@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { SearchWidget } from './SearchWidget';
-import { LandingHeader } from './LandingHeader';
 import { typography, animations } from '@/app/components/design-system/constants';
 import { Play } from 'lucide-react';
 
@@ -53,7 +52,6 @@ export function HeroParallax() {
 
             {/* Content Layer */}
             <div className="relative z-10">
-                <LandingHeader /> {/* Reverted to default (dark theme) */}
 
                 <div className="pt-32 pb-40 px-4 md:px-12 max-w-[1800px] mx-auto">
                     {/* Text and Search Top Section */}

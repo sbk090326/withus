@@ -15,16 +15,30 @@ interface SearchFieldProps {
 
 const SearchField = ({ icon, label, placeholder, hasSeparator = true, theme = 'dark' }: SearchFieldProps) => (
     <div className={`flex items-center gap-4 flex-1 px-6 ${hasSeparator ? (theme === 'dark' ? 'border-r border-white/20' : 'border-r border-black/10') : ''}`}>
-        <div className={theme === 'dark' ? 'text-white/80' : 'text-[#1A3C5A]/80'}>
+        <div style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : `${colors.primary.navy}cc` /* cc = 80% opacity */ }}>
             {icon}
         </div>
         <div className="flex flex-col">
-            <span className={`text-xs font-medium uppercase tracking-wider mb-1 ${theme === 'dark' ? 'text-white/60' : 'text-[#1A3C5A]/60'}`}>{label}</span>
+            <span
+                className="text-xs font-medium uppercase tracking-wider mb-1"
+                style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : `${colors.primary.navy}99` /* 99 = 60% opacity */ }}
+            >
+                {label}
+            </span>
             <input
                 type="text"
                 placeholder={placeholder}
-                className={`bg-transparent border-none outline-none w-full font-medium ${theme === 'dark' ? 'text-white placeholder-white/90' : 'text-[#1A3C5A] placeholder-[#1A3C5A]/50'}`}
+                className="bg-transparent border-none outline-none w-full font-medium"
+                style={{
+                    color: theme === 'dark' ? colors.neutral.white : colors.primary.navy,
+                    '--placeholder-color': theme === 'dark' ? 'rgba(255,255,255,0.9)' : `${colors.primary.navy}80`
+                } as React.CSSProperties}
             />
+            <style jsx>{`
+                input::placeholder {
+                    color: var(--placeholder-color) !important;
+                }
+            `}</style>
         </div>
     </div>
 );
@@ -32,10 +46,12 @@ const SearchField = ({ icon, label, placeholder, hasSeparator = true, theme = 'd
 export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
     return (
         <motion.div
-            className={`w-full max-w-[900px] h-[88px] backdrop-blur-xl rounded-full flex items-center p-2 pl-4 shadow-2xl ${theme === 'dark'
-                ? 'bg-black/20 border border-white/10'
-                : 'bg-white/60 border border-white/40' // Added white/40 border for light mode
-                }`}
+            className="w-full max-w-[900px] h-[88px] backdrop-blur-xl rounded-full flex items-center p-2 pl-4 shadow-2xl transition-colors duration-300"
+            style={{
+                backgroundColor: theme === 'dark' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.6)',
+                borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.4)',
+                borderWidth: '1px'
+            }}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: animations.duration.normal, delay: 0.4, ease: animations.easing.smooth }}
@@ -61,10 +77,11 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
             />
 
             <motion.button
-                className={`h-[72px] px-8 rounded-full font-semibold text-lg flex items-center gap-2 transition-colors ${theme === 'dark'
-                    ? 'bg-white text-[#1A3C5A] hover:bg-white/90'
-                    : 'bg-[#1A3C5A] text-white hover:bg-[#1A3C5A]/90'
-                    }`}
+                className="h-[72px] px-8 rounded-full font-semibold text-lg flex items-center gap-2 transition-colors duration-300"
+                style={{
+                    backgroundColor: theme === 'dark' ? colors.neutral.white : colors.primary.navy,
+                    color: theme === 'dark' ? colors.primary.navy : colors.neutral.white
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
             >
