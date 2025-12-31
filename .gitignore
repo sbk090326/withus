@@ -1,0 +1,15 @@
+# Java / Gradle
+build/
+.gradle/
+bin/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.env*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
