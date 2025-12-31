@@ -1,19 +1,15 @@
-'use client';
+import { Metadata } from 'next';
+import { HeroParallax } from './components/HeroParallax';
 
-import { HeroWithImages } from './components/hero-with-images';
-import { ServiceCoreValues } from './components/service-core-values';
-import { HotDestinations } from './components/hot-destinations';
-import { RecommendedCompanions } from './components/recommended-companions';
-import { CommunityReviews } from './components/community-reviews';
+export const metadata: Metadata = {
+    title: 'Withus - Find Your Next Unforgettable Trip',
+    description: 'Discover hidden gems, chill spots, and wild adventures with the best travel companion platform.',
+};
 
 export default function LandingPage() {
     return (
-        <div className="min-h-screen">
-            <HeroWithImages />
-            <ServiceCoreValues />
-            <HotDestinations />
-            <RecommendedCompanions />
-            <CommunityReviews />
-        </div>
+        <main className="min-h-screen bg-[#F7F3F0]">
+            <HeroParallax />
+        </main>
     );
 }

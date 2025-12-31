@@ -1,14 +1,39 @@
 'use client';
 
 import React from 'react';
-import { motion, HTMLMotionProps, useInView } from 'motion/react';
+// import { motion, HTMLMotionProps, useInView } from 'motion/react'; // Cleaned up
 import { colors, typography, animations } from '../design-system/constants';
 
-interface SectionTitleProps extends Omit<HTMLMotionProps<'h2'>, 'style'> {
+interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
     children: React.ReactNode;
     className?: string;
     animate?: boolean;
 }
+
+const fadeUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: animations.duration.normal,
+            ease: animations.easing.smooth
+        }
+    }
+};
+
+const descriptionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 0.8,
+        y: 0,
+        transition: {
+            duration: animations.duration.normal,
+            delay: 0.2,
+            ease: animations.easing.smooth
+        }
+    }
+};
 
 export function SectionTitle({
     children,
@@ -16,31 +41,23 @@ export function SectionTitle({
     animate = true,
     ...props
 }: SectionTitleProps) {
-    const ref = React.useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-
     return (
-        <motion.h2
-            ref={ref}
+        <h2
             className={`text-center mb-16 ${className}`}
             style={{
                 fontSize: typography.fontSize['3xl'],
                 color: colors.primary.navy,
+                opacity: '1 !important' as any,
+                visibility: 'visible !important' as any,
             }}
-            initial={animate ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-            animate={animate ? (isInView ? { opacity: 1, y: 0 } : {}) : { opacity: 1, y: 0 }}
-            transition={animate ? {
-                duration: animations.duration.normal,
-                ease: animations.easing.smooth
-            } : undefined}
             {...props}
         >
             {children}
-        </motion.h2>
+        </h2>
     );
 }
 
-interface SectionDescriptionProps extends Omit<HTMLMotionProps<'p'>, 'style'> {
+interface SectionDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
     children: React.ReactNode;
     className?: string;
     animate?: boolean;
@@ -52,28 +69,17 @@ export function SectionDescription({
     animate = true,
     ...props
 }: SectionDescriptionProps) {
-    const ref = React.useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-
     return (
-        <motion.p
-            ref={ref}
+        <p
             className={`text-center mb-12 ${className}`}
             style={{
                 fontSize: typography.fontSize.base,
                 color: colors.primary.navy,
                 opacity: 0.8,
             }}
-            initial={animate ? { opacity: 0, y: 20 } : { opacity: 0.8, y: 0 }}
-            animate={animate ? (isInView ? { opacity: 0.8, y: 0 } : {}) : { opacity: 0.8, y: 0 }}
-            transition={animate ? {
-                duration: animations.duration.normal,
-                delay: 0.2,
-                ease: animations.easing.smooth
-            } : undefined}
             {...props}
         >
             {children}
-        </motion.p>
+        </p>
     );
 }

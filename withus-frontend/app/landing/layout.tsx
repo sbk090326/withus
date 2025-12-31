@@ -1,7 +1,10 @@
 'use client';
 
-import { Header, Footer } from '../components/layout';
-import { CTASection } from './components/cta-section';
+import React from 'react';
+
+// We rely on the page to define its own layout structure (Header/Hero/Footer)
+// or we can add a Footer here if needed later.
+// For now, we want a clean slate for the Hero section demo.
 
 export default function LandingLayout({
     children,
@@ -9,11 +12,8 @@ export default function LandingLayout({
     children: React.ReactNode;
 }) {
     return (
-        <>
-            <Header />
+        <React.Fragment>
             {children}
-            <CTASection />
-            <Footer />
-        </>
+        </React.Fragment>
     );
 }
