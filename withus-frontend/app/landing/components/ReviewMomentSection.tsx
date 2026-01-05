@@ -55,7 +55,7 @@ const reviews = [
 
 export function ReviewMomentSection() {
     return (
-        <section className={`w-full ${spacing.section.py} bg-[#F7F3F0] relative z-10 overflow-hidden`}>
+        <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] relative z-10 overflow-hidden`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px} text-center`}>
 
                 <motion.div
@@ -64,11 +64,11 @@ export function ReviewMomentSection() {
                     viewport={{ once: true }}
                     className="mb-20"
                 >
-                    <h3 className="text-sm font-semibold tracking-wider uppercase text-gray-500 mb-3">
-                        Real stories from real travelers
+                    <h3 className="text-sm font-semibold tracking-wider uppercase text-slate-500 mb-3">
+                        여행자들의 생생한 후기
                     </h3>
-                    <h2 className="text-3xl md:text-5xl font-bold leading-tight" style={{ color: colors.primary.navy }}>
-                        Moments that made every journey <br className="hidden md:block" /> unforgettable
+                    <h2 className="text-3xl md:text-5xl font-bold leading-tight text-slate-900">
+                        모든 여행을 <br className="hidden md:block" /> 잊지 못할 추억으로 만든 순간들
                     </h2>
                 </motion.div>
 
@@ -90,7 +90,7 @@ export function ReviewMomentSection() {
                             </div>
 
                             <div className="text-left px-2">
-                                <Quote size={24} className="text-[#FF8A73] mb-3 opacity-50" />
+                                <Quote size={24} className="text-[#FF7E5F] mb-3 opacity-50" />
                                 <p className="text-gray-700 font-medium leading-relaxed mb-6 min-h-[80px]">
                                     "{review.text}"
                                 </p>
@@ -110,8 +110,8 @@ export function ReviewMomentSection() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.6 }}
                 >
-                    <button className={`px-8 py-3 rounded-full bg-[${colors.primary.navy}] text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-[#1A3C5A]/20`}>
-                        See more happiness
+                    <button className="px-8 py-3 rounded-full bg-[#FF7E5F] text-white font-semibold hover:bg-[#FF6B47] transition-colors shadow-lg">
+                        행복한 순간 더 보기
                     </button>
                 </motion.div>
 

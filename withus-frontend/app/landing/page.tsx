@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { LandingHeader } from './components/LandingHeader';
+
 import { HeroParallax } from './components/HeroParallax';
 import { CurationSection } from './components/CurationSection';
 import { DiscoverSection } from './components/DiscoverSection';
@@ -8,26 +8,26 @@ import { ServiceIdentitySection } from './components/ServiceIdentitySection';
 import { TrendingSection } from './components/TrendingSection';
 import { RegionQuickExploreSection } from './components/RegionQuickExploreSection';
 import { CallToActionSection } from './components/CallToActionSection';
-import { Footer } from '@/app/components/layout/Footer';
+
 
 export const metadata: Metadata = {
-    title: 'Withus - Find Your Next Unforgettable Trip',
-    description: 'Discover hidden gems, chill spots, and wild adventures with the best travel companion platform.',
+    title: 'Withus - Travel with Friends, Make Memories Together',
+    description: 'Find your perfect travel buddy and explore the world together. Safe, verified, and fun! Join 10,000+ travelers worldwide.',
 };
 
 export default function LandingPage() {
     return (
-        <main className="min-h-screen bg-[#F7F3F0]">
-            <LandingHeader />
+        <main className="min-h-screen bg-[#FDFCFB]">
+
             <HeroParallax />
-            <CurationSection />
-            <DiscoverSection />
-            <ReviewMomentSection />
             <ServiceIdentitySection />
             <TrendingSection />
             <RegionQuickExploreSection />
+            <CurationSection />
+            <ReviewMomentSection />
+            <DiscoverSection />
             <CallToActionSection />
-            <Footer />
+
         </main>
     );
 }

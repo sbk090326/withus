@@ -1,58 +1,61 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'motion/react';
-import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { Instagram, Twitter, Facebook } from 'lucide-react';
 import Link from 'next/link';
-import { colors } from '@/app/components/design-system/constants';
 
 export function Footer() {
-    const socialLinks = [
-        { icon: Instagram, href: '#instagram' },
-        { icon: Facebook, href: '#facebook' },
-        { icon: Twitter, href: '#twitter' },
-    ];
+    const footerLinks = {
+        company: [
+            { name: 'About Us', href: '#' },
+            { name: 'Careers', href: '#' },
+            { name: 'Blog', href: '#' },
+        ],
+        support: [
+            { name: 'Help Center', href: '#' },
+            { name: 'Terms of Service', href: '#' },
+            { name: 'Privacy Policy', href: '#' },
+        ],
+    };
 
-    const footerLinks = [
-        { name: 'About Us', href: '#about' },
-        { name: 'Terms of Service', href: '#terms' },
-        { name: 'Privacy Policy', href: '#privacy' },
-        { name: 'Contact Us', href: '#contact' },
-        { name: 'Help Center', href: '#help' },
+    const socialLinks = [
+        { icon: Instagram, href: '#', label: 'Instagram' },
+        { icon: Twitter, href: '#', label: 'Twitter' },
+        { icon: Facebook, href: '#', label: 'Facebook' },
     ];
 
     return (
-        <footer className="py-16 px-8" style={{ backgroundColor: colors.primary.navy }}>
-            <div className="max-w-[1400px] mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                    {/* Logo & Description */}
-                    <div>
+        <footer className="bg-[#FDFCFB] text-slate-900 pt-20 pb-12 relative overflow-hidden border-t border-slate-200">
+            {/* Decorative Background */}
+            <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl"></div>
+            </div>
+
+            <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+                {/* Links Section */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-center md:text-left">
+                    {/* Brand */}
+                    <div className="col-span-2 md:col-span-1">
                         <Link href="/">
-                            <h3 className="mb-4 cursor-pointer" style={{ fontSize: '28px', color: colors.neutral.white }}>
-                                With<span style={{ color: colors.primary.tan }}>us</span>
-                            </h3>
+                            <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent cursor-pointer">
+                                WITHUS
+                            </h2>
                         </Link>
-                        <p style={{ fontSize: '16px', color: colors.neutral.white, opacity: 0.85 }}>
-                            Connecting travelers with compatible companions for unforgettable shared
-                            experiences around the world.
+                        <p className="text-slate-600 text-sm">
+                            Connect with verified travel companions worldwide.
                         </p>
                     </div>
 
-                    {/* Quick Links */}
+                    {/* Company Links */}
                     <div>
-                        <h4
-                            className="mb-4"
-                            style={{ fontSize: '18px', color: colors.neutral.white, opacity: 0.95 }}
-                        >
-                            Quick Links
-                        </h4>
-                        <ul className="space-y-3">
-                            {footerLinks.slice(0, 3).map((link, index) => (
-                                <li key={index}>
+                        <h3 className="font-bold text-sm mb-3 text-slate-900">Company</h3>
+                        <ul className="space-y-2">
+                            {footerLinks.company.map((link) => (
+                                <li key={link.name}>
                                     <a
                                         href={link.href}
-                                        className="transition-colors duration-300 hover:opacity-100"
-                                        style={{ fontSize: '16px', color: colors.neutral.white, opacity: 0.85 }}
+                                        className="text-slate-600 hover:text-orange-500 transition-colors text-sm"
                                     >
                                         {link.name}
                                     </a>
@@ -61,60 +64,46 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    {/* Support */}
+                    {/* Support Links */}
                     <div>
-                        <h4
-                            className="mb-4"
-                            style={{ fontSize: '18px', color: colors.neutral.white, opacity: 0.95 }}
-                        >
-                            Support
-                        </h4>
-                        <ul className="space-y-3">
-                            {footerLinks.slice(3).map((link, index) => (
-                                <li key={index}>
+                        <h3 className="font-bold text-sm mb-3 text-slate-900">Support</h3>
+                        <ul className="space-y-2">
+                            {footerLinks.support.map((link) => (
+                                <li key={link.name}>
                                     <a
                                         href={link.href}
-                                        className="transition-colors duration-300 hover:opacity-100"
-                                        style={{ fontSize: '16px', color: colors.neutral.white, opacity: 0.85 }}
+                                        className="text-slate-600 hover:text-orange-500 transition-colors text-sm"
                                     >
                                         {link.name}
                                     </a>
                                 </li>
                             ))}
                         </ul>
+                    </div>
+
+                    {/* Social Links */}
+                    <div>
+                        <h3 className="font-bold text-sm mb-3 text-slate-900">Follow Us</h3>
+                        <div className="flex gap-3 justify-center md:justify-start">
+                            {socialLinks.map((social) => (
+                                <a
+                                    key={social.label}
+                                    href={social.href}
+                                    aria-label={social.label}
+                                    className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-gradient-to-br hover:from-orange-500 hover:to-pink-500 hover:border-transparent transition-all group"
+                                >
+                                    <social.icon size={16} className="text-slate-600 group-hover:text-white transition-colors" />
+                                </a>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                {/* Divider */}
-                <div
-                    className="h-[1px] mb-8"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
-                />
-
-                {/* Bottom Bar */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    {/* Copyright */}
-                    <p style={{ fontSize: '14px', color: colors.neutral.white, opacity: 0.7 }}>
-                        © 2025 Withus. All rights reserved.
+                {/* Bottom Section */}
+                <div className="border-t border-slate-200 pt-6 text-center">
+                    <p className="text-slate-500 text-sm">
+                        © 2026 WithUs. All rights reserved.
                     </p>
-
-                    {/* Social Media Icons */}
-                    <div className="flex items-center gap-6">
-                        {socialLinks.map((social, index) => {
-                            const Icon = social.icon;
-                            return (
-                                <motion.a
-                                    key={index}
-                                    href={social.href}
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <Icon size={24} style={{ color: colors.primary.tan }} />
-                                </motion.a>
-                            );
-                        })}
-                    </div>
                 </div>
             </div>
         </footer>

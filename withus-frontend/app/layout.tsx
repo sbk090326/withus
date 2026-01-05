@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Header, Footer } from '@/app/components/layout';
+
 
 export const metadata: Metadata = {
     title: 'Withus - Find Your Perfect Travel Companion',
@@ -13,8 +15,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className="antialiased">
+            <body className="antialiased bg-[#FDFCFB]">
+                <Header />
                 {children}
+                <Footer />
             </body>
         </html>
     );

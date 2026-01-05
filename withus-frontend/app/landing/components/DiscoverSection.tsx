@@ -54,41 +54,39 @@ export function DiscoverSection() {
         : destinations.filter(d => d.region === activeCategory);
 
     return (
-        <section className={`w-full ${spacing.section.py} bg-white relative z-10`}>
+        <section className={`w-full ${spacing.section.py} bg-[#FFF9F7] relative z-10`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
 
                 {/* Header */}
                 <div className="text-center mb-16">
                     <motion.h2
-                        className="text-4xl md:text-5xl font-bold mb-6"
+                        className="text-4xl md:text-5xl font-bold mb-6 text-slate-900"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        style={{ color: colors.primary.navy }}
                     >
-                        Discover the World
+                        세계를 발견하세요
                     </motion.h2>
                     <motion.p
-                        className="text-lg max-w-2xl mx-auto"
+                        className="text-lg max-w-2xl mx-auto text-slate-600"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        style={{ color: colors.primary.navy, opacity: 0.7 }}
                     >
-                        From hidden beaches to buzzing cities, explore handpicked destinations around the globe, curated for every kind of traveler.
+                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 전 세계 여행지를 만나보세요.
                     </motion.p>
                 </div>
 
                 {/* Filter Tabs */}
-                <div className="flex flex-wrapjustify-center gap-3 mb-12 overflow-x-auto pb-4 justify-center">
+                <div className="flex flex-wrap justify-center gap-3 mb-12 overflow-x-auto pb-4">
                     {categories.map((cat, index) => (
                         <motion.button
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat
-                                    ? `bg-[${colors.primary.navy}] text-white border-[${colors.primary.navy}]`
-                                    : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'
+                                ? 'bg-[#FF7E5F] text-white border-[#FF7E5F]'
+                                : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'
                                 }`}
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
