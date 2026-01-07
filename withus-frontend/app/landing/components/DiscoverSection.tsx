@@ -8,48 +8,48 @@ import { colors, spacing } from '@/app/components/design-system/constants';
 const destinations = [
     {
         id: 1,
-        name: 'Santorini, Greece',
-        description: 'Watch golden sunsets over whitewashed cliffs and enjoy romantic getaways by the Aegean Sea.',
-        tags: ['Romantic', 'Luxury'],
-        region: 'Europe',
-        icon: Building2,
-        color: 'bg-blue-100 text-blue-600'
-    },
-    {
-        id: 2,
-        name: 'Kyoto, Japan',
-        description: 'Wander through ancient temples, peaceful gardens, and charming streets filled with culture and tradition.',
-        tags: ['Cultural', 'Calm Escape'],
-        region: 'Asia',
-        icon: Tent,
-        color: 'bg-red-100 text-red-600'
-    },
-    {
-        id: 3,
-        name: 'Palawan, Philippines',
-        description: 'A tropical paradise of crystal lagoons and limestone cliffs perfect for sun-seekers and island dreamers.',
-        tags: ['Nature', 'Relaxation'],
-        region: 'Asia',
+        name: '제주도',
+        description: '푸른 바다와 한라산, 아름다운 오름과 폭포로 막힐 엿 이상향이 넘치는 한국의 대표 휴양지.',
+        tags: ['로맨틱', '휴양'],
+        region: '제주/도서권',
         icon: Palmtree,
         color: 'bg-teal-100 text-teal-600'
     },
     {
+        id: 2,
+        name: '경주',
+        description: '불국사와 천년 고도, 평화로운 정원과 전통이 살아있는 한국의 문화 수도.',
+        tags: ['문화', '힘링'],
+        region: '영남권',
+        icon: Building2,
+        color: 'bg-red-100 text-red-600'
+    },
+    {
+        id: 3,
+        name: '강릉',
+        description: '동해의 맑은 해변과 소나무 숲, 아름다운 카페로 가득한 힘링 여행의 메카.',
+        tags: ['자연', '휴식'],
+        region: '강원권',
+        icon: Tent,
+        color: 'bg-blue-100 text-blue-600'
+    },
+    {
         id: 4,
-        name: 'Swiss Alps, Switzerland',
-        description: 'Experience breathtaking peaks, ski resorts, and cozy chalets in the heart of the mountains.',
-        tags: ['Adventure', 'Scenic'],
-        region: 'Europe',
+        name: '부산',
+        description: '해운대 해변과 감천 문화마을, 자갈치 시장과 산과 바다가 어우러진 동적인 해양 도시.',
+        tags: ['해변', '도시'],
+        region: '영남권',
         icon: Mountain,
         color: 'bg-slate-200 text-slate-700'
     }
 ];
 
-const categories = ['All', 'Asia', 'Europe', 'Oceania', 'Africa', 'Caribbean', 'Middle East'];
+const categories = ['전체', '제주/도서권', '강원권', '영남권', '호남권', '충청권', '수도권'];
 
 export function DiscoverSection() {
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [activeCategory, setActiveCategory] = useState('전체');
 
-    const filteredDestinations = activeCategory === 'All'
+    const filteredDestinations = activeCategory === '전체'
         ? destinations
         : destinations.filter(d => d.region === activeCategory);
 
@@ -65,7 +65,7 @@ export function DiscoverSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        세계를 발견하세요
+                        대한민국을 발견하세요
                     </motion.h2>
                     <motion.p
                         className="text-lg max-w-2xl mx-auto text-slate-600"
@@ -74,7 +74,7 @@ export function DiscoverSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
                     >
-                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 전 세계 여행지를 만나보세요.
+                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 국내 여행지를 만나보세요.
                     </motion.p>
                 </div>
 

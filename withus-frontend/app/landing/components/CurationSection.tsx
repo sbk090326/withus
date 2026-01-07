@@ -43,10 +43,10 @@ const profiles: MatchProfile[] = [
         name: '박수진',
         age: 25,
         matchScore: 89,
-        tags: ['#미술관', '#전시회', '#유럽감성'],
+        tags: ['#미술관', '#전시회', '#감성카페'],
         bio: '하루 종일 미술관에서 시간 보내는 거 좋아해요. 같이 가실 분!',
         image: '👩🏼',
-        location: '파리 거주',
+        location: '서울',
     }
 ];
 

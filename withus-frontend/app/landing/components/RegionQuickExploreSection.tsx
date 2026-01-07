@@ -17,12 +17,12 @@ const RegionPill = ({ name }: { name: string }) => (
 
 export function RegionQuickExploreSection() {
     const regions = [
-        "Europe", "Asia", "North America", "South America",
-        "Africa", "Oceania", "Middle East", "Caribbean"
+        "수도권", "강원권", "충청권", "호남권",
+        "영남권", "제주도", "부산/경남", "대구/경북"
     ];
 
     const popular = [
-        "Paris", "London", "Tokyo", "New York", "Bali", "Seoul", "Bangkok", "Rome"
+        "제주도", "강릉", "부산", "여수", "경주", "전주", "속초", "평창"
     ];
 
     return (
@@ -41,14 +41,14 @@ export function RegionQuickExploreSection() {
                         다음 여행지는 어디인가요?
                     </h2>
                     <p className="text-slate-600">
-                        대륙별 인기 여행지와 핫한 도시를 빠르게 찾아보세요.
+                        권역별 인기 여행지와 핫한 관광지를 빠르게 찾아보세요.
                     </p>
                 </motion.div>
 
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-8">
                         <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-6 flex items-center justify-center gap-2">
-                            <Map size={16} /> 대륙별
+                            <Map size={16} /> 권역별
                         </h3>
                         <div className="flex flex-wrap justify-center gap-4">
                             {regions.map((r) => <RegionPill key={r} name={r} />)}
