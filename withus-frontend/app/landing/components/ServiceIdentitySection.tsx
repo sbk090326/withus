@@ -41,9 +41,9 @@ export function ServiceIdentitySection() {
     return (
         <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] rounded-t-[60px] -mt-20 relative z-30`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
-                <div className="flex flex-col lg:flex-row items-end justify-between gap-12 mb-20">
+                <div className="flex flex-col lg:flex-row items-center justify-center gap-12 mb-20">
                     <motion.div
-                        className="flex-1 max-w-2xl"
+                        className="flex-1 max-w-2xl text-center mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

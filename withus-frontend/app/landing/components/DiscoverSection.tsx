@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { ArrowRight, MapPin, Tent, Building2, Palmtree, Mountain } from 'lucide-react';
 import { colors, spacing } from '@/app/components/design-system/constants';
@@ -13,6 +14,7 @@ const destinations = [
         tags: ['로맨틱', '휴양'],
         region: '제주/도서권',
         icon: Palmtree,
+        image: '/discover-jeju.png',
         color: 'bg-teal-100 text-teal-600'
     },
     {
@@ -22,6 +24,7 @@ const destinations = [
         tags: ['문화', '힘링'],
         region: '영남권',
         icon: Building2,
+        image: '/discover-gyeongju.png',
         color: 'bg-red-100 text-red-600'
     },
     {
@@ -31,6 +34,7 @@ const destinations = [
         tags: ['자연', '휴식'],
         region: '강원권',
         icon: Tent,
+        image: '/discover-gangneung.png',
         color: 'bg-blue-100 text-blue-600'
     },
     {
@@ -40,6 +44,7 @@ const destinations = [
         tags: ['해변', '도시'],
         region: '영남권',
         icon: Mountain,
+        image: '/discover-busan.png',
         color: 'bg-slate-200 text-slate-700'
     }
 ];
@@ -65,7 +70,7 @@ export function DiscoverSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        대한민국을 발견하세요
+                        국내 명소 곳곳에 담긴 이야기
                     </motion.h2>
                     <motion.p
                         className="text-lg max-w-2xl mx-auto text-slate-600"
@@ -110,10 +115,13 @@ export function DiscoverSection() {
                             transition={{ duration: 0.4 }}
                             className="group relative h-[420px] rounded-[32px] overflow-hidden cursor-pointer"
                         >
-                            {/* Placeholder Image Background */}
-                            <div className={`absolute inset-0 ${dest.color} transition-colors duration-500 flex items-center justify-center`}>
-                                <dest.icon size={64} className="opacity-20 group-hover:scale-110 transition-transform duration-500" />
-                            </div>
+                            {/* Destination Image Background */}
+                            <Image
+                                src={dest.image}
+                                alt={`${dest.name} 여행지 사진`}
+                                fill
+                                className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
 
                             {/* Overlay Gradient */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />

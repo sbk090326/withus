@@ -48,11 +48,13 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
             transition={{ duration: animations.duration.normal, ease: animations.easing.smooth }}
         >
             {/* Logo */}
-            <div className="flex items-center gap-2">
-                <div className="text-2xl font-bold tracking-tight bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
-                    WITHUS
+            <Link href="/landing">
+                <div className="flex items-center gap-2 cursor-pointer">
+                    <div className="text-2xl font-bold tracking-tight bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                        WITHUS
+                    </div>
                 </div>
-            </div>
+            </Link>
 
             {/* Navigation Pill */}
             <nav className={`hidden md:flex items-center p-1.5 rounded-full transition-all duration-300 backdrop-blur-md border ${pillBg}`}>
