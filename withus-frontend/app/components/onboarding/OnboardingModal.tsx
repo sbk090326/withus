@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '@/app/context/AuthContext';
 import { ArrowRight } from 'lucide-react';
+import { api } from '@/app/lib/api';
+import { toast } from 'sonner';
 
 import { WelcomeStep } from './steps/WelcomeStep';
 import { NicknameStep } from './steps/NicknameStep';
@@ -38,7 +40,7 @@ export function OnboardingModal() {
         });
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (step === 0) {
             setStep(1);
         } else if (step === 1 && nickname.trim()) {
@@ -50,12 +52,28 @@ export function OnboardingModal() {
         } else if (step === 4) {
             setStep(5);
         } else if (step === 5) {
-            // Save data before showing completion screen
-            if (user) {
-                // In a real app, all preferences would be saved
-                login({ ...user, nickname: nickname });
+            try {
+                await api.post('/members/onboarding', {
+                    nickname,
+                    preferences: {
+                        interests: preferences,
+                        planStyle: planStyle?.toUpperCase(),
+                        paceStyle: paceStyle?.toUpperCase(),
+                        budgetStyle: budgetStyle?.toUpperCase(),
+                        foodStyle: foodStyle?.toUpperCase(),
+                        lifestyleStyle: lifestyleStyle?.toUpperCase(),
+                    }
+                });
+
+                // Save data locally before showing completion screen
+                if (user) {
+                    login({ ...user, nickname: nickname });
+                }
+                setStep(6);
+            } catch (error) {
+                console.error(error);
+                toast.error('온보딩 정보를 저장하는데 실패했습니다.');
             }
-            setStep(6);
         }
     };
 

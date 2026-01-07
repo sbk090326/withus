@@ -1,13 +1,22 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { api } from '@/app/lib/api';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { theme } from '@/app/components/design-system/constants';
 import { ArrowLeft, User, Mail, Lock, Check, ChevronRight } from 'lucide-react';
 
 export default function SignUpPage() {
+    const router = useRouter();
     const [allAgreed, setAllAgreed] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
     const [agreements, setAgreements] = useState({
         age: false,
         service: false,
@@ -36,13 +45,42 @@ export default function SignUpPage() {
         });
     };
 
-    // Sync allAgreed state when individual items change manually (handled in handleSingleCheck generally, but good for safety)
     useEffect(() => {
         const allChecked = Object.values(agreements).every(val => val);
         if (allAgreed !== allChecked) {
             setAllAgreed(allChecked);
         }
     }, [agreements, allAgreed]);
+
+    const handleSignup = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!email || !password || !confirmPassword) {
+            toast.error('모든 필드를 입력해주세요.');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            toast.error('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        if (!agreements.age || !agreements.service || !agreements.privacy) {
+            toast.error('필수 약관에 동의해주세요.');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await api.post('/members/signup', { email, password });
+            toast.success('회원가입이 완료되었습니다!');
+            router.push('/login');
+        } catch (error: any) {
+            toast.error(error.message || '회원가입 중 오류가 발생했습니다.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <main className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-[#FDFCFB]">
@@ -81,8 +119,7 @@ export default function SignUpPage() {
                     </div>
 
                     {/* Sign Up Form */}
-                    <form className="text-left w-full mb-6" onSubmit={(e) => e.preventDefault()}>
-
+                    <form className="text-left w-full mb-6" onSubmit={handleSignup}>
 
                         {/* Email */}
                         <div className="mb-2">
@@ -90,6 +127,8 @@ export default function SignUpPage() {
                             <div className="relative">
                                 <input
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="example@email.com"
                                     className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FF7E5F] focus:ring-4 focus:ring-[#FF7E5F]/10 outline-none transition-all text-sm"
                                 />
@@ -103,6 +142,8 @@ export default function SignUpPage() {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     placeholder="8자 이상 입력해주세요"
                                     className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FF7E5F] focus:ring-4 focus:ring-[#FF7E5F]/10 outline-none transition-all text-sm"
                                 />
@@ -116,6 +157,8 @@ export default function SignUpPage() {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                     placeholder="비밀번호를 한번 더 입력해주세요"
                                     className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FF7E5F] focus:ring-4 focus:ring-[#FF7E5F]/10 outline-none transition-all text-sm"
                                 />
@@ -192,8 +235,12 @@ export default function SignUpPage() {
                             </div>
                         </div>
 
-                        <button className="w-full py-3.5 rounded-xl bg-[#FF7E5F] text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(255,126,95,0.39)] hover:shadow-[0_6px_20px_rgba(255,126,95,0.23)] hover:bg-[#FF6B47] hover:-translate-y-0.5 transition-all duration-300">
-                            회원가입 완료
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full py-3.5 rounded-xl bg-[#FF7E5F] text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(255,126,95,0.39)] hover:shadow-[0_6px_20px_rgba(255,126,95,0.23)] hover:bg-[#FF6B47] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {isLoading ? '가입 중...' : '회원가입 완료'}
                         </button>
                     </form>
 
