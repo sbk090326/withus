@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     description: 'Connect with compatible travel companions for unforgettable shared experiences around the world.',
 };
 
+import { AuthProvider } from '@/app/context/AuthContext';
+import { OnboardingModal } from '@/app/components/onboarding/OnboardingModal';
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -16,9 +19,12 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body className="antialiased bg-[#FDFCFB]">
-                <Header />
-                {children}
-                <Footer />
+                <AuthProvider>
+                    <Header />
+                    <OnboardingModal />
+                    {children}
+                    <Footer />
+                </AuthProvider>
             </body>
         </html>
     );

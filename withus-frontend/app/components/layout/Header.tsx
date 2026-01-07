@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
+import Link from 'next/link';
 import { colors, animations } from '@/app/components/design-system/constants';
+import { useAuth } from '@/app/context/AuthContext';
+import { User, LogOut } from 'lucide-react';
 
 export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'dark' }) {
     const [activeTab, setActiveTab] = useState('Destinations');
     const [isScrolled, setIsScrolled] = useState(false);
     const { scrollY } = useScroll();
+    const { isLoggedIn, logout } = useAuth();
 
     const navLinks = [
         '동행 찾기', '추천 여행지', '커뮤니티', '내 여행', '소개', '문의'
@@ -76,12 +80,30 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
             </nav>
 
             {/* Sign Up Button */}
-            <motion.button
-                className="px-8 py-3 rounded-full font-semibold text-sm transition-colors duration-300 bg-[#FF7E5F] text-white hover:bg-[#FF6B47] shadow-md"
-                whileTap={{ scale: 0.95 }}
-            >
-                로그인
-            </motion.button>
+            {/* Authentication */}
+            {isLoggedIn ? (
+                <div className="flex items-center gap-4">
+                    <button className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center hover:bg-slate-50 transition-colors">
+                        <User size={20} className="text-slate-600" />
+                    </button>
+                    <button
+                        onClick={logout}
+                        className="p-2 text-slate-500 hover:text-[#FF7E5F] transition-colors"
+                        title="로그아웃"
+                    >
+                        <LogOut size={20} />
+                    </button>
+                </div>
+            ) : (
+                <Link href="/login">
+                    <motion.button
+                        className="px-8 py-3 rounded-full font-semibold text-sm transition-colors duration-300 bg-[#FF7E5F] text-white hover:bg-[#FF6B47] shadow-md"
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        로그인
+                    </motion.button>
+                </Link>
+            )}
         </motion.header>
     );
 }
