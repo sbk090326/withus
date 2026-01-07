@@ -20,11 +20,11 @@ export default function LandingPage() {
         <main className="min-h-screen bg-[#FDFCFB]">
 
             <HeroParallax />
-            <ServiceIdentitySection />
             <TrendingSection />
-            <RegionQuickExploreSection />
             <CurationSection />
+            <ServiceIdentitySection />
             <ReviewMomentSection />
+            <RegionQuickExploreSection />
             <DiscoverSection />
             <CallToActionSection />
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Flame, ArrowUpRight, MapPin, Calendar, User, Clock } from 'lucide-react';
-import { colors, spacing } from '@/app/components/design-system/constants';
+import { colors, spacing, theme } from '@/app/components/design-system/constants';
 
 interface RecruitmentProps {
     id: number;
@@ -107,7 +107,7 @@ export function TrendingSection() {
     ];
 
     return (
-        <section className={`w-full ${spacing.section.py} bg-[#FFF9F7] relative z-20`}>
+        <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] relative z-20`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
                 <div className="flex flex-col lg:flex-row gap-16 items-start">
                     {/* Left: Heading & Context */}
@@ -121,7 +121,7 @@ export function TrendingSection() {
                         </div>
                         <h2 className="text-4xl font-bold mb-6 text-slate-900 leading-tight">
                             지금 떠나는 동행, <br />
-                            <span className="text-[#38BDF8]">바로 합류하세요.</span>
+                            <span style={{ color: theme.colors.secondary.DEFAULT }}>바로 합류하세요.</span>
                         </h2>
                         <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                             수많은 여행자들이 지금 이 순간에도 동행을 찾고 있습니다. 놓치기 아까운 기회를 잡으세요!

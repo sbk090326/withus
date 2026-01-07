@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ShieldCheck, Sparkles, HeartHandshake, Fingerprint } from 'lucide-react';
-import { colors, spacing } from '@/app/components/design-system/constants';
+import { colors, spacing, theme } from '@/app/components/design-system/constants';
 
 const TrustFeature = ({ icon: Icon, title, description, delay }: { icon: any, title: string, description: string, delay: number }) => (
     <motion.div
@@ -13,8 +13,20 @@ const TrustFeature = ({ icon: Icon, title, description, delay }: { icon: any, ti
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay }}
     >
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#FF7E5F]/10 to-[#38BDF8]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <Icon size={28} className="text-[#FF7E5F] group-hover:text-[#38BDF8] transition-colors" strokeWidth={1.5} />
+        <div
+            className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+            style={{
+                background: `linear-gradient(135deg, ${theme.colors.primary.light}33, ${theme.colors.secondary.light}33)`,
+                // Define CSS variables for the icon colors
+                ['--icon-base' as any]: theme.colors.primary.DEFAULT,
+                ['--icon-hover' as any]: theme.colors.secondary.DEFAULT,
+            }}
+        >
+            <Icon
+                size={28}
+                className="transition-colors duration-300 text-[var(--icon-base)] group-hover:text-[var(--icon-hover)]"
+                strokeWidth={1.5}
+            />
         </div>
         <h3 className="text-xl font-bold mb-3 text-slate-900">
             {title}
@@ -36,12 +48,18 @@ export function ServiceIdentitySection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <span className="inline-block py-1 px-3 rounded-full bg-[#FF7E5F]/10 text-[#FF7E5F] text-xs font-bold uppercase tracking-wider mb-4">
+                        <span
+                            className="inline-block py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+                            style={{
+                                backgroundColor: theme.colors.primary.bg,
+                                color: theme.colors.primary.DEFAULT
+                            }}
+                        >
                             Why Withus?
                         </span>
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">
                             믿을 수 있는 동행, <br />
-                            <span className="text-[#38BDF8]">검증된 만남.</span>
+                            <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남.</span>
                         </h2>
                         <p className="text-lg text-slate-600 leading-relaxed">
                             여행 친구 찾기, 이제 스트레스 받지 마세요. <br className="hidden md:block" />

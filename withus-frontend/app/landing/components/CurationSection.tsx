@@ -125,7 +125,7 @@ export function CurationSection() {
         <section className={`w-full ${theme.layout.section.paddingY} relative bg-[#FFF9F7] overflow-hidden`}>
             {/* Background Decor */}
             <div className="absolute top-20 left-0 w-64 h-64 bg-orange-200/20 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-20 right-0 w-80 h-80 bg-sky-200/20 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-20 right-0 w-80 h-80 rounded-full blur-[100px] pointer-events-none" style={{ backgroundColor: `${theme.colors.secondary.light}33` }} />
 
             <div className={`max-w-[1400px] mx-auto ${theme.layout.section.paddingX} relative z-10`}>
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -138,7 +138,13 @@ export function CurationSection() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
-                            <span className="inline-block py-1 px-3 rounded-full bg-sky-100 text-sky-600 text-xs font-bold uppercase tracking-wider mb-4">
+                            <span
+                                className="inline-block py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+                                style={{
+                                    backgroundColor: theme.colors.secondary.bg,
+                                    color: theme.colors.secondary.DEFAULT
+                                }}
+                            >
                                 AI 매칭 시스템
                             </span>
                             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-[1.2]">

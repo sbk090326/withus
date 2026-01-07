@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Calendar, User, Search } from 'lucide-react';
-import { colors, borderRadius, animations } from '@/app/components/design-system/constants';
+import { colors, borderRadius, animations, theme as designTheme } from '@/app/components/design-system/constants';
 
 interface SearchFieldProps {
     icon: React.ReactNode;
@@ -78,15 +78,15 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
     };
 
     const popularTags = [
-        "Japan", "Solo Trip", "Food Tour", "Europe Summer", "Hiking"
+        "일본", "혼자 여행", "맛집 투어", "유럽 여름", "하이킹"
     ];
 
     // Sample data for autocomplete
     const destinations = [
-        "Seoul, South Korea", "Tokyo, Japan", "Osaka, Japan", "Kyoto, Japan",
-        "Paris, France", "London, UK", "New York, USA", "Bangkok, Thailand",
-        "Singapore", "Bali, Indonesia", "Barcelona, Spain", "Rome, Italy",
-        "Sydney, Australia", "Vietnam", "Jeju Island, Korea"
+        "서울, 대한민국", "도쿄, 일본", "오사카, 일본", "교토, 일본",
+        "파리, 프랑스", "런던, 영국", "뉴욕, 미국", "방콕, 태국",
+        "싱가포르", "발리, 인도네시아", "바르셀로나, 스페인", "로마, 이탈리아",
+        "시드니, 호주", "다낭, 베트남", "제주도"
     ];
 
     return (
@@ -113,8 +113,8 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
             >
                 <SearchField
                     icon={<MapPin size={22} />}
-                    label="Destination"
-                    placeholder="Where to?"
+                    label="여행지"
+                    placeholder="어디로 떠나세요?"
                     theme={theme}
                     isActive={activeField === 'location'}
                     onClick={() => setActiveField('location')}
@@ -124,8 +124,8 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
                 />
                 <SearchField
                     icon={<Calendar size={22} />}
-                    label="Dates"
-                    placeholder="Add dates"
+                    label="일정"
+                    placeholder="언제 떠나시나요?"
                     theme={theme}
                     isActive={activeField === 'dates'}
                     onClick={() => setActiveField('dates')}
@@ -135,8 +135,8 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
                 />
                 <SearchField
                     icon={<User size={22} />}
-                    label="Travelers"
-                    placeholder="Guests"
+                    label="인원"
+                    placeholder="몇 명인가요?"
                     hasSeparator={false}
                     theme={theme}
                     isActive={activeField === 'guests'}
@@ -167,12 +167,27 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
             >
-                <span className="text-white/70 text-sm font-medium mr-2">Popular:</span>
+                <span
+                    className="text-sm font-medium mr-2"
+                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : designTheme.colors.text.secondary }}
+                >
+                    인기:
+                </span>
                 {popularTags.map((tag, i) => (
                     <motion.button
                         key={tag}
-                        className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/90 text-sm font-medium hover:bg-white/20 hover:border-white/30 transition-all cursor-pointer"
-                        whileHover={{ y: -2 }}
+                        className="px-4 py-1.5 rounded-full backdrop-blur-md border text-sm font-medium transition-all cursor-pointer"
+                        style={{
+                            backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.6)',
+                            borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : designTheme.colors.primary.light,
+                            color: theme === 'dark' ? 'rgba(255,255,255,0.9)' : designTheme.colors.text.secondary,
+                        }}
+                        whileHover={{
+                            y: -2,
+                            backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.8)',
+                            borderColor: theme === 'dark' ? 'rgba(255,255,255,0.3)' : designTheme.colors.primary.hover,
+                            color: theme === 'dark' ? '#fff' : designTheme.colors.primary.hover,
+                        }}
                         whileTap={{ scale: 0.95 }}
                     >
                         #{tag}

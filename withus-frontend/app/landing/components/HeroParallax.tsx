@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { SearchWidget } from './SearchWidget';
-import { typography, animations } from '@/app/components/design-system/constants';
+import { typography, animations, theme } from '@/app/components/design-system/constants';
 import { Users, Heart, MapPin } from 'lucide-react';
 import { CountUp } from '@/app/components/ui/CountUp';
 
@@ -25,11 +25,11 @@ export function HeroParallax() {
     const overlayOpacity = useTransform(scrollY, [0, 500], [0, 0.3]);
 
     return (
-        <div ref={containerRef} className="relative w-full min-h-[140vh] overflow-hidden bg-gradient-to-b from-orange-50 via-white to-sky-50">
+        <div ref={containerRef} className="relative w-full min-h-[140vh] overflow-hidden bg-gradient-to-b from-orange-50 to-white">
             {/* Decorative Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 right-10 w-72 h-72 bg-orange-200/30 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-40 left-10 w-96 h-96 bg-sky-200/30 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-40 left-10 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-100/20 rounded-full blur-3xl"></div>
             </div>
 
@@ -100,23 +100,24 @@ export function HeroParallax() {
                         </div>
 
                         {/* Center Column - Main Featured Video */}
-                        <div className="md:col-span-6 h-[500px] md:h-full flex items-center justify-center">
+                        <div className="md:col-span-6 h-[500px] md:h-full flex items-center justify-center relative">
                             <motion.div
                                 style={{ y: yCenter }}
                                 className="relative w-full h-[95%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white group"
                             >
-                                {/* Background Video - YouTube Embed */}
-                                <iframe
-                                    className="absolute inset-0 w-full h-full pointer-events-none"
-                                    src="https://www.youtube.com/embed/EngW7tLk6R8?autoplay=1&mute=1&loop=1&playlist=EngW7tLk6R8&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                                    title="Travel Video"
-                                    allow="autoplay; encrypted-media"
-                                    style={{
-                                        border: 'none',
-                                        transform: 'scale(1.5)',
-                                        transformOrigin: 'center'
-                                    }}
-                                />
+                                {/* Background Video - Direct MP4 */}
+                                <video
+                                    className="absolute inset-0 w-full h-full object-cover scale-110"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    poster="/hero-background-warm.png"
+                                >
+                                    <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm" type="video/webm" />
+                                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
 
                                 {/* Fallback Image (shown if video fails) */}
                                 <Image
@@ -126,39 +127,41 @@ export function HeroParallax() {
                                     className="object-cover -z-10"
                                 />
 
-                                {/* Overlay with Stats */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                            </motion.div>
 
-                                <div className="absolute bottom-10 left-10 right-10">
-                                    <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-lg">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center">
-                                                <Heart size={24} className="text-white" fill="white" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-lg font-bold text-slate-900">나만의 동행 찾기</h3>
-                                                <p className="text-sm text-slate-600">안전하고 검증된 여행 친구</p>
-                                            </div>
+                            {/* Floating Stats Card - Positioned outside the overflow-hidden container */}
+                            <motion.div
+                                style={{ y: yCenter }}
+                                className="absolute bottom-10 left-6 right-6 md:left-10 md:right-10 z-20"
+                            >
+                                <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/40">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg">
+                                            <Heart size={24} className="text-white" fill="white" />
                                         </div>
-                                        <div className="flex gap-4 text-center pt-3 border-t border-slate-200">
-                                            <div className="flex-1">
-                                                <div className="text-2xl font-bold text-orange-500">
-                                                    <CountUp end={10} suffix="K+" />
-                                                </div>
-                                                <div className="text-xs text-slate-600">누적 여행자</div>
+                                        <div>
+                                            <h3 className="text-lg font-bold text-slate-900">나만의 동행 찾기</h3>
+                                            <p className="text-sm text-slate-600">안전하고 검증된 여행 친구</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4 text-center pt-4 border-t border-slate-200/60">
+                                        <div className="flex-1">
+                                            <div className="text-2xl font-bold text-orange-500">
+                                                <CountUp end={10} suffix="K+" />
                                             </div>
-                                            <div className="flex-1">
-                                                <div className="text-2xl font-bold text-sky-500">
-                                                    <CountUp end={150} suffix="+" />
-                                                </div>
-                                                <div className="text-xs text-slate-600">여행 국가</div>
+                                            <div className="text-xs text-slate-600 font-medium">누적 여행자</div>
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="text-2xl font-bold" style={{ color: theme.colors.secondary.DEFAULT }}>
+                                                <CountUp end={150} suffix="+" />
                                             </div>
-                                            <div className="flex-1">
-                                                <div className="text-2xl font-bold text-pink-500">
-                                                    <CountUp end={98} suffix="%" />
-                                                </div>
-                                                <div className="text-xs text-slate-600">여행 만족도</div>
+                                            <div className="text-xs text-slate-600 font-medium">여행 국가</div>
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="text-2xl font-bold text-pink-500">
+                                                <CountUp end={98} suffix="%" />
                                             </div>
+                                            <div className="text-xs text-slate-600 font-medium">여행 만족도</div>
                                         </div>
                                     </div>
                                 </div>

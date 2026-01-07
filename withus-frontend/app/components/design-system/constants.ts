@@ -15,15 +15,15 @@ export const palette = {
         500: '#F9603D',
         600: '#D6401F',
     },
-    // Secondary Colors (Clean & Trust)
-    sky: {
-        50: '#F0F9FF',
-        100: '#E0F2FE',
-        200: '#BAE6FD',
-        300: '#7DD3FC',
-        400: '#38BDF8', // Accent Color
-        500: '#0EA5E9',
-        600: '#0284C7',
+    // Secondary Colors (Nature & Harmony)
+    teal: {
+        50: '#F0FDFA',
+        100: '#CCFBF1',
+        200: '#99F6E4',
+        300: '#5EEAD4',
+        400: '#2DD4BF', // Accent Color
+        500: '#14B8A6',
+        600: '#0D9488',
     },
     // Neutrals (Slate-based for modern crisp look)
     slate: {
@@ -57,9 +57,9 @@ export const theme = {
             bg: palette.coral[50],
         },
         secondary: {
-            DEFAULT: palette.sky[400],
-            light: palette.sky[200],
-            bg: palette.sky[50],
+            DEFAULT: palette.teal[400],
+            light: palette.teal[200],
+            bg: palette.teal[50],
         },
         text: {
             primary: palette.slate[900],   // Strong Heatdings
@@ -215,8 +215,8 @@ export const colors = {
         text: palette.slate[600],
     },
     accent: {
-        sky: palette.sky[400],
-        skyLight: palette.sky[200],
+        teal: palette.teal[400],
+        tealLight: palette.teal[200],
     },
     card: {
         background: theme.colors.background.white,

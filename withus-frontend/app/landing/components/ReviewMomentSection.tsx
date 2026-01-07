@@ -55,7 +55,7 @@ const reviews = [
 
 export function ReviewMomentSection() {
     return (
-        <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] relative z-10 overflow-hidden`}>
+        <section className={`w-full ${spacing.section.py} bg-[#FFF9F7] relative z-10 overflow-hidden`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px} text-center`}>
 
                 <motion.div
