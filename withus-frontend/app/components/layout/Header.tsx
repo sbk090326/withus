@@ -10,7 +10,7 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
     const { scrollY } = useScroll();
 
     const navLinks = [
-        '여행지', '커뮤니티', '이벤트', '가이드', '소개', '문의'
+        '동행 찾기', '추천 여행지', '커뮤니티', '내 여행', '소개', '문의'
     ];
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -80,7 +80,7 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
                 className="px-8 py-3 rounded-full font-semibold text-sm transition-colors duration-300 bg-[#FF7E5F] text-white hover:bg-[#FF6B47] shadow-md"
                 whileTap={{ scale: 0.95 }}
             >
-                Sign up
+                로그인
             </motion.button>
         </motion.header>
     );
