@@ -40,16 +40,6 @@ export function HeroParallax() {
                     <div className="flex flex-col items-center justify-center mb-20 z-20 relative">
 
                         {/* Badge */}
-                        <motion.div
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-orange-200 shadow-sm mb-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                        >
-                            <Users size={16} className="text-orange-500" />
-                            <span className="text-sm font-semibold text-slate-700">10,000+ 명의 여행자와 함께하세요</span>
-                        </motion.div>
-
                         <motion.h1
                             className="text-center font-bold leading-[1.1] mb-6 text-slate-900"
                             style={{ fontSize: 'clamp(40px, 5.5vw, 72px)' }}
@@ -67,7 +57,7 @@ export function HeroParallax() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: animations.duration.normal, delay: 0.3, ease: animations.easing.smooth }}
                         >
-                            마음 맞는 여행 친구를 찾아 떠나보세요. 안전하고 즐거운 여행이 기다리고 있습니다! 🌍✨
+                            마음 맞는 여행 친구를 찾아 떠나보세요. 안전하고 즐거운 여행이 기다리고 있습니다!
                         </motion.p>
 
                         <SearchWidget theme="light" />
