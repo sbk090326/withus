@@ -41,5 +41,5 @@ export function CountUp({ end, duration = 2000, suffix = '' }: CountUpProps) {
         requestAnimationFrame(animate);
     }, [end, duration, isInView]);
 
-    return <span ref={ref}>{count}{suffix}</span>;
+    return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
 }
