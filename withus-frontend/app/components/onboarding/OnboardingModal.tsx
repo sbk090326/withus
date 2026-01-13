@@ -67,7 +67,10 @@ export function OnboardingModal() {
 
                 // Save data locally before showing completion screen
                 if (user) {
-                    login({ ...user, nickname: nickname });
+                    const updatedUser = { ...user, nickname: nickname };
+                    login(updatedUser);
+                    // Force persist the completion state locally as well to be safe
+                    localStorage.setItem('isOnboardingComplete', 'true');
                 }
                 setStep(6);
             } catch (error) {

@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from '@/app/context/AuthContext';
 import { OnboardingModal } from '@/app/components/onboarding/OnboardingModal';
+import { ModalProvider } from '@/app/context/ModalContext';
+import { AlertModal } from '@/app/components/ui/AlertModal';
 
 export default function RootLayout({
     children,
@@ -20,10 +22,13 @@ export default function RootLayout({
         <html lang="ko">
             <body className="antialiased bg-[#FDFCFB]">
                 <AuthProvider>
-                    <Header />
-                    <OnboardingModal />
-                    {children}
-                    <Footer />
+                    <ModalProvider>
+                        <Header />
+                        <OnboardingModal />
+                        <AlertModal />
+                        {children}
+                        <Footer />
+                    </ModalProvider>
                 </AuthProvider>
             </body>
         </html>

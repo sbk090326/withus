@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { SearchWidget } from './SearchWidget';
 import { typography, animations, theme } from '@/app/components/design-system/constants';
 import { Users, Heart, MapPin } from 'lucide-react';
@@ -16,6 +16,18 @@ export function HeroParallax() {
         offset: ["start start", "end start"]
     });
 
+    const VIDEOS = [
+        "/videos/253436_small.mp4",
+        "/videos/6399-191636228_small.mp4",
+        "/videos/7260-199191197_small.mp4"
+    ];
+
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+    const handleVideoEnded = () => {
+        setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length);
+    };
+
     const yLeft = useTransform(scrollYProgress, [0, 1], [0, -80]);
     const yCenter = useTransform(scrollYProgress, [0, 1], [0, 40]);
     const yRight = useTransform(scrollYProgress, [0, 1], [0, -120]);
@@ -25,12 +37,26 @@ export function HeroParallax() {
     const overlayOpacity = useTransform(scrollY, [0, 500], [0, 0.3]);
 
     return (
-        <div ref={containerRef} className="relative w-full min-h-[140vh] overflow-hidden bg-gradient-to-b from-orange-50 to-white">
+        <div ref={containerRef} className="relative w-full min-h-[140vh] overflow-hidden bg-slate-50">
+            {/* Background Image Layer - Adds depth and vibe */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/hero.jpg"
+                    alt="Travel destination background"
+                    fill
+                    className="object-cover object-top opacity-80 blur-[1px]"
+                    priority
+                    quality={100}
+                />
+                {/* Gradient Overlay to blend with content - ensures text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/40 to-white/90"></div>
+            </div>
+
             {/* Decorative Background Elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-20 right-10 w-72 h-72 bg-orange-200/30 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-40 left-10 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-100/20 rounded-full blur-3xl"></div>
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-20 right-10 w-72 h-72 bg-orange-200/20 rounded-full blur-3xl mix-blend-multiply"></div>
+                <div className="absolute bottom-40 left-10 w-96 h-96 bg-orange-100/20 rounded-full blur-3xl mix-blend-multiply"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-100/10 rounded-full blur-3xl"></div>
             </div>
 
             {/* Content Layer */}
@@ -41,7 +67,7 @@ export function HeroParallax() {
 
                         {/* Badge */}
                         <motion.div
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-orange-200 shadow-sm mb-6"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-orange-200 shadow-sm mb-6"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
@@ -51,18 +77,18 @@ export function HeroParallax() {
                         </motion.div>
 
                         <motion.h1
-                            className="text-center font-bold leading-[1.1] mb-6 text-slate-900"
+                            className="text-center font-bold leading-[1.1] mb-6 text-slate-900 drop-shadow-sm"
                             style={{ fontSize: 'clamp(40px, 5.5vw, 72px)' }}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: animations.duration.normal, delay: 0.2, ease: animations.easing.smooth }}
                         >
                             친구와 함께 떠나는 여행, <br />
-                            <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">함께 만드는 특별한 추억</span>
+                            <span className="bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">함께 만드는 특별한 추억</span>
                         </motion.h1>
 
                         <motion.p
-                            className="text-center text-slate-600 text-xl font-medium mb-12 max-w-2xl"
+                            className="text-center text-slate-700 text-xl font-medium mb-12 max-w-2xl drop-shadow-sm"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: animations.duration.normal, delay: 0.3, ease: animations.easing.smooth }}
@@ -74,7 +100,7 @@ export function HeroParallax() {
                     </div>
 
                     {/* Image Grid with Parallax */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[700px] w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-3 h-auto md:h-[700px] w-full">
 
                         {/* Left Column - Travelers Walking */}
                         <div className="md:col-span-3 h-[400px] md:h-full flex items-end">
@@ -105,28 +131,22 @@ export function HeroParallax() {
                                 style={{ y: yCenter }}
                                 className="relative w-full h-[95%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white group"
                             >
-                                {/* Background Video - Direct MP4 */}
-                                <video
-                                    className="absolute inset-0 w-full h-full object-cover scale-110"
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    poster="/hero-background-warm.png"
-                                >
-                                    <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm" type="video/webm" />
-                                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
-
-                                {/* Fallback Image (shown if video fails) */}
-                                <Image
-                                    src="/hero-background-warm.png"
-                                    alt="Happy diverse travelers taking a selfie together at a scenic travel destination"
-                                    fill
-                                    className="object-cover -z-10"
-                                />
-
+                                {/* Background Video - Rotating Playlist */}
+                                <AnimatePresence mode="popLayout">
+                                    <motion.video
+                                        key={VIDEOS[currentVideoIndex]}
+                                        src={VIDEOS[currentVideoIndex]}
+                                        className="absolute inset-0 w-full h-full object-cover scale-110"
+                                        autoPlay
+                                        muted
+                                        playsInline
+                                        onEnded={handleVideoEnded}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 1.5 }}
+                                    />
+                                </AnimatePresence>
                             </motion.div>
 
                             {/* Floating Stats Card - Positioned outside the overflow-hidden container */}
@@ -169,7 +189,7 @@ export function HeroParallax() {
                         </div>
 
                         {/* Right Column - Stacked Images */}
-                        <div className="md:col-span-3 h-[400px] md:h-full flex flex-col gap-6 pt-0 md:pt-16">
+                        <div className="md:col-span-3 h-[400px] md:h-full flex flex-col gap-3 pt-0 md:pt-16">
                             <motion.div
                                 style={{ y: yRight }}
                                 className="relative w-full h-[48%] rounded-3xl overflow-hidden shadow-xl border-4 border-white group"

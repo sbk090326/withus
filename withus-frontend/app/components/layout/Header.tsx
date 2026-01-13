@@ -32,13 +32,13 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
     // Dynamic styles - warm and friendly colors
     const textColor = 'text-slate-900';
     const pillBg = isScrolled
-        ? 'bg-slate-50/80 border-slate-200'
-        : 'bg-orange-50/40 border-orange-100/50';
+        ? 'bg-slate-50/80 border-slate-200 shadow-sm'
+        : 'bg-white/40 backdrop-blur-md border border-white/50 shadow-sm hover:bg-white/50';
 
     // Header container style
     const headerBgClass = isScrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-md py-4 border-b border-slate-200' // Scrolled: solid white
-        : 'bg-gradient-to-b from-white/70 to-white/50 backdrop-blur-md py-6 border-b border-orange-100/30'; // Top: warm gradient
+        ? 'bg-white/95 backdrop-blur-xl shadow-sm py-4 border-b border-slate-200/60' // Scrolled: glass white
+        : 'bg-transparent py-6 border-b border-transparent'; // Top: completely transparent
 
     return (
         <motion.header

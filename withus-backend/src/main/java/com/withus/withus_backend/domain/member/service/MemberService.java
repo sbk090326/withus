@@ -54,7 +54,20 @@ public class MemberService {
     public TokenDto login(LoginRequestDto requestDto) {
         UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        return jwtTokenProvider.generateToken(authentication);
+        TokenDto tokenDto = jwtTokenProvider.generateToken(authentication);
+
+        Member member = memberRepository.findByEmail(requestDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+
+        boolean isOnboardingComplete = travelPreferenceRepository.existsByMember_Id(member.getId());
+
+        return TokenDto.builder()
+                .grantType(tokenDto.getGrantType())
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
+                .accessTokenExpiresIn(tokenDto.getAccessTokenExpiresIn())
+                .isOnboardingComplete(isOnboardingComplete)
+                .build();
     }
 
     @Transactional
@@ -71,8 +84,15 @@ public class MemberService {
             member.updateNickname(requestDto.getNickname());
         }
 
-        // Save Preferences
+        // Save or Update Preferences
         if (requestDto.getPreferences() != null) {
+            TravelPreference existingPreference = travelPreferenceRepository.findByMember_Id(memberId).orElse(null);
+
+            if (existingPreference != null) {
+                travelPreferenceRepository.delete(existingPreference);
+                travelPreferenceRepository.flush(); // Ensure delete is executed before insert
+            }
+
             TravelPreference preference = TravelPreference.builder()
                     .member(member)
                     .interests(requestDto.getPreferences().getInterests())
@@ -84,6 +104,7 @@ public class MemberService {
                     .build();
 
             travelPreferenceRepository.save(preference);
+            travelPreferenceRepository.flush(); // Force commit
         }
     }
 }
