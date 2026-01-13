@@ -1,21 +1,47 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { theme } from '@/app/components/design-system/constants';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/app/context/AuthContext';
+import { api } from '@/app/lib/api';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
+    const router = useRouter();
     const { login, setShowOnboarding } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Mock login with empty nickname to simulate new user flow
-        login({ nickname: '', avatarUrl: '' });
-        // Trigger onboarding modal
-        setShowOnboarding(true);
+
+        if (!email || !password) {
+            toast.error('이메일과 비밀번호를 입력해주세요.');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const data = await api.post('/members/login', { email, password });
+
+            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('refreshToken', data.refreshToken);
+
+            // Context Update (Simulated for now, ideally fetch user profile)
+            login({ nickname: email.split('@')[0], avatarUrl: '' });
+
+            toast.success('로그인되었습니다.');
+            router.push('/');
+        } catch (error: any) {
+            toast.error(error.message || '로그인에 실패했습니다.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -55,11 +81,13 @@ export default function LoginPage() {
                     </div>
 
                     {/* Email & Password Form */}
-                    <form className="text-left w-full mb-6" onSubmit={handleSubmit}>
+                    <form className="text-left w-full mb-6" onSubmit={handleLogin}>
                         <div className="mb-3">
                             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">이메일</label>
                             <input
                                 type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="example@email.com"
                                 className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FF7E5F] focus:ring-4 focus:ring-[#FF7E5F]/10 outline-none transition-all"
                             />
@@ -68,13 +96,19 @@ export default function LoginPage() {
                             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">비밀번호</label>
                             <input
                                 type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 placeholder="비밀번호를 입력해주세요"
                                 className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-[#FF7E5F] focus:ring-4 focus:ring-[#FF7E5F]/10 outline-none transition-all"
                             />
                         </div>
 
-                        <button className="w-full py-3.5 rounded-xl bg-[#FF7E5F] text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(255,126,95,0.39)] hover:shadow-[0_6px_20px_rgba(255,126,95,0.23)] hover:bg-[#FF6B47] hover:-translate-y-0.5 transition-all duration-300">
-                            로그인
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full py-3.5 rounded-xl bg-[#FF7E5F] text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(255,126,95,0.39)] hover:shadow-[0_6px_20px_rgba(255,126,95,0.23)] hover:bg-[#FF6B47] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {isLoading ? '로그인 중...' : '로그인'}
                         </button>
                     </form>
 
@@ -91,7 +125,7 @@ export default function LoginPage() {
                     {/* Social Login Buttons */}
                     <div className="flex flex-col gap-3 mb-8">
                         {/* Kakao */}
-                        <button className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-[#FEE500] text-[#000000] font-semibold hover:opacity-90 transition-opacity shadow-sm text-sm">
+                        <button type="button" className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-[#FEE500] text-[#000000] font-semibold hover:opacity-90 transition-opacity shadow-sm text-sm">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 3C5.373 3 0 7.373 0 12.768c0 3.39 2.14 6.42 5.48 8.16-.25 2.11-1.63 7.63-1.67 7.97-.04.38.3.56.63.34.33-.21 4.54-3.09 6.26-4.32.42.04.85.07 1.29.07 6.627 0 12-4.373 12-9.768C24 7.373 18.627 3 12 3z" />
                             </svg>
@@ -99,12 +133,12 @@ export default function LoginPage() {
                         </button>
 
                         {/* Naver */}
-                        <button className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-[#03C75A] text-white font-semibold hover:opacity-90 transition-opacity shadow-sm text-sm">
+                        <button type="button" className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-[#03C75A] text-white font-semibold hover:opacity-90 transition-opacity shadow-sm text-sm">
                             <span className="font-black text-base">N</span> 네이버로 시작하기
                         </button>
 
                         {/* Google */}
-                        <button className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors shadow-sm text-sm">
+                        <button type="button" className="w-full flex items-center justify-center gap-3 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors shadow-sm text-sm">
                             <svg width="18" height="18" viewBox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -131,3 +165,4 @@ export default function LoginPage() {
         </main>
     );
 }
+
