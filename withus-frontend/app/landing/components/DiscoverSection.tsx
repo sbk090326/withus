@@ -73,7 +73,7 @@ export function DiscoverSection() {
                         국내 명소 곳곳에 담긴 이야기
                     </motion.h2>
                     <motion.p
-                        className="text-lg max-w-2xl mx-auto text-slate-600"
+                        className="text-lg max-w-2xl mx-auto text-slate-600 whitespace-nowrap"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

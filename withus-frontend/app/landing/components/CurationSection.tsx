@@ -157,10 +157,10 @@ export function CurationSection() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <button className="px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                <button className="px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 whitespace-nowrap">
                                     무료 매칭 테스트 시작하기
                                 </button>
-                                <button className="px-8 py-4 rounded-full bg-white text-slate-900 border border-slate-200 font-semibold hover:bg-slate-50 transition-all">
+                                <button className="px-8 py-4 rounded-full bg-white text-slate-900 border border-slate-200 font-semibold hover:bg-slate-50 transition-all whitespace-nowrap">
                                     서비스 소개
                                 </button>
                             </div>

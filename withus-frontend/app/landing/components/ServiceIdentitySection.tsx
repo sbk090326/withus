@@ -62,8 +62,7 @@ export function ServiceIdentitySection() {
                             <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남.</span>
                         </h2>
                         <p className="text-lg text-slate-600 leading-relaxed">
-                            여행 친구 찾기, 이제 스트레스 받지 마세요. <br className="hidden md:block" />
-                            위드어스는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 집중할 수 있게 도와드립니다.
+                            WithUs는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 <br /> 집중할 수 있게 도와드립니다.
                         </p>
                     </motion.div>
 
