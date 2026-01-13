@@ -14,7 +14,12 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
     const { isLoggedIn, logout } = useAuth();
 
     const navLinks = [
-        '동행 찾기', '추천 여행지', '커뮤니티', '내 여행', '소개', '문의'
+        { label: '동행 찾기', href: '/find-companion' },
+        { label: '추천 여행지', href: '/destinations' },
+        { label: '커뮤니티', href: '/community' },
+        { label: '내 여행', href: '/my-trips' },
+        { label: '소개', href: '/about' },
+        { label: '문의', href: '/contact' },
     ];
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -48,34 +53,35 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
             transition={{ duration: animations.duration.normal, ease: animations.easing.smooth }}
         >
             {/* Logo */}
-            <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
                 <div className="text-2xl font-bold tracking-tight bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
                     WITHUS
                 </div>
-            </div>
+            </Link>
 
             {/* Navigation Pill */}
             <nav className={`hidden md:flex items-center p-1.5 rounded-full transition-all duration-300 backdrop-blur-md border ${pillBg}`}>
                 {navLinks.map((link) => (
-                    <button
-                        key={link}
-                        onClick={() => setActiveTab(link)}
-                        className={`relative px-6 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === link ? 'text-white' : `${textColor} hover:opacity-80`
-                            }`}
-                    >
-                        {activeTab === link && (
-                            <motion.div
-                                layoutId="nav-pill"
-                                className="absolute inset-0 rounded-full shadow-sm bg-gradient-to-r from-orange-500 to-pink-500"
-                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                style={{ borderRadius: 9999 }}
-                            />
-                        )}
-                        <span className={`relative z-10 transition-colors duration-300 ${activeTab === link ? 'text-white' : ''
-                            }`}>
-                            {link}
-                        </span>
-                    </button>
+                    <Link key={link.label} href={link.href}>
+                        <button
+                            onClick={() => setActiveTab(link.label)}
+                            className={`relative px-6 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${activeTab === link.label ? 'text-white' : `${textColor} hover:opacity-80`
+                                }`}
+                        >
+                            {activeTab === link.label && (
+                                <motion.div
+                                    layoutId="nav-pill"
+                                    className="absolute inset-0 rounded-full shadow-sm bg-gradient-to-r from-orange-500 to-pink-500"
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                    style={{ borderRadius: 9999 }}
+                                />
+                            )}
+                            <span className={`relative z-10 transition-colors duration-300 ${activeTab === link.label ? 'text-white' : ''
+                                }`}>
+                                {link.label}
+                            </span>
+                        </button>
+                    </Link>
                 ))}
             </nav>
 
