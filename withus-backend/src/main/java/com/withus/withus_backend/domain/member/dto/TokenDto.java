@@ -1,5 +1,6 @@
 package com.withus.withus_backend.domain.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,4 +15,7 @@ public class TokenDto {
     private String accessToken;
     private String refreshToken;
     private Long accessTokenExpiresIn;
+
+    @JsonProperty("isOnboardingComplete")
+    private boolean isOnboardingComplete;
 }

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { api } from '@/app/lib/api';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { useModal } from '@/app/context/ModalContext';
 import { motion } from 'motion/react';
 import { theme } from '@/app/components/design-system/constants';
 import { ArrowLeft, User, Mail, Lock, Check, ChevronRight } from 'lucide-react';
@@ -52,31 +53,53 @@ export default function SignUpPage() {
         }
     }, [agreements, allAgreed]);
 
+    const { openModal } = useModal();
+
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!email || !password || !confirmPassword) {
-            toast.error('모든 필드를 입력해주세요.');
+            openModal({
+                title: '입력 오류',
+                message: '모든 필드를 입력해주세요.',
+                type: 'error'
+            });
             return;
         }
 
         if (password !== confirmPassword) {
-            toast.error('비밀번호가 일치하지 않습니다.');
+            openModal({
+                title: '비밀번호 오류',
+                message: '비밀번호가 일치하지 않습니다.',
+                type: 'error'
+            });
             return;
         }
 
         if (!agreements.age || !agreements.service || !agreements.privacy) {
-            toast.error('필수 약관에 동의해주세요.');
+            openModal({
+                title: '약관 동의 필요',
+                message: '필수 약관에 동의해주세요.',
+                type: 'error'
+            });
             return;
         }
 
         setIsLoading(true);
         try {
             await api.post('/members/signup', { email, password });
-            toast.success('회원가입이 완료되었습니다!');
-            router.push('/login');
+            openModal({
+                title: '가입 완료',
+                message: '회원가입이 완료되었습니다!\n로그인 페이지로 이동합니다.',
+                type: 'success',
+                onClose: () => router.push('/login')
+            });
         } catch (error: any) {
-            toast.error(error.message || '회원가입 중 오류가 발생했습니다.');
+            openModal({
+                title: '가입 실패',
+                message: error.message || '회원가입 중 오류가 발생했습니다.',
+                type: 'error'
+            });
         } finally {
             setIsLoading(false);
         }

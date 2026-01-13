@@ -111,7 +111,7 @@ export function TrendingSection() {
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
                 <div className="flex flex-col lg:flex-row gap-16 items-start">
                     {/* Left: Heading & Context */}
-                    <div className="lg:w-1/3 sticky top-32">
+                    <div className="lg:w-1/3 lg:sticky lg:top-32">
                         <div className="flex items-center gap-2 mb-4 text-[#FF7E5F]">
                             <span className="relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7E5F] opacity-75"></span>

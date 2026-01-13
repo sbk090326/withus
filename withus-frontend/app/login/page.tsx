@@ -7,12 +7,14 @@ import { motion } from 'motion/react';
 import { theme } from '@/app/components/design-system/constants';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/app/context/AuthContext';
+import { useModal } from '@/app/context/ModalContext';
 import { api } from '@/app/lib/api';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
     const router = useRouter();
     const { login, setShowOnboarding } = useAuth();
+    const { openModal } = useModal();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +23,11 @@ export default function LoginPage() {
         e.preventDefault();
 
         if (!email || !password) {
-            toast.error('이메일과 비밀번호를 입력해주세요.');
+            openModal({
+                title: '입력 오류',
+                message: '이메일과 비밀번호를 모두 입력해주세요.',
+                type: 'error'
+            });
             return;
         }
 
@@ -35,10 +41,26 @@ export default function LoginPage() {
             // Context Update (Simulated for now, ideally fetch user profile)
             login({ nickname: email.split('@')[0], avatarUrl: '' });
 
-            toast.success('로그인되었습니다.');
-            router.push('/');
+            if (!data.isOnboardingComplete) {
+                // If onbording is needed, show it immediately.
+                // We skip the "Login Success" modal to avoid overlapping/confusing UIs.
+                // The Onboarding Modal (Step 0) has a welcome message.
+                setShowOnboarding(true);
+            } else {
+                // Only show success modal if onboarding is already complete
+                openModal({
+                    title: '환영합니다!',
+                    message: '성공적으로 로그인되었습니다.',
+                    type: 'success',
+                    onClose: () => router.push('/')
+                });
+            }
         } catch (error: any) {
-            toast.error(error.message || '로그인에 실패했습니다.');
+            openModal({
+                title: '로그인 실패',
+                message: error.message || '이메일 또는 비밀번호를 확인해주세요.',
+                type: 'error'
+            });
         } finally {
             setIsLoading(false);
         }
