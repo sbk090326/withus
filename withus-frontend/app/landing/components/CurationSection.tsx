@@ -153,7 +153,7 @@ export function CurationSection() {
                             </h2>
                             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                                 어색한 침묵은 걱정 마세요. <br className="hidden md:block" />
-                                위드어스가 취향, 속도, 감성까지 딱 맞는 여행 메이트를 연결해 드립니다.
+                                WithUs가 취향, 속도, 감성까지 딱 맞는 여행 메이트를 연결해 드립니다.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
