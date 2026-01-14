@@ -41,9 +41,9 @@ export function ServiceIdentitySection() {
     return (
         <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] rounded-t-[60px] -mt-20 relative z-30`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
-                <div className="flex flex-col lg:flex-row items-end justify-between gap-12 mb-20">
+                <div className="flex flex-col lg:flex-row items-center justify-center gap-12 mb-20">
                     <motion.div
-                        className="flex-1 max-w-2xl"
+                        className="flex-1 max-w-2xl text-center mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -62,8 +62,7 @@ export function ServiceIdentitySection() {
                             <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남.</span>
                         </h2>
                         <p className="text-lg text-slate-600 leading-relaxed">
-                            여행 친구 찾기, 이제 스트레스 받지 마세요. <br className="hidden md:block" />
-                            위드어스는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 집중할 수 있게 도와드립니다.
+                            WithUs는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 <br /> 집중할 수 있게 도와드립니다.
                         </p>
                     </motion.div>
 

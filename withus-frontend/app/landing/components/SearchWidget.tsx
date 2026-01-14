@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Calendar, User, Search } from 'lucide-react';
 import { colors, borderRadius, animations, theme as designTheme } from '@/app/components/design-system/constants';
@@ -20,54 +20,76 @@ interface SearchFieldProps {
     min?: string;
 }
 
-const SearchField = ({ icon, label, placeholder, value, onChange, hasSeparator = true, theme = 'dark', isActive = false, onClick, type = "text", list, min }: SearchFieldProps) => (
-    <div
-        className={`relative flex items-center gap-4 flex-1 px-8 py-3 cursor-pointer group transition-all duration-300 rounded-full hover:bg-white/10 ${isActive ? 'bg-white/20' : ''}`}
-        onClick={onClick}
-    >
+const SearchField = ({ icon, label, placeholder, value, onChange, hasSeparator = true, theme = 'dark', isActive = false, onClick, type = "text", list, min }: SearchFieldProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleContainerClick = () => {
+        onClick?.();
+        // input에 포커스
+        inputRef.current?.focus();
+        // 날짜 입력인 경우 달력 열기
+        if (type === 'date' && inputRef.current) {
+            try {
+                (inputRef.current as any).showPicker?.();
+            } catch (e) {
+                // showPicker가 지원되지 않는 브라우저에서는 무시
+            }
+        }
+    };
+
+    return (
         <div
-            className="transition-colors duration-300 flex-shrink-0"
-            style={{
-                color: theme === 'dark'
-                    ? (isActive ? '#fff' : 'rgba(255,255,255,0.8)')
-                    : (isActive ? colors.primary.main : colors.text.primary)
-            }}
+            className={`relative flex items-center gap-6 flex-1 px-5 py-2 cursor-pointer group transition-all duration-300 rounded-full hover:bg-white/5 ${isActive ? 'bg-white/10' : ''}`}
+            onClick={handleContainerClick}
         >
-            {icon}
-        </div>
-        <div className="flex flex-col min-w-0 w-full">
-            <span
-                className="text-xs font-bold uppercase tracking-wider mb-0.5 transition-colors duration-300"
+            <div
+                className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
                 style={{
+                    backgroundColor: theme === 'dark'
+                        ? (isActive ? 'rgba(255, 126, 95, 0.15)' : 'rgba(255, 255, 255, 0.1)')
+                        : (isActive ? 'rgba(255, 126, 95, 0.1)' : 'rgba(248, 250, 252, 1)'),
                     color: theme === 'dark'
-                        ? (isActive ? '#fff' : 'rgba(255,255,255,0.6)')
-                        : (isActive ? colors.primary.main : colors.text.secondary)
+                        ? (isActive ? '#FF7E5F' : 'rgba(255,255,255,0.8)')
+                        : (isActive ? '#FF7E5F' : 'rgba(0,0,0,0.6)')
                 }}
             >
-                {label}
-            </span>
-            <input
-                type={type}
-                list={list}
-                min={min}
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                className={`bg-transparent border-none outline-none w-full font-medium text-lg p-0 placeholder-gray-400/70 ${type === 'date' ? 'uppercase' : ''}`}
-                style={{
-                    color: theme === 'dark' ? colors.neutral.white : colors.text.primary,
-                    textOverflow: 'ellipsis',
-                    colorScheme: theme === 'dark' ? 'dark' : 'light' // Fix calendar icon color
-                }}
-            />
-        </div>
+                {icon}
+            </div>
+            <div className="flex flex-col min-w-0 w-full">
+                <span
+                    className="text-[10px] font-semibold uppercase tracking-wide mb-0.5 transition-colors duration-300"
+                    style={{
+                        color: theme === 'dark'
+                            ? (isActive ? '#fff' : 'rgba(255,255,255,0.6)')
+                            : (isActive ? colors.primary.main : 'rgba(0,0,0,0.5)')
+                    }}
+                >
+                    {label}
+                </span>
+                <input
+                    ref={inputRef}
+                    type={type}
+                    list={list}
+                    min={min}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    className={`bg-transparent border-none outline-none w-full font-medium text-base p-0 placeholder-gray-400/60 ${type === 'date' ? 'uppercase [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden' : ''}`}
+                    style={{
+                        color: theme === 'dark' ? colors.neutral.white : 'rgba(156, 163, 175, 0.8)',
+                        textOverflow: 'ellipsis',
+                        colorScheme: theme === 'dark' ? 'dark' : 'light'
+                    }}
+                />
+            </div>
 
-        {/* Separator */}
-        {hasSeparator && (
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 h-8 w-[1px] bg-white/20 group-hover:hidden" />
-        )}
-    </div>
-);
+            {/* Separator */}
+            {hasSeparator && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-[1px] bg-slate-200/60 group-hover:bg-slate-200/40 transition-colors" />
+            )}
+        </div>
+    );
+};
 
 export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
     const [activeField, setActiveField] = useState<string | null>(null);
@@ -78,15 +100,15 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
     };
 
     const popularTags = [
-        "일본", "혼자 여행", "맛집 투어", "유럽 여름", "하이킹"
+        "제주도", "혼자 여행", "맛집 투어", "당일치기", "힐링 여행"
     ];
 
-    // Sample data for autocomplete
+    // Sample data for autocomplete - 한국 국내 여행지
     const destinations = [
-        "서울, 대한민국", "도쿄, 일본", "오사카, 일본", "교토, 일본",
-        "파리, 프랑스", "런던, 영국", "뉴욕, 미국", "방콕, 태국",
-        "싱가포르", "발리, 인도네시아", "바르셀로나, 스페인", "로마, 이탈리아",
-        "시드니, 호주", "다낭, 베트남", "제주도"
+        "서울", "부산", "제주도", "강릉",
+        "경주", "전주", "여수", "속초",
+        "대구", "광주", "인천", "포항",
+        "춘천", "평창", "보령", "통영"
     ];
 
     return (
@@ -101,15 +123,28 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
 
             {/* Main Search Bar */}
             <motion.div
-                className="w-full max-w-[920px] h-[92px] backdrop-blur-xl rounded-full flex items-center p-2 pl-4 shadow-2xl transition-all duration-300 relative z-20"
+                className="w-full max-w-[1000px] h-[80px] backdrop-blur-xl rounded-full flex items-center px-6 transition-all duration-300 relative z-20"
                 style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.8)',
-                    borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.5)',
-                    borderWidth: '1px'
+                    backgroundColor: theme === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.9)',
+                    borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.8)',
+                    borderWidth: '1px',
+                    // 떠있는 느낌을 주는 그림자 (3중 레이어)
+                    boxShadow: theme === 'dark'
+                        ? '0 20px 60px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2)'
+                        : '0 20px 60px rgba(0, 0, 0, 0.12), 0 10px 30px rgba(0, 0, 0, 0.08), 0 5px 15px rgba(0, 0, 0, 0.05)',
+                    // 살짝 위로 올라가는 효과
+                    transform: 'translateY(-4px)'
                 }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: animations.duration.normal, delay: 0.4, ease: animations.easing.smooth }}
+                // 호버 시 더 떠오르는 효과
+                whileHover={{
+                    y: -2,
+                    boxShadow: theme === 'dark'
+                        ? '0 25px 70px rgba(0, 0, 0, 0.6), 0 15px 40px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)'
+                        : '0 25px 70px rgba(0, 0, 0, 0.15), 0 15px 40px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.08)'
+                }}
             >
                 <SearchField
                     icon={<MapPin size={22} />}
@@ -148,7 +183,7 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
                 />
 
                 <motion.button
-                    className="h-[64px] w-[64px] rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-300 shadow-lg ml-2"
+                    className="h-[52px] w-[52px] rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-300 shadow-md"
                     style={{
                         backgroundColor: colors.primary.main,
                         color: '#fff'
@@ -156,13 +191,13 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
                     whileHover={{ scale: 1.05, backgroundColor: colors.primary.hover }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <Search size={26} strokeWidth={2.5} />
+                    <Search size={22} strokeWidth={2.5} />
                 </motion.button>
             </motion.div>
 
             {/* Quick Tags */}
             <motion.div
-                className="mt-6 flex flex-wrap items-center justify-center gap-3"
+                className="mt-10 flex flex-wrap items-center justify-center gap-3"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}

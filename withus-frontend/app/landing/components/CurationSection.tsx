@@ -43,10 +43,10 @@ const profiles: MatchProfile[] = [
         name: '박수진',
         age: 25,
         matchScore: 89,
-        tags: ['#미술관', '#전시회', '#유럽감성'],
+        tags: ['#미술관', '#전시회', '#감성카페'],
         bio: '하루 종일 미술관에서 시간 보내는 거 좋아해요. 같이 가실 분!',
         image: '👩🏼',
-        location: '파리 거주',
+        location: '서울',
     }
 ];
 
@@ -153,14 +153,14 @@ export function CurationSection() {
                             </h2>
                             <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                                 어색한 침묵은 걱정 마세요. <br className="hidden md:block" />
-                                위드어스가 취향, 속도, 감성까지 딱 맞는 여행 메이트를 연결해 드립니다.
+                                WithUs가 취향, 속도, 감성까지 딱 맞는 여행 메이트를 연결해 드립니다.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <button className="px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                <button className="px-8 py-4 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 whitespace-nowrap">
                                     무료 매칭 테스트 시작하기
                                 </button>
-                                <button className="px-8 py-4 rounded-full bg-white text-slate-900 border border-slate-200 font-semibold hover:bg-slate-50 transition-all">
+                                <button className="px-8 py-4 rounded-full bg-white text-slate-900 border border-slate-200 font-semibold hover:bg-slate-50 transition-all whitespace-nowrap">
                                     서비스 소개
                                 </button>
                             </div>
