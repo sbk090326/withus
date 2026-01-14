@@ -24,7 +24,9 @@ interface CompanionCardProps {
         budget?: string;
         currentPeople: number;
         maxPeople: number;
+        route?: string[];
     };
+
     index: number;
 }
 
@@ -97,9 +99,27 @@ export const CompanionCard = ({ companion, index }: CompanionCardProps) => {
                     </div>
 
                     {/* Title (Limited to 2 lines, tight spacing) */}
-                    <h4 className="font-bold text-[15px] text-slate-900 mb-4 line-clamp-2 leading-[1.4] h-[42px] group-hover:text-[#FF7E5F] transition-colors">
+                    <h4 className="font-bold text-[15px] text-slate-900 mb-3 line-clamp-1 leading-[1.4] group-hover:text-[#FF7E5F] transition-colors">
                         {companion.title}
                     </h4>
+
+                    {/* Mini Route Visualization - NEW */}
+                    {companion.route && companion.route.length > 0 && (
+                        <div className="flex items-center gap-1 mb-4 overflow-hidden">
+                            {companion.route.map((point, i, arr) => (
+                                <React.Fragment key={i}>
+                                    <div className="flex-shrink-0 px-2 py-0.5 rounded-lg bg-orange-50/50 border border-orange-100/50 text-[10px] font-bold text-orange-600 max-w-[80px] truncate">
+                                        {point}
+                                    </div>
+                                    {i < arr.length - 1 && (
+                                        <div className="flex-shrink-0 w-1.5 h-[1px] bg-slate-200" />
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    )}
+
+
 
                     {/* Main Info Block (Compact) */}
                     <div className="space-y-1.5 mb-5 p-3 rounded-xl bg-slate-50/50 border border-slate-100">

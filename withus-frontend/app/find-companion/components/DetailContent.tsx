@@ -16,6 +16,7 @@ interface DetailContentProps {
         targetAge: string;
         isSmoker: string;
         budget: string;
+        route?: string[];
     };
 }
 

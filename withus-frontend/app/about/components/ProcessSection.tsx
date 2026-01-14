@@ -37,8 +37,12 @@ const steps = [
 
 export const ProcessSection = () => {
     return (
-        <section className="w-full py-32 px-6" style={{ backgroundColor: palette.cream.section }}>
-            <div className="max-w-[1200px] mx-auto">
+        <section className="w-full py-32 px-6 overflow-hidden relative" style={{ backgroundColor: palette.cream.section }}>
+            {/* Subtle floating elements to break monotony */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-orange-100/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-100/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+
+            <div className="max-w-[1200px] mx-auto relative z-10">
                 <div className="text-center mb-24 space-y-4">
                     <span className="text-sm font-bold text-orange-400">Easy Step-by-Step</span>
                     <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">

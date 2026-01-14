@@ -23,6 +23,7 @@ const mockCompanions = [
         budget: '50만원 내외',
         currentPeople: 3,
         maxPeople: 4,
+        route: ['에펠탑', '루브르 박물관', '몽생미셸']
     },
     {
         id: 2,
@@ -39,6 +40,7 @@ const mockCompanions = [
         budget: '30만원',
         currentPeople: 1,
         maxPeople: 2,
+        route: ['마토지뉴sh 비치', '리베이라 광장']
     },
     {
         id: 3,
@@ -55,6 +57,7 @@ const mockCompanions = [
         budget: '20만원',
         currentPeople: 2,
         maxPeople: 4,
+        route: ['테이트 모던', '브리티시 뮤지엄', '런던 아이']
     },
     {
         id: 4,
@@ -71,6 +74,7 @@ const mockCompanions = [
         budget: '10만원 미만',
         currentPeople: 5,
         maxPeople: 6,
+        route: ['카오산 로드', '티츄카 루프탑']
     },
     {
         id: 5,
@@ -87,13 +91,14 @@ const mockCompanions = [
         budget: '40만원',
         currentPeople: 2,
         maxPeople: 3,
+        route: ['함덕 해수욕장', '성산 일출봉', '우도']
     },
     {
         id: 6,
         user: { name: '진', image: '👨', tags: ['#역사', '#도보여행', '#로컬맛집'] },
         title: '로마의 숨겨진 골목 투어, 현지인 맛집 위주로 다녀요.',
         location: '이탈리아, 로마',
-        date: '2026.05.10 - 2026.05.15',
+        date: '2025.10.10 - 2025.10.15',
         matchScore: 78,
         likeCount: 9,
         thumbnail: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800',
@@ -103,7 +108,9 @@ const mockCompanions = [
         budget: '자유',
         currentPeople: 1,
         maxPeople: 4,
+        route: ['트레비 분수', '판테온', '콜로세움']
     },
+
 ];
 
 export const CompanionList = () => {

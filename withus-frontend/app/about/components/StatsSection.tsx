@@ -12,8 +12,11 @@ const stats = [
 
 export const StatsSection = () => {
     return (
-        <section className="w-full py-24 px-6 border-y border-slate-50 bg-white">
-            <div className="max-w-[1200px] mx-auto">
+        <section className="w-full py-24 px-6 bg-white border-y border-slate-50 relative overflow-hidden">
+            {/* Subtle Background Accent */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,126,95,0.03)_0%,transparent_70%)] pointer-events-none" />
+
+            <div className="max-w-[1200px] mx-auto relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-slate-100">
                     {stats.map((stat, index) => (
                         <div key={index} className="flex flex-col items-center text-center px-4 md:px-12 py-8 group">

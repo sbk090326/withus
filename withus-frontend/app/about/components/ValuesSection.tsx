@@ -31,8 +31,11 @@ const values = [
 
 export const ValuesSection = () => {
     return (
-        <section className="w-full py-32 px-6 bg-white relative">
-            <div className="max-w-[1200px] mx-auto">
+        <section className="w-full py-32 px-6 bg-white relative overflow-hidden">
+            {/* Subtle Radial Gradient for premium look */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-50/20 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+
+            <div className="max-w-[1200px] mx-auto relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div className="space-y-8 text-center lg:text-left">
                         <span className="text-sm font-bold text-orange-400">Our Heart</span>
