@@ -18,6 +18,12 @@ interface CompanionCardProps {
         matchScore: number;
         likeCount: number;
         thumbnail: string;
+        targetGender?: string;
+        targetAge?: string;
+        isSmoker?: string;
+        budget?: string;
+        currentPeople: number;
+        maxPeople: number;
     };
     index: number;
 }
@@ -42,77 +48,94 @@ export const CompanionCard = ({ companion, index }: CompanionCardProps) => {
             className="group relative bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 cursor-pointer"
         >
             <Link href={`/find-companion/${companion.id}`} className="block">
-                {/* Thumbnail Image */}
-                <div className="relative h-48 w-full overflow-hidden">
+                {/* Thumbnail Section */}
+                <div className="relative h-44 w-full overflow-hidden">
                     <img
                         src={companion.thumbnail}
                         alt={companion.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                    {/* Match Score Badge (Inside Image) */}
-                    <div className="absolute top-4 right-4 z-10">
-                        <div
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white font-bold text-[10px] shadow-lg backdrop-blur-md border border-white/20"
-                            style={{ background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.8), rgba(236, 72, 153, 0.8))' }}
-                        >
-                            <Sparkles size={10} fill="white" />
-                            {companion.matchScore}% Match
+                    {/* Top Layer: Floating Badges */}
+                    <div className="absolute top-3 left-3 right-3 flex justify-between items-start pointer-events-none">
+                        {companion.maxPeople - companion.currentPeople <= 1 ? (
+                            <div className="px-2.5 py-1 rounded-full bg-rose-500 text-white text-[9px] font-black uppercase tracking-wider animate-pulse shadow-lg border border-rose-400/30">
+                                🔥 Closing
+                            </div>
+                        ) : <div />}
+
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white font-black text-[9px] tracking-tighter shadow-xl">
+                            <Sparkles size={10} className="text-[#FF7E5F]" fill="currentColor" />
+                            {companion.matchScore}%
                         </div>
+                    </div>
+
+                    {/* Bottom Layer: Quick Identity */}
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full border border-white/50 shadow-lg bg-white/20 backdrop-blur-md flex items-center justify-center text-xs overflow-hidden">
+                            {companion.user.image}
+                        </div>
+                        <span className="text-[11px] font-bold text-white drop-shadow-md">{companion.user.name}</span>
                     </div>
                 </div>
 
-                <div className="p-6">
-                    <div className="flex items-center gap-4 mb-5">
-                        <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-2xl shadow-inner border-2 border-white overflow-hidden">
-                            {companion.user.image}
+                <div className="p-5 flex flex-col h-auto">
+                    {/* Tags & Meta Row (Space-efficient) */}
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex gap-1.5 overflow-hidden">
+                            {companion.user.tags.slice(0, 2).map((tag, i) => (
+                                <span key={i} className="text-[9px] font-bold text-[#FF7E5F] bg-[#FFF7F5] px-1.5 py-0.5 rounded border border-[#FFE5DF]">
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
-                        <div>
-                            <h3 className="font-bold text-base text-slate-900 leading-none mb-1 group-hover:text-orange-500 transition-colors">
-                                {companion.user.name}
-                            </h3>
-                            <p className="text-[10px] text-teal-500 font-bold uppercase tracking-wider">Verified Traveler</p>
+                        <div className="flex items-center gap-1 text-[#14B8A6] font-black text-[10px]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#14B8A6] animate-pulse" />
+                            {companion.currentPeople}/{companion.maxPeople} 명
                         </div>
                     </div>
 
-                    <h4 className="font-bold text-lg text-slate-900 mb-4 line-clamp-2 leading-snug h-[52px]">
+                    {/* Title (Limited to 2 lines, tight spacing) */}
+                    <h4 className="font-bold text-[15px] text-slate-900 mb-4 line-clamp-2 leading-[1.4] h-[42px] group-hover:text-[#FF7E5F] transition-colors">
                         {companion.title}
                     </h4>
 
-                    <div className="space-y-3 mb-8">
-                        <div className="flex items-center gap-2 text-sm text-slate-500">
-                            <MapPin size={16} className="text-slate-400" />
-                            <span>{companion.location}</span>
+                    {/* Main Info Block (Compact) */}
+                    <div className="space-y-1.5 mb-5 p-3 rounded-xl bg-slate-50/50 border border-slate-100">
+                        <div className="flex items-center gap-2 text-slate-500">
+                            <MapPin size={12} className="text-slate-400 shrink-0" />
+                            <span className="text-[10px] font-bold truncate">{companion.location}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-500">
-                            <Calendar size={16} className="text-slate-400" />
-                            <span>{companion.date}</span>
+                        <div className="flex items-center gap-2 text-slate-500">
+                            <Calendar size={12} className="text-slate-400 shrink-0" />
+                            <span className="text-[10px] font-bold">{companion.date}</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                        <div className="flex items-center gap-4">
-                            <motion.button
-                                whileTap={{ scale: 1.4 }}
-                                onClick={handleLike}
-                                className={`flex items-center gap-1.5 transition-colors ${isLiked ? 'text-pink-500' : 'text-slate-400 hover:text-pink-500'
-                                    }`}
-                            >
-                                <Heart size={20} fill={isLiked ? "currentColor" : "none"} />
-                                <span className="text-sm font-bold">{likes}</span>
-                            </motion.button>
+                    {/* Criteria & Budget - Footer Meta */}
+                    <div className="flex items-center justify-between pt-1">
+                        <div className="flex gap-2 text-[10px] items-center">
+                            <span className="text-slate-400 font-medium italic">{companion.targetGender} · {companion.targetAge}</span>
+                            {companion.budget && (
+                                <span className="text-[#14B8A6] font-bold border-l border-slate-200 pl-2 ml-2">
+                                    💰 {companion.budget}
+                                </span>
+                            )}
                         </div>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                // Chat logic
-                            }}
-                            className="p-3 rounded-full bg-slate-50 text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300"
-                        >
-                            <MessageCircle size={22} />
-                        </button>
+
+                        <div className="flex items-center gap-2.5">
+                            <button
+                                onClick={handleLike}
+                                className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-slate-300 hover:text-pink-400'}`}
+                            >
+                                <Heart size={16} fill={isLiked ? "currentColor" : "none"} />
+                                <span className="text-[10px] font-black">{likes}</span>
+                            </button>
+                            <button className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-[#FF7E5F] transition-all shadow-sm">
+                                <MessageCircle size={14} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </Link>

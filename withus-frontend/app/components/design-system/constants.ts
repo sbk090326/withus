@@ -1,252 +1,197 @@
-// ============================================
-// WithUs Design System
-// ============================================
-// A unified design system based on the "Warm & Friendly" travel companion concept.
-// This file acts as the single source of truth for all design tokens.
+/**
+ * WithUs Design System Constants (Refined)
+ * --------------------------------------------
+ * 랜딩 페이지와 기존 컴포넌트들의 실제 활용 컬러를 기반으로한 단일 소스 오브 트루스.
+ * 사용법: import { palette, theme } from '@/app/components/design-system/constants';
+ */
 
 export const palette = {
-    // Brand Colors (Warm & Energetic)
+    // 1. Signature Coral (기존 브랜드 메인 컬러)
     coral: {
-        50: '#FFF7F5',
-        100: '#FFE5DF',
-        200: '#FFC8BB',
-        300: '#FFA08D',
-        400: '#FF7E5F', // Primary Brand Color
+        50: '#FFF5F2',
+        100: '#FFEBE6',
+        200: '#FFD1C7',
+        300: '#FFAFA1',
+        400: '#FF7E5F', // 메인 포인트 (Coral)
         500: '#F9603D',
-        600: '#D6401F',
+        600: '#E64A2E',
+        700: '#C23D26',
+        800: '#942B1B',
+        900: '#66190D',
     },
-    // Secondary Colors (Nature & Harmony)
+
+    // 2. Vibrant Brand (랜딩 페이지 그라데이션 소스)
+    orange: {
+        50: '#FFF7ED',
+        100: '#FFEDD5',
+        200: '#FED7AA',
+        300: '#FDBA74',
+        400: '#FB923C',
+        500: '#F97316', // Tailwind Orange-500
+        600: '#EA580C',
+        700: '#C2410C',
+    },
+    pink: {
+        50: '#FDF2F8',
+        100: '#FCE7F3',
+        200: '#FBCFE8',
+        300: '#F9A8D4',
+        400: '#F472B6',
+        500: '#EC4899', // Tailwind Pink-500
+        600: '#DB2777',
+        700: '#BE185D',
+    },
+
+    // 3. Trust Secondary (신뢰감 & 매칭 시스템)
     teal: {
         50: '#F0FDFA',
         100: '#CCFBF1',
         200: '#99F6E4',
         300: '#5EEAD4',
-        400: '#2DD4BF', // Accent Color
+        400: '#2DD4BF',
         500: '#14B8A6',
         600: '#0D9488',
     },
-    // Neutrals (Slate-based for modern crisp look)
+
+    // 4. Neutrals (Slate 계열 - 깔끔한 모던 스타일)
     slate: {
         50: '#F8FAFC',
-        100: '#F1F5F9', // Light backgrounds
-        200: '#E2E8F0', // Borders
+        100: '#F1F5F9',
+        200: '#E2E8F0',
         300: '#CBD5E1',
-        400: '#94A3B8', // Subtitles/Icons
-        500: '#64748B', // Body text
-        600: '#475569', // Secondary text
+        400: '#94A3B8',
+        500: '#64748B',
+        600: '#475569',
         700: '#334155',
         800: '#1E293B',
-        900: '#0F172A', // Headings
+        900: '#0F172A',
     },
-    // Semantic Backgrounds
+
+    // 5. Semantic & Backgrounds (랜딩 페이지 기준 배경색)
     cream: {
-        base: '#FDFCFB',    // Main Page Background (Warm White)
-        section: '#FFF9F7', // Highlight Section Background
+        base: '#FFFFFF',
+        section: '#FDFCFB',    // TrendingSection 배경 (유백색)
+        peach: '#FFF9F7',      // CurationSection 배경 (연한 피치)
     },
-    // Functional
+    white: '#FFFFFF',
+    black: '#000000',
     danger: '#FF4B4B',
     success: '#10B981',
+
+    // Aliases
+    brand: {
+        50: '#FFF7ED',
+        100: '#FFEDD5',
+        200: '#FED7AA',
+        300: '#FDBA74',
+        400: '#FB923C',
+        500: '#F97316',
+        600: '#EA580C',
+        700: '#C2410C',
+        DEFAULT: '#EA580C',
+        pink: '#DB2777',
+        accent: '#FF7E5F',
+    },
+    secondary_palette: {
+        50: '#F0FDFA',
+        100: '#CCFBF1',
+        200: '#99F6E4',
+        300: '#5EEAD4',
+        400: '#2DD4BF',
+        500: '#14B8A6',
+        600: '#0D9488',
+    },
 } as const;
 
 export const theme = {
     colors: {
         primary: {
             DEFAULT: palette.coral[400],
+            main: palette.coral[400], // Alias for legacy components
             hover: palette.coral[500],
             light: palette.coral[100],
             bg: palette.coral[50],
         },
         secondary: {
             DEFAULT: palette.teal[400],
+            main: palette.teal[400], // Alias
+            hover: palette.teal[500],
             light: palette.teal[200],
             bg: palette.teal[50],
         },
         text: {
-            primary: palette.slate[900],   // Strong Heatdings
-            secondary: palette.slate[600], // Detailed text
-            tertiary: palette.slate[400],  // Labels/Meta
+            primary: palette.slate[900],
+            secondary: palette.slate[600],
+            tertiary: palette.slate[400],
             white: '#FFFFFF',
+        },
+        neutral: {
+            white: '#FFFFFF',
+            black: '#000000',
         },
         background: {
             main: palette.cream.base,
-            secondary: palette.cream.section,
-            white: '#FFFFFF',
-            modal: '#FFFFFF',
-        },
-        border: {
-            default: palette.slate[200],
-            hover: palette.coral[300], // Interactive border
-            active: palette.coral[400],
-        },
-        status: {
-            urgent: {
-                text: palette.danger,
-                bg: 'rgba(255, 75, 75, 0.1)',
-            },
-            success: palette.success,
+            alt: palette.cream.section,
+            highlight: palette.cream.peach,
         },
         gradients: {
-            brand: 'linear-gradient(to right, #F97316, #EC4899)', // Orange to Pink
-            warmHaze: 'linear-gradient(to bottom, #FFF7ED, #FFFFFF, #F0F9FF)', // Orange-50 via White to Sky-50
+            // 랜딩 페이지에서 사용되는 그라데이션
+            brand: 'linear-gradient(to right, #F97316, #EC4899)', // Orange-500 to Pink-500
+            brandDeep: 'linear-gradient(to right, #EA580C, #DB2777)', // Orange-600 to Pink-600
         }
     },
 
-    // Typography System
-    typography: {
-        fontFamily: {
-            sans: 'var(--font-pretendard), -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
-        },
-        fontSize: {
-            xs: '12px',
-            sm: '14px',
-            base: '16px',
-            lg: '18px',
-            xl: '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            '4xl': '40px',
-            '5xl': '48px',
-            huge: 'clamp(40px, 5.5vw, 72px)', // Hero Text
-        },
-        fontWeight: {
-            regular: '400',
-            medium: '500',
-            semibold: '600',
-            bold: '700',
-            extrabold: '800',
-        },
-        lineHeight: {
-            tight: '1.2',
-            normal: '1.5',
-            relaxed: '1.75',
-        }
-    },
-
-    // Layout & Spacing
-    layout: {
-        container: {
-            base: 'max-w-[1400px]',
-            wide: 'max-w-[1800px]',
-            narrow: 'max-w-[800px]',
-        },
-        section: {
-            paddingX: 'px-4 md:px-12',
-            paddingY: 'py-16 md:py-24',
-        },
-        card: {
-            padding: 'p-5 md:p-6',
-        }
-    },
-
-    // Shapes
-    borderRadius: {
-        sm: 'rounded-lg',       // 8px
-        md: 'rounded-xl',       // 12px
-        lg: 'rounded-2xl',      // 16px (Cards default)
-        xl: 'rounded-3xl',      // 24px (Large Containers)
-        full: 'rounded-full',   // Buttons/Badges
-    },
-
-    // Effects
+    // Shadows (Landing page quality)
     shadows: {
-        sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-        glow: '0 0 15px rgba(255, 126, 95, 0.3)', // Brand Glow
-        cardHover: '0 20px 40px -5px rgba(0, 0, 0, 0.1)',
+        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
     },
 
-    // Animation Tokens
-    animation: {
-        duration: {
-            fast: 0.2,
-            normal: 0.3,
-            medium: 0.5,
-            slow: 0.8,
-        },
-        ease: {
-            default: [0.25, 0.1, 0.25, 1], // ease
-            smooth: [0.22, 1, 0.36, 1], // custom smooth
-            bounce: [0.68, -0.55, 0.265, 1.55],
+    // Border Radius
+    borderRadius: {
+        none: '0',
+        sm: '0.125rem',
+        base: '0.25rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        full: '9999px',
+    },
+
+    // Spacing Helper
+    layout: {
+        section: {
+            paddingY: 'py-20 md:py-32',
+            paddingX: 'px-6 md:px-12',
         }
     }
 } as const;
 
-// Helper to get class names for common patterns
-export const styles = {
-    // Utility classes combining multiple tokens
-    glass: 'bg-white/70 backdrop-blur-md border border-white/20',
-    glassDark: 'bg-black/50 backdrop-blur-md border border-white/10',
-
-    // Interactive element styles
-    button: {
-        primary: 'bg-[#FF7E5F] hover:bg-[#F9603D] text-white shadow-lg hover:shadow-xl transition-all duration-300',
-        secondary: 'bg-white text-slate-900 border border-slate-200 hover:border-[#FF7E5F] hover:bg-orange-50 transition-all duration-300',
-        ghost: 'text-slate-600 hover:text-[#FF7E5F] hover:bg-orange-50/50 transition-colors',
-    },
-
-    // Card styles
-    card: {
-        base: 'bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-[#FF7E5F]/30 hover:shadow-cardHover transition-all duration-300',
-    }
-} as const;
-
-// ============================================
-// Backward Compatibility / Shortcuts
-// ============================================
-// These exports allow existing components to continue working while we migrate to `theme.*` usage.
-
-export const colors = {
-    background: {
-        primary: palette.cream.base,
-        secondary: theme.colors.background.white,
-    },
-    text: theme.colors.text,
-    primary: {
-        main: palette.coral[400],
-        hover: palette.coral[500],
-        light: palette.coral[100],
-        ghost: palette.coral[50], // approximation
-    },
-    secondary: {
-        main: palette.slate[200],
-        hover: palette.slate[300],
-        text: palette.slate[600],
-    },
-    accent: {
-        teal: palette.teal[400],
-        tealLight: palette.teal[200],
-    },
-    card: {
-        background: theme.colors.background.white,
-        border: theme.colors.border.default,
-        borderHover: theme.colors.border.hover,
-    },
-    neutral: {
-        white: '#FFFFFF',
-        black: palette.slate[900],
-    }
-};
-
-export const typography = theme.typography;
-
+// Legacy Aliases (For backward compatibility with existing components)
+export const colors = theme.colors;
 export const spacing = {
     section: {
         py: theme.layout.section.paddingY,
         px: theme.layout.section.paddingX,
-    },
-    container: {
-        maxWidth: theme.layout.container.base,
-        maxWidthWide: theme.layout.container.wide,
-        maxWidthNarrow: theme.layout.container.narrow,
     }
 };
-
-export const borderRadius = theme.borderRadius;
-export const shadows = theme.shadows;
-export const animations = {
-    duration: theme.animation.duration,
-    easing: theme.animation.ease,
+export const typography = {
+    h1: 'text-4xl md:text-6xl font-extrabold tracking-tight',
+    h2: 'text-3xl md:text-5xl font-bold tracking-tight',
+    body: 'text-base md:text-lg leading-relaxed text-slate-600',
 };
-
+export const animations = {
+    duration: {
+        fast: 0.2,
+        normal: 0.3,
+        slow: 0.5,
+    },
+    easing: {
+        smooth: [0.22, 1, 0.36, 1] as any,
+    }
+};

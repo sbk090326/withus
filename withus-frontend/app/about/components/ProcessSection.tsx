@@ -2,98 +2,82 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Smile, Search, ShieldCheck } from 'lucide-react';
-import { palette } from '@/app/components/design-system/constants';
+import { UserCircle, MessagesSquare, TreePalm } from 'lucide-react';
+import { palette, theme, animations } from '@/app/components/design-system/constants';
 
 const steps = [
     {
-        icon: <Smile size={32} />,
-        title: "여행 스타일 등록",
-        description: "MBTI, 식성, 여행 스타일 등 나만의 여행 취향을 간단하게 등록하세요."
+        num: "01",
+        title: "나만의 색깔 등록하기",
+        description: "당신이 좋아하는 여행 스타일과 MBTI를 살짝 알려주세요. 딱 맞는 인연을 찾는 시작점이 됩니다.",
+        tag: "Taste",
+        icon: UserCircle,
+        color: "text-orange-500",
+        bg: "bg-orange-50"
     },
     {
-        icon: <Search size={32} />,
-        title: "동행 찾기 & 대화",
-        description: "나와 핏이 맞는 여행자를 찾아 대화를 나누고 일정을 조율해보세요."
+        num: "02",
+        title: "가벼운 인사 건네기",
+        description: "나와 결이 맞는 메이트를 찾으셨나요? 1:1 채팅으로 가볍게 인사를 나누며 일정을 맞춰보세요.",
+        tag: "Chat",
+        icon: MessagesSquare,
+        color: "text-teal-600",
+        bg: "bg-teal-50"
     },
     {
-        icon: <ShieldCheck size={32} />,
-        title: "안전 여행",
-        description: "인증된 사용자와의 만남, 위드어스의 안전 가이드와 함께 즐거운 여행을 떠나세요."
+        num: "03",
+        title: "함께 떠나는 설렘",
+        description: "이제 준비는 끝났어요! 새로운 친구와 함께 낯선 곳에서의 특별한 하루를 만들어보세요.",
+        tag: "Journey",
+        icon: TreePalm,
+        color: "text-pink-500",
+        bg: "bg-pink-50"
     }
 ];
 
 export const ProcessSection = () => {
     return (
-        <section
-            className="w-full py-24 px-6 relative"
-            style={{ backgroundColor: palette.cream.section }}
-        >
-            <div className="max-w-[1200px] mx-auto relative z-10">
-                <div className="text-center mb-16">
-                    <span
-                        className="font-bold tracking-wider text-sm uppercase mb-3 block"
-                        style={{ color: palette.coral[400] }}
-                    >
-                        How it Works
-                    </span>
-                    <h2
-                        className="text-3xl md:text-4xl font-bold"
-                        style={{ color: palette.slate[900] }}
-                    >
-                        위드어스 이용 가이드
+        <section className="w-full py-32 px-6" style={{ backgroundColor: palette.cream.section }}>
+            <div className="max-w-[1200px] mx-auto">
+                <div className="text-center mb-24 space-y-4">
+                    <span className="text-sm font-bold text-orange-400">Easy Step-by-Step</span>
+                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                        위드어스와 함께하는 <br /> <span className="text-transparent bg-clip-text" style={{ backgroundImage: theme.colors.gradients.brand }}>기분 좋은 세 단계</span>
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                    {/* Connecting Line (Desktop) - simplified */}
-                    <div
-                        className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] z-0"
-                        style={{ backgroundColor: palette.slate[100] }}
-                    ></div>
-
-                    {steps.map((step, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.2 }}
-                            className="relative z-10 flex flex-col items-center text-center group"
-                        >
-                            <div className="relative mb-6 group">
-                                <div
-                                    className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110"
-                                    style={{
-                                        backgroundColor: '#FFFFFF',
-                                        border: `1px solid ${palette.slate[200]}`
-                                    }}
-                                >
-                                    <div style={{ color: palette.coral[400] }}>
-                                        {step.icon}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {steps.map((step, index) => {
+                        const Icon = step.icon;
+                        return (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1, duration: 0.8 }}
+                                className="p-10 bg-white shadow-sm rounded-[40px] hover:shadow-2xl hover:shadow-orange-100/50 transition-all duration-500 group border border-transparent hover:border-orange-100"
+                            >
+                                <div className="flex flex-col h-full space-y-8">
+                                    <div className={`w-16 h-16 rounded-2xl ${step.bg} flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6`}>
+                                        <Icon className={step.color} size={30} strokeWidth={2} />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-black text-slate-900 leading-tight">
+                                            {step.title}
+                                        </h3>
+                                        <p className="text-slate-500 leading-relaxed font-medium">
+                                            {step.description}
+                                        </p>
+                                    </div>
+                                    <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                                        <span className={`text-[10px] font-black tracking-widest uppercase ${step.color}`}>{step.tag}</span>
+                                        <span className="text-xs font-black text-slate-200 group-hover:text-slate-900 transition-colors">STEP {step.num}</span>
                                     </div>
                                 </div>
-                                <div
-                                    className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs text-white shadow-md z-20 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-                                    style={{ backgroundColor: palette.teal[400] }}
-                                >
-                                    {index + 1}
-                                </div>
-                            </div>
-                            <h3
-                                className="text-lg font-bold mb-3"
-                                style={{ color: palette.slate[900] }}
-                            >
-                                {step.title}
-                            </h3>
-                            <p
-                                className="leading-relaxed text-sm max-w-[240px]"
-                                style={{ color: palette.slate[500] }}
-                            >
-                                {step.description}
-                            </p>
-                        </motion.div>
-                    ))}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>

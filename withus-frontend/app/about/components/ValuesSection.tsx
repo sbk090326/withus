@@ -2,79 +2,74 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Heart, Users } from 'lucide-react';
-import { palette, theme } from '@/app/components/design-system/constants';
+import { Heart, Smile, Handshake } from 'lucide-react';
+import { palette, theme, animations } from '@/app/components/design-system/constants';
 
 const values = [
     {
-        icon: ShieldCheck,
-        title: "안전한 동행",
-        description: "철저한 본인 인증과 신뢰도 시스템을 통해, 믿을 수 있는 여행 메이트만을 매칭합니다. 안전이 최우선입니다."
-    },
-    {
         icon: Heart,
-        title: "취향 중심 매칭",
-        description: "단순한 목적지 매칭을 넘어, 여행 스타일, 식성, 예산 등 세심한 취향 분석을 통해 '잘 맞는' 사람을 찾아드립니다."
+        title: "진정한 마음의 연결",
+        description: "단순히 일정을 맞추는게 다가 아니에요. 서로의 취향과 마음이 통하는 진짜 '인연'을 맺을 수 있도록 돕습니다.",
+        color: "text-pink-500",
+        bg: "bg-pink-50"
     },
     {
-        icon: Users,
-        title: "따뜻한 커뮤니티",
-        description: "여행 정보 공유부터 실시간 번개 모임까지. 여행을 사랑하는 사람들의 따뜻하고 활발한 소통 공간을 지향합니다."
+        icon: Smile,
+        title: "웃음이 끊이지 않는 여행",
+        description: "낯선 곳에서도 미소가 가득하도록. 위드어스는 안전하고 즐거운 동행 문화를 만들어가고 있습니다.",
+        color: "text-orange-500",
+        bg: "bg-orange-50"
+    },
+    {
+        icon: Handshake,
+        title: "믿고 의지하는 친구",
+        description: "여행 중 겪을 수 있는 어려움을 함께 나누고 서로에게 든든한 버팀목이 되어주는 소중한 친구가 되어보세요.",
+        color: "text-teal-600",
+        bg: "bg-teal-50"
     }
 ];
 
 export const ValuesSection = () => {
     return (
-        <section
-            className="w-full py-24 px-6 bg-[#FDFCFB]"
-        >
-            <div className="max-w-[1400px] mx-auto">
-                <div className="text-center mb-16">
-                    <h2
-                        className="text-3xl font-bold text-slate-900"
-                    >
-                        우리가 중요하게 생각하는 가치
-                    </h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {values.map((item, index) => {
-                        const Icon = item.icon;
-                        return (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.2 }}
-                                className="p-8 rounded-[32px] bg-white hover:shadow-lg transition-all duration-300 border border-slate-100 group"
-                            >
-                                <div
-                                    className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-                                    style={{
-                                        background: `linear-gradient(135deg, ${palette.coral[100]}33, ${palette.teal[100]}33)`,
-                                        ['--icon-base' as any]: palette.coral[400],
-                                        ['--icon-hover' as any]: palette.teal[400],
-                                    }}
+        <section className="w-full py-32 px-6 bg-white relative">
+            <div className="max-w-[1200px] mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                    <div className="space-y-8 text-center lg:text-left">
+                        <span className="text-sm font-bold text-orange-400">Our Heart</span>
+                        <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+                            위드어스가 꿈꾸는 <br />
+                            <span className="text-transparent bg-clip-text" style={{ backgroundImage: theme.colors.gradients.brand }}>따뜻한 동행의 가치</span>
+                        </h2>
+                        <p className="text-slate-500 text-lg leading-relaxed max-w-sm mx-auto lg:mx-0">
+                            우리는 기술보다 사람을, <br /> 숫자보다 웃음을 더 중요하게 생각합니다.
+                        </p>
+                    </div>
+
+                    <div className="space-y-6">
+                        {values.map((item, index) => {
+                            const Icon = item.icon;
+                            return (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1, duration: 0.8 }}
+                                    className="p-8 bg-slate-50/50 rounded-3xl flex items-center gap-8 group hover:bg-white hover:shadow-xl transition-all duration-500"
                                 >
-                                    <Icon
-                                        size={28}
-                                        className="transition-colors duration-300 text-[var(--icon-base)] group-hover:text-[var(--icon-hover)]"
-                                        strokeWidth={1.5}
-                                    />
-                                </div>
-                                <h3
-                                    className="text-xl font-bold mb-3 text-slate-900"
-                                >
-                                    {item.title}
-                                </h3>
-                                <p
-                                    className="leading-relaxed text-slate-600"
-                                >
-                                    {item.description}
-                                </p>
-                            </motion.div>
-                        );
-                    })}
+                                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-12`}>
+                                        <Icon className={item.color} size={28} strokeWidth={2.5} />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="text-xl font-black text-slate-900">{item.title}</h3>
+                                        <p className="text-slate-500 leading-relaxed font-medium">
+                                            {item.description}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </section>
