@@ -5,9 +5,9 @@ import { Filter, ChevronDown, Sparkles, List, Map as MapIcon, Navigation, X } fr
 import { MapView } from './MapView';
 import { CompanionSkeleton } from './CompanionSkeleton';
 import { AdvancedFilter } from './AdvancedFilter';
+import { LoadMoreButton } from '../../components/ui/LoadMoreButton';
 
 const mockCompanions = [
-    // ... (rest of mockCompanions stays the same)
     {
         id: 1,
         user: { name: '지니', image: '👩‍🦰', tags: ['#E형인간', '#미식가', '#뚜벅이'] },
@@ -17,6 +17,12 @@ const mockCompanions = [
         matchScore: 98,
         likeCount: 24,
         thumbnail: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&q=80&w=800',
+        targetGender: '여성만',
+        targetAge: '20대',
+        isSmoker: '비흡연자만',
+        budget: '50만원 내외',
+        currentPeople: 3,
+        maxPeople: 4,
     },
     {
         id: 2,
@@ -27,6 +33,12 @@ const mockCompanions = [
         matchScore: 92,
         likeCount: 15,
         thumbnail: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '전체',
+        isSmoker: '상관없음',
+        budget: '30만원',
+        currentPeople: 1,
+        maxPeople: 2,
     },
     {
         id: 3,
@@ -37,6 +49,12 @@ const mockCompanions = [
         matchScore: 89,
         likeCount: 12,
         thumbnail: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800',
+        targetGender: '여성만',
+        targetAge: '20-30대',
+        isSmoker: '비흡연자만',
+        budget: '20만원',
+        currentPeople: 2,
+        maxPeople: 4,
     },
     {
         id: 4,
@@ -47,6 +65,12 @@ const mockCompanions = [
         matchScore: 85,
         likeCount: 31,
         thumbnail: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '전체',
+        isSmoker: '상관없음',
+        budget: '10만원 미만',
+        currentPeople: 5,
+        maxPeople: 6,
     },
     {
         id: 5,
@@ -57,6 +81,12 @@ const mockCompanions = [
         matchScore: 82,
         likeCount: 18,
         thumbnail: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800',
+        targetGender: '여성만',
+        targetAge: '전체',
+        isSmoker: '비흡연자만',
+        budget: '40만원',
+        currentPeople: 2,
+        maxPeople: 3,
     },
     {
         id: 6,
@@ -67,6 +97,12 @@ const mockCompanions = [
         matchScore: 78,
         likeCount: 9,
         thumbnail: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '30대 이상',
+        isSmoker: '상관없음',
+        budget: '자유',
+        currentPeople: 1,
+        maxPeople: 4,
     },
 ];
 
@@ -75,8 +111,11 @@ export const CompanionList = () => {
     const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
     const [isLoading, setIsLoading] = useState(true);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [filters, setFilters] = useState({ gender: '전체', age: '전체', style: [] });
+    const [filters, setFilters] = useState({ gender: '전체', age: '전체', smoking: '전체', style: [] });
+    const [sortBy, setSortBy] = useState<'latest' | 'match' | 'popular'>('latest');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+    const [isMoreLoading, setIsMoreLoading] = useState(false);
 
     useEffect(() => {
         // Simulate initial loading
@@ -94,9 +133,34 @@ export const CompanionList = () => {
         }, 1500);
     };
 
-    const displayCompanions = activeTab === 'all'
-        ? mockCompanions
-        : mockCompanions.filter(c => c.matchScore >= 90);
+    const handleLoadMore = () => {
+        setIsMoreLoading(true);
+        // Simulate API call to fetch more data
+        setTimeout(() => {
+            setIsMoreLoading(false);
+        }, 1500);
+    };
+
+    const getSortedCompanions = () => {
+        let list = activeTab === 'all'
+            ? [...mockCompanions]
+            : mockCompanions.filter(c => c.matchScore >= 90);
+
+        // Sorting logic
+        if (sortBy === 'match') {
+            list.sort((a, b) => sortOrder === 'desc' ? b.matchScore - a.matchScore : a.matchScore - b.matchScore);
+        } else if (sortBy === 'popular') {
+            // Popularity is currently based on likeCount
+            list.sort((a, b) => sortOrder === 'desc' ? b.likeCount - a.likeCount : a.likeCount - b.likeCount);
+        } else {
+            // latest is default (based on id as proxy for creation time)
+            list.sort((a, b) => sortOrder === 'desc' ? b.id - a.id : a.id - b.id);
+        }
+
+        return list;
+    };
+
+    const displayCompanions = getSortedCompanions();
 
     return (
         <div className="w-full max-w-[1200px] mx-auto px-6 pb-32">
@@ -150,16 +214,45 @@ export const CompanionList = () => {
                             <MapIcon size={18} />
                         </button>
                     </div>
+                    <div className="w-px h-6 bg-slate-200 mx-2 hidden md:block" />
+
+                    {/* Sort Dropdown */}
+                    <div className="flex items-center gap-1">
+                        <div className="relative group">
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value as any)}
+                                className="appearance-none bg-white border border-slate-100 pl-4 pr-10 py-2 rounded-full text-sm font-bold text-slate-600 hover:border-slate-200 cursor-pointer outline-none transition-all shadow-sm focus:border-orange-500"
+                            >
+                                <option value="latest">최신순</option>
+                                <option value="match">매칭점수순</option>
+                                <option value="popular">인기순</option>
+                            </select>
+                            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none transition-transform group-hover:text-slate-600" />
+                        </div>
+                        <button
+                            onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+                            className="p-2 rounded-full bg-white border border-slate-100 text-slate-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm"
+                            title={sortOrder === 'desc' ? '내림차순' : '오름차순'}
+                        >
+                            {sortOrder === 'desc' ? (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m3 16 4 4 4-4" /><path d="M7 20V4" /><path d="M11 4h10" /><path d="M11 8h7" /><path d="M11 12h4" /></svg>
+                            ) : (
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m3 8 4-4 4 4" /><path d="M7 4v16" /><path d="M11 12h4" /><path d="M11 16h7" /><path d="M11 20h10" /></svg>
+                            )}
+                        </button>
+                    </div>
+
                     <button
                         onClick={() => setIsFilterOpen(true)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all border ${filters.style.length > 0 || filters.gender !== '전체'
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all border ${filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체'
                             ? 'bg-slate-900 text-white border-slate-900'
                             : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200'
                             }`}
                     >
                         <Filter size={16} />
                         필터
-                        {(filters.style.length > 0 || filters.gender !== '전체') && (
+                        {(filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체') && (
                             <span className="w-4 h-4 bg-orange-500 text-[10px] rounded-full flex items-center justify-center text-white">
                                 !
                             </span>
@@ -211,7 +304,7 @@ export const CompanionList = () => {
                         ))}
 
                         <button
-                            onClick={() => setFilters({ gender: '전체', age: '전체', style: [] })}
+                            onClick={() => setFilters({ gender: '전체', age: '전체', smoking: '전체', style: [] })}
                             className="text-xs text-slate-400 hover:text-orange-500 font-bold ml-2 transition-colors border-b border-transparent hover:border-orange-500"
                         >
                             전체 초기화
@@ -249,13 +342,12 @@ export const CompanionList = () => {
                             ))}
                         </div>
 
-                        {/* Pagination Placeholder */}
+                        {/* Load More Section */}
                         {displayCompanions.length >= 6 && (
-                            <div className="mt-20 flex justify-center">
-                                <button className="px-12 py-4 rounded-full border border-slate-200 text-slate-500 font-bold hover:bg-slate-50 transition-colors shadow-sm">
-                                    더보기
-                                </button>
-                            </div>
+                            <LoadMoreButton
+                                onClick={handleLoadMore}
+                                isLoading={isMoreLoading}
+                            />
                         )}
 
                         {displayCompanions.length === 0 && (

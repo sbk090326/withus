@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useModal } from '@/app/context/ModalContext';
 import { Send, User, Mail, MessageSquare } from 'lucide-react';
+import { palette, theme } from '@/app/components/design-system/constants';
 
 export default function ContactPage() {
     const { openModal } = useModal();
@@ -32,7 +33,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#FDFCFB] pt-32 pb-24 px-6 relative overflow-hidden">
+        <div className="min-h-screen pt-32 pb-24 px-6 relative overflow-hidden" style={{ backgroundColor: palette.cream.section }}>
             {/* Background Decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-200/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-pink-200/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -42,20 +43,20 @@ export default function ContactPage() {
                     {/* Left: Info */}
                     <div className="space-y-8">
                         <div>
-                            <span className="text-[#FF7E5F] font-bold tracking-wider text-sm uppercase mb-2 block">
+                            <span className="font-bold tracking-wider text-sm uppercase mb-2 block" style={{ color: palette.coral[400] }}>
                                 Contact Us
                             </span>
                             <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">
                                 궁금한 점이 <br /> 있으신가요?
                             </h1>
-                            <p className="text-lg text-slate-500 leading-relaxed">
-                                위드어스 팀은 여러분의 목소리에 항상 귀 기울이고 있습니다. 서비스 이용 문의, 제휴 제안, 혹은 단순한 응원까지 언제든 환영합니다.
+                            <p className="text-lg text-slate-500 leading-relaxed font-medium">
+                                위드어스 팀은 여러분의 목소리에 항상 귀 기울이고 있습니다. <br /> 서비스 이용 문의, 제휴 제안, 혹은 단순한 응원까지 언제든 환영합니다.
                             </p>
                         </div>
 
                         <div className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 space-y-6">
                             <div className="flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: palette.coral[50], color: palette.coral[400] }}>
                                     <Mail size={20} />
                                 </div>
                                 <div>
@@ -64,7 +65,7 @@ export default function ContactPage() {
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-green-50 text-green-500 flex items-center justify-center shrink-0">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: palette.teal[50], color: palette.teal[500] }}>
                                     <MessageSquare size={20} />
                                 </div>
                                 <div>
@@ -90,7 +91,7 @@ export default function ContactPage() {
                                     <input
                                         type="text"
                                         required
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-[#FF7E5F] transition-all"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-slate-900 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#FF7E5F] transition-all font-bold placeholder:text-slate-300"
                                         placeholder="홍길동"
                                         value={formData.name}
                                         onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -105,7 +106,7 @@ export default function ContactPage() {
                                     <input
                                         type="email"
                                         required
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-[#FF7E5F] transition-all"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 text-slate-900 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#FF7E5F] transition-all font-bold placeholder:text-slate-300"
                                         placeholder="hello@example.com"
                                         value={formData.email}
                                         onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -118,7 +119,7 @@ export default function ContactPage() {
                                 <textarea
                                     required
                                     rows={5}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-[#FF7E5F] transition-all resize-none"
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-slate-900 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-[#FF7E5F] transition-all resize-none font-bold placeholder:text-slate-300"
                                     placeholder="무엇을 도와드릴까요?"
                                     value={formData.message}
                                     onChange={e => setFormData({ ...formData, message: e.target.value })}
@@ -128,14 +129,18 @@ export default function ContactPage() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full py-4 rounded-2xl bg-[#FF7E5F] hover:bg-[#F9603D] text-white font-bold text-lg shadow-lg shadow-orange-200 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                                className="w-full py-5 rounded-[24px] text-white font-black text-lg shadow-xl transition-all flex items-center justify-center gap-3 disabled:opacity-70 group hover:scale-[1.02] active:scale-[0.98]"
+                                style={{
+                                    background: theme.colors.gradients.brand,
+                                    boxShadow: '0 20px 40px -12px rgba(244, 114, 182, 0.3)'
+                                }}
                             >
                                 {isLoading ? (
-                                    <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
                                     <>
-                                        보내기
-                                        <Send size={20} />
+                                        문의 보내기
+                                        <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                                     </>
                                 )}
                             </button>

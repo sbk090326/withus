@@ -139,43 +139,8 @@ export function HeroParallax() {
                                 </AnimatePresence>
                             </motion.div>
 
-                            {/* Floating Stats Card - Positioned outside the overflow-hidden container */}
-                            <motion.div
-                                style={{ y: yCenter }}
-                                className="absolute bottom-10 left-6 right-6 md:left-10 md:right-10 z-20"
-                            >
-                                <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/40">
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-lg">
-                                            <Heart size={24} className="text-white" fill="white" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-lg font-bold text-slate-900">나만의 동행 찾기</h3>
-                                            <p className="text-sm text-slate-600">안전하고 검증된 여행 친구</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-4 text-center pt-4 border-t border-slate-200/60">
-                                        <div className="flex-1">
-                                            <div className="text-2xl font-bold text-orange-500">
-                                                <CountUp end={10} suffix="K+" />
-                                            </div>
-                                            <div className="text-xs text-slate-600 font-medium">누적 여행자</div>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="text-2xl font-bold" style={{ color: theme.colors.secondary.DEFAULT }}>
-                                                <CountUp end={150} suffix="+" />
-                                            </div>
-                                            <div className="text-xs text-slate-600 font-medium">여행 국가</div>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="text-2xl font-bold text-pink-500">
-                                                <CountUp end={98} suffix="%" />
-                                            </div>
-                                            <div className="text-xs text-slate-600 font-medium">여행 만족도</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                            {/* Floating Stats Card Removed */}
+
                         </div>
 
                         {/* Right Column - Stacked Images */}

@@ -2,39 +2,31 @@
 
 import React from 'react';
 import { CountUp } from '@/app/components/ui/CountUp';
-import { palette } from '@/app/components/design-system/constants';
+import { palette, theme } from '@/app/components/design-system/constants';
 
 const stats = [
-    { value: 15420, suffix: "+", label: "누적 동행 매칭" },
-    { value: 8700, suffix: "+", label: "함께한 여행자" },
-    { value: 98, suffix: "%", label: "사용자 만족도" },
+    { value: 15420, suffix: "+", label: "서로를 발견한 횟수", icon: "🤝" },
+    { value: 8700, suffix: "+", label: "함께 웃은 여행자", icon: "😊" },
+    { value: 98, suffix: "%", label: "다시 만나고 싶은 마음", icon: "🧡" },
 ];
 
 export const StatsSection = () => {
     return (
-        <section
-            className="w-full border-y py-16"
-            style={{
-                backgroundColor: '#FFFFFF',
-                borderColor: palette.slate[100]
-            }}
-        >
-            <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-                <div
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x"
-                    style={{ borderColor: palette.slate[100] }}
-                >
+        <section className="w-full py-24 px-6 border-y border-slate-50 bg-white">
+            <div className="max-w-[1200px] mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-slate-100">
                     {stats.map((stat, index) => (
-                        <div key={index} className="flex flex-col items-center text-center p-4">
+                        <div key={index} className="flex flex-col items-center text-center px-4 md:px-12 py-8 group">
+                            <span className="text-3xl mb-4 group-hover:scale-125 transition-transform duration-500">
+                                {stat.icon}
+                            </span>
                             <span
-                                className="text-4xl md:text-5xl font-extrabold mb-2"
-                                style={{ color: palette.coral[400] }}
+                                className="text-4xl md:text-6xl font-black mb-2 tracking-tight text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-500 group-hover:to-pink-500 transition-all duration-500"
                             >
                                 <CountUp end={stat.value} duration={2500} suffix={stat.suffix} />
                             </span>
                             <span
-                                className="font-medium text-sm tracking-wide"
-                                style={{ color: palette.slate[500] }}
+                                className="font-bold text-xs tracking-tight text-slate-400"
                             >
                                 {stat.label}
                             </span>

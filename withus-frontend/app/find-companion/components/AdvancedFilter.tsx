@@ -90,6 +90,25 @@ export const AdvancedFilter = ({ isOpen, onClose, filters, setFilters }: Advance
                                 </div>
                             </div>
 
+                            {/* Smoking */}
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">흡연 여부</h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {['전체', '비흡연자만'].map((opt) => (
+                                        <button
+                                            key={opt}
+                                            onClick={() => setFilters({ ...filters, smoking: opt })}
+                                            className={`py-3 rounded-2xl text-sm font-bold transition-all border ${filters.smoking === opt
+                                                ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
+                                                : 'bg-white border-slate-100 text-slate-500 hover:border-slate-200'
+                                                }`}
+                                        >
+                                            {opt}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Travel Style */}
                             <div>
                                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">여행 스타일</h3>
@@ -99,7 +118,7 @@ export const AdvancedFilter = ({ isOpen, onClose, filters, setFilters }: Advance
                                             key={opt}
                                             onClick={() => toggleStyle(opt)}
                                             className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all border flex items-center gap-2 ${filters.style.includes(opt)
-                                                ? 'bg-slate-900 border-slate-900 text-white'
+                                                ? 'bg-orange-500 border-orange-500 text-white'
                                                 : 'bg-white border-slate-100 text-slate-500 hover:border-slate-200'
                                                 }`}
                                         >

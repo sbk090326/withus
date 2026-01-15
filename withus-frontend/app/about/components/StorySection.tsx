@@ -2,59 +2,71 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { palette } from '@/app/components/design-system/constants';
+import { palette, theme, animations } from '@/app/components/design-system/constants';
 
 export const StorySection = () => {
     return (
-        <section className="w-full py-32 px-6 bg-white">
-            <div className="max-w-4xl mx-auto text-center space-y-12">
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 1 }}
-                >
-                    <h2
-                        className="text-3xl md:text-4xl font-bold mb-6"
-                        style={{ color: palette.slate[900] }}
+        <section className="w-full py-40 px-6 bg-white overflow-hidden">
+            <div className="max-w-[1200px] mx-auto space-y-24">
+                <div className="text-center space-y-6">
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        className="text-[10px] font-black tracking-[0.5em] uppercase text-slate-400"
                     >
-                        우리가 꿈꾸는 여행
-                    </h2>
-                    <p
-                        className="text-lg leading-loose"
-                        style={{ color: palette.slate[500] }}
+                        Our Mission
+                    </motion.span>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="text-4xl md:text-7xl font-black text-slate-900 tracking-tight leading-none"
                     >
-                        여행은 어디를 가느냐보다 <span className="font-bold" style={{ color: palette.coral[400] }}>누구와 가느냐</span>가 더 중요하다고 믿습니다.<br />
-                        나와 꼭 맞는 취향을 가진 여행 메이트를 만나,<br />
-                        평생 잊지 못할 추억을 만들어보세요.
-                    </p>
-                </motion.div>
+                        다시 쓰는 <br />
+                        <span className="text-transparent bg-clip-text" style={{ backgroundImage: theme.colors.gradients.brand }}>여행의 패러다임</span>
+                    </motion.h2>
+                </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                    {/* Placeholder for images with nicer placeholders using Palette */}
-                    <div
-                        className="h-48 rounded-2xl flex items-center justify-center font-bold text-2xl"
-                        style={{ backgroundColor: palette.coral[100], color: palette.coral[400] }}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
                     >
-                        Trip 1
-                    </div>
-                    <div
-                        className="h-48 rounded-2xl flex items-center justify-center font-bold text-2xl mt-8"
-                        style={{ backgroundColor: palette.teal[50], color: palette.teal[400] }}
+                        <img
+                            src="https://images.unsplash.com/photo-1531058284639-8d2863810f87?auto=format&fit=crop&q=80&w=1000"
+                            alt="Mission"
+                            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                        className="space-y-8"
                     >
-                        Trip 2
-                    </div>
-                    <div
-                        className="h-48 rounded-2xl flex items-center justify-center font-bold text-2xl"
-                        style={{ backgroundColor: palette.slate[100], color: palette.slate[400] }}
-                    >
-                        Trip 3
-                    </div>
-                    <div
-                        className="h-48 rounded-2xl flex items-center justify-center font-bold text-2xl mt-8"
-                        style={{ backgroundColor: palette.coral[50], color: palette.coral[300] }}
-                    >
-                        Trip 4
-                    </div>
+                        <p className="text-2xl leading-relaxed text-slate-900 font-bold">
+                            위드어스는 단순한 동행 중개를 넘어, <br />
+                            동행이라는 문화를 하나의 '표준'으로 정립하고자 합니다.
+                        </p>
+                        <p className="text-lg leading-relaxed text-slate-500 font-medium">
+                            누구나 안전하게, 언제 어디서든 나와 결이 맞는 사람을 만날 수 있는 세상. 우리는 기술과 데이터, 그리고 인간에 대한 깊은 이해를 바탕으로 여행의 새로운 미래를 설계합니다.
+                        </p>
+                        <div className="flex items-center gap-6 pt-4">
+                            <div className="text-center">
+                                <p className="text-3xl font-black text-slate-900">1.5M</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Verified Users</p>
+                            </div>
+                            <div className="w-[1px] h-10 bg-slate-100" />
+                            <div className="text-center">
+                                <p className="text-3xl font-black text-slate-900">120k</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Monthly Matches</p>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
             </div>
         </section>
