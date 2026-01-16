@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Calendar, User, Search } from 'lucide-react';
-import { colors, borderRadius, animations, theme as designTheme } from '@/app/components/design-system/constants';
+import { colors, animations, theme as designTheme } from '@/app/components/design-system/constants';
 
 interface SearchFieldProps {
     icon: React.ReactNode;
@@ -103,12 +103,14 @@ export function SearchWidget({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
         "제주도", "혼자 여행", "맛집 투어", "당일치기", "힐링 여행"
     ];
 
-    // Sample data for autocomplete - 한국 국내 여행지
+    // Sample data for autocomplete - 국내외 여행지
     const destinations = [
         "서울", "부산", "제주도", "강릉",
         "경주", "전주", "여수", "속초",
         "대구", "광주", "인천", "포항",
-        "춘천", "평창", "보령", "통영"
+        "춘천", "평창", "보령", "통영",
+        "도쿄", "파리", "방콕", "뉴욕",
+        "바르셀로나", "런던", "로마", "싱가포르"
     ];
 
     return (
