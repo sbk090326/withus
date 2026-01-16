@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { ArrowRight, MapPin, Tent, Building2, Palmtree, Mountain } from 'lucide-react';
 import { colors, spacing } from '@/app/components/design-system/constants';
@@ -8,48 +9,92 @@ import { colors, spacing } from '@/app/components/design-system/constants';
 const destinations = [
     {
         id: 1,
-        name: 'Santorini, Greece',
-        description: 'Watch golden sunsets over whitewashed cliffs and enjoy romantic getaways by the Aegean Sea.',
-        tags: ['Romantic', 'Luxury'],
-        region: 'Europe',
-        icon: Building2,
-        color: 'bg-blue-100 text-blue-600'
+        name: '제주도',
+        description: '푸른 바다와 한라산, 아름다운 오름과 폭포로 막힐 엿 이상향이 넘치는 한국의 대표 휴양지.',
+        tags: ['로맨틱', '휴양'],
+        region: '제주/도서권',
+        icon: Palmtree,
+        image: '/discover-jeju.png',
+        color: 'bg-teal-100 text-teal-600'
     },
     {
         id: 2,
-        name: 'Kyoto, Japan',
-        description: 'Wander through ancient temples, peaceful gardens, and charming streets filled with culture and tradition.',
-        tags: ['Cultural', 'Calm Escape'],
-        region: 'Asia',
-        icon: Tent,
+        name: '경주',
+        description: '불국사와 천년 고도, 평화로운 정원과 전통이 살아있는 한국의 문화 수도.',
+        tags: ['문화', '힘링'],
+        region: '영남권',
+        icon: Building2,
+        image: '/discover-gyeongju.png',
         color: 'bg-red-100 text-red-600'
     },
     {
         id: 3,
-        name: 'Palawan, Philippines',
-        description: 'A tropical paradise of crystal lagoons and limestone cliffs perfect for sun-seekers and island dreamers.',
-        tags: ['Nature', 'Relaxation'],
-        region: 'Asia',
-        icon: Palmtree,
-        color: 'bg-teal-100 text-teal-600'
+        name: '강릉',
+        description: '동해의 맑은 해변과 소나무 숲, 아름다운 카페로 가득한 힘링 여행의 메카.',
+        tags: ['자연', '휴식'],
+        region: '강원권',
+        icon: Tent,
+        image: '/discover-gangneung.png',
+        color: 'bg-blue-100 text-blue-600'
     },
     {
         id: 4,
-        name: 'Swiss Alps, Switzerland',
-        description: 'Experience breathtaking peaks, ski resorts, and cozy chalets in the heart of the mountains.',
-        tags: ['Adventure', 'Scenic'],
-        region: 'Europe',
+        name: '부산',
+        description: '해운대 해변과 감천 문화마을, 자갈치 시장과 산과 바다가 어우러진 동적인 해양 도시.',
+        tags: ['해변', '도시'],
+        region: '영남권',
         icon: Mountain,
+        image: '/discover-busan.png',
         color: 'bg-slate-200 text-slate-700'
+    },
+    {
+        id: 5,
+        name: '파리',
+        description: '에펠탑과 루브르 박물관, 센 강변의 낭만과 예술이 살아 숨쉬는 세계 문화의 중심지.',
+        tags: ['문화', '로맨틱'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-paris.png',
+        color: 'bg-purple-100 text-purple-600'
+    },
+    {
+        id: 6,
+        name: '도쿄',
+        description: '전통과 현대가 공존하는 메트로폴리스. 시부야, 아사쿠사, 그리고 미식의 천국.',
+        tags: ['도시', '문화'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-tokyo.png',
+        color: 'bg-pink-100 text-pink-600'
+    },
+    {
+        id: 7,
+        name: '바르셀로나',
+        description: '가우디의 건축물과 지중해의 해변, 타파스와 정열이 넘치는 스페인의 보석.',
+        tags: ['해변', '문화'],
+        region: '해외',
+        icon: Palmtree,
+        image: '/discover-barcelona.png',
+        color: 'bg-orange-100 text-orange-600'
+    },
+    {
+        id: 8,
+        name: '뉴욕',
+        description: '자유의 여신상과 타임스퀘어, 꿈과 기회의 도시에서 펼쳐지는 무한한 가능성.',
+        tags: ['도시', '문화'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-newyork.png',
+        color: 'bg-blue-100 text-blue-600'
     }
 ];
 
-const categories = ['All', 'Asia', 'Europe', 'Oceania', 'Africa', 'Caribbean', 'Middle East'];
+const categories = ['전체', '제주/도서권', '강원권', '영남권', '호남권', '충청권', '수도권', '해외'];
 
 export function DiscoverSection() {
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [activeCategory, setActiveCategory] = useState('전체');
 
-    const filteredDestinations = activeCategory === 'All'
+    const filteredDestinations = activeCategory === '전체'
         ? destinations
         : destinations.filter(d => d.region === activeCategory);
 
@@ -65,16 +110,16 @@ export function DiscoverSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        세계를 발견하세요
+                        국내외 명소 곳곳에 담긴 이야기
                     </motion.h2>
                     <motion.p
-                        className="text-lg max-w-2xl mx-auto text-slate-600"
+                        className="text-lg max-w-2xl mx-auto text-slate-600 whitespace-nowrap"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
                     >
-                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 전 세계 여행지를 만나보세요.
+                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 국내외 여행지를 만나보세요.
                     </motion.p>
                 </div>
 
@@ -110,10 +155,13 @@ export function DiscoverSection() {
                             transition={{ duration: 0.4 }}
                             className="group relative h-[420px] rounded-[32px] overflow-hidden cursor-pointer"
                         >
-                            {/* Placeholder Image Background */}
-                            <div className={`absolute inset-0 ${dest.color} transition-colors duration-500 flex items-center justify-center`}>
-                                <dest.icon size={64} className="opacity-20 group-hover:scale-110 transition-transform duration-500" />
-                            </div>
+                            {/* Destination Image Background */}
+                            <Image
+                                src={dest.image}
+                                alt={`${dest.name} 여행지 사진`}
+                                fill
+                                className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
 
                             {/* Overlay Gradient */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />

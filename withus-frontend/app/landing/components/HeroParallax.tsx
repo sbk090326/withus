@@ -61,21 +61,11 @@ export function HeroParallax() {
 
             {/* Content Layer */}
             <div className="relative z-10">
-                <div className="pt-32 pb-40 px-4 md:px-12 max-w-[1800px] mx-auto">
+                <div className="pt-40 pb-40 px-4 md:px-12 max-w-[1800px] mx-auto">
                     {/* Text and Search Top Section */}
-                    <div className="flex flex-col items-center justify-center mb-20 z-20 relative">
+                    <div className="flex flex-col items-center justify-center mt-12 mb-20 z-20 relative">
 
                         {/* Badge */}
-                        <motion.div
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-orange-200 shadow-sm mb-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                        >
-                            <Users size={16} className="text-orange-500" />
-                            <span className="text-sm font-semibold text-slate-700">10,000+ 명의 여행자와 함께하세요</span>
-                        </motion.div>
-
                         <motion.h1
                             className="text-center font-bold leading-[1.1] mb-6 text-slate-900 drop-shadow-sm"
                             style={{ fontSize: 'clamp(40px, 5.5vw, 72px)' }}
@@ -83,17 +73,17 @@ export function HeroParallax() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: animations.duration.normal, delay: 0.2, ease: animations.easing.smooth }}
                         >
-                            친구와 함께 떠나는 여행, <br />
-                            <span className="bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">함께 만드는 특별한 추억</span>
+                            혼자가 아닌 함께, <br />
+                            <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">지금 함께 떠나볼까요?</span>
                         </motion.h1>
 
                         <motion.p
-                            className="text-center text-slate-700 text-xl font-medium mb-12 max-w-2xl drop-shadow-sm"
+                            className="text-center text-slate-600 text-lg font-medium mb-12 max-w-2xl"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: animations.duration.normal, delay: 0.3, ease: animations.easing.smooth }}
                         >
-                            마음 맞는 여행 친구를 찾아 떠나보세요. 안전하고 즐거운 여행이 기다리고 있습니다! 🌍✨
+                            함께라서 더 즐거운 국내 여행의 시작을 지금 WithUs와 함께하세요.
                         </motion.p>
 
                         <SearchWidget theme="light" />

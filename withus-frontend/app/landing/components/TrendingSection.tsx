@@ -100,10 +100,10 @@ const RecruitmentCard = ({ data, index }: { data: RecruitmentProps; index: numbe
 
 export function TrendingSection() {
     const activeRecruitments: RecruitmentProps[] = [
-        { id: 1, destination: "오사카, 일본", title: "유니버셜 스튜디오 재팬(USJ) 익스프레스 포함 같이 가실 분!", dates: "11월 10일 - 12일", author: "유나", spots: { current: 3, total: 4 }, tags: ["테마파크", "인생샷"], isUrgent: true },
-        { id: 2, destination: "파리, 프랑스", title: "루브르 박물관 도슨트 투어 1/N 하실 분 구해요", dates: "12월 05일", author: "민수", spots: { current: 1, total: 2 }, tags: ["예술", "도보여행"], isUrgent: false },
-        { id: 3, destination: "세부, 필리핀", title: "오픈워터 자격증 같이 따실 분? 초보 환영", dates: "1월 20일 - 25일", author: "사라", spots: { current: 2, total: 6 }, tags: ["액티비티", "물놀이"], isUrgent: false },
-        { id: 4, destination: "뉴욕, 미국", title: "뉴욕 크리스마스 마켓 투어 & 저녁 식사", dates: "12월 24일 - 26일", author: "마이크", spots: { current: 1, total: 3 }, tags: ["도시여행", "맛집"], isUrgent: true },
+        { id: 1, destination: "제주도", title: "에코랜드 + 우도 투어 같이 가실 분!", dates: "11월 10일 - 12일", author: "유나", spots: { current: 3, total: 4 }, tags: ["테마파크", "인생샷"], isUrgent: true },
+        { id: 2, destination: "방콕", title: "수상시장 & 왓아룬 사원 투어 같이 하실 분!", dates: "12월 15일 - 18일", author: "민수", spots: { current: 2, total: 4 }, tags: ["문화체험", "맛집"], isUrgent: false },
+        { id: 3, destination: "강릉", title: "정동진 해돋이 보고 커피거리 투어", dates: "1월 20일 - 22일", author: "사라", spots: { current: 2, total: 6 }, tags: ["힐링", "카페투어"], isUrgent: false },
+        { id: 4, destination: "오사카", title: "도톤보리 야시장 & 유니버셜 스튜디오 투어", dates: "12월 24일 - 26일", author: "재훈", spots: { current: 1, total: 3 }, tags: ["테마파크", "먹방"], isUrgent: true },
     ];
 
     return (
@@ -111,7 +111,7 @@ export function TrendingSection() {
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
                 <div className="flex flex-col lg:flex-row gap-16 items-start">
                     {/* Left: Heading & Context */}
-                    <div className="lg:w-1/3 lg:sticky lg:top-32">
+                    <div className="lg:w-1/3">
                         <div className="flex items-center gap-2 mb-4 text-[#FF7E5F]">
                             <span className="relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7E5F] opacity-75"></span>
