@@ -101,9 +101,9 @@ const RecruitmentCard = ({ data, index }: { data: RecruitmentProps; index: numbe
 export function TrendingSection() {
     const activeRecruitments: RecruitmentProps[] = [
         { id: 1, destination: "제주도", title: "에코랜드 + 우도 투어 같이 가실 분!", dates: "11월 10일 - 12일", author: "유나", spots: { current: 3, total: 4 }, tags: ["테마파크", "인생샷"], isUrgent: true },
-        { id: 2, destination: "경주", title: "불국사 & 석굴암 도슨트 투어 1/N 하실 분 구해요", dates: "12월 05일", author: "민수", spots: { current: 1, total: 2 }, tags: ["문화유산", "도보여행"], isUrgent: false },
+        { id: 2, destination: "방콕", title: "수상시장 & 왓아룬 사원 투어 같이 하실 분!", dates: "12월 15일 - 18일", author: "민수", spots: { current: 2, total: 4 }, tags: ["문화체험", "맛집"], isUrgent: false },
         { id: 3, destination: "강릉", title: "정동진 해돋이 보고 커피거리 투어", dates: "1월 20일 - 22일", author: "사라", spots: { current: 2, total: 6 }, tags: ["힐링", "카페투어"], isUrgent: false },
-        { id: 4, destination: "부산", title: "감천문화마을 & 해운대 야시장 투어", dates: "12월 24일 - 26일", author: "재훈", spots: { current: 1, total: 3 }, tags: ["도시여행", "맛집"], isUrgent: true },
+        { id: 4, destination: "오사카", title: "도톤보리 야시장 & 유니버셜 스튜디오 투어", dates: "12월 24일 - 26일", author: "재훈", spots: { current: 1, total: 3 }, tags: ["테마파크", "먹방"], isUrgent: true },
     ];
 
     return (

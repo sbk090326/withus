@@ -46,10 +46,50 @@ const destinations = [
         icon: Mountain,
         image: '/discover-busan.png',
         color: 'bg-slate-200 text-slate-700'
+    },
+    {
+        id: 5,
+        name: '파리',
+        description: '에펠탑과 루브르 박물관, 센 강변의 낭만과 예술이 살아 숨쉬는 세계 문화의 중심지.',
+        tags: ['문화', '로맨틱'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-paris.png',
+        color: 'bg-purple-100 text-purple-600'
+    },
+    {
+        id: 6,
+        name: '도쿄',
+        description: '전통과 현대가 공존하는 메트로폴리스. 시부야, 아사쿠사, 그리고 미식의 천국.',
+        tags: ['도시', '문화'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-tokyo.png',
+        color: 'bg-pink-100 text-pink-600'
+    },
+    {
+        id: 7,
+        name: '바르셀로나',
+        description: '가우디의 건축물과 지중해의 해변, 타파스와 정열이 넘치는 스페인의 보석.',
+        tags: ['해변', '문화'],
+        region: '해외',
+        icon: Palmtree,
+        image: '/discover-barcelona.png',
+        color: 'bg-orange-100 text-orange-600'
+    },
+    {
+        id: 8,
+        name: '뉴욕',
+        description: '자유의 여신상과 타임스퀘어, 꿈과 기회의 도시에서 펼쳐지는 무한한 가능성.',
+        tags: ['도시', '문화'],
+        region: '해외',
+        icon: Building2,
+        image: '/discover-newyork.png',
+        color: 'bg-blue-100 text-blue-600'
     }
 ];
 
-const categories = ['전체', '제주/도서권', '강원권', '영남권', '호남권', '충청권', '수도권'];
+const categories = ['전체', '제주/도서권', '강원권', '영남권', '호남권', '충청권', '수도권', '해외'];
 
 export function DiscoverSection() {
     const [activeCategory, setActiveCategory] = useState('전체');
@@ -70,7 +110,7 @@ export function DiscoverSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        국내 명소 곳곳에 담긴 이야기
+                        국내외 명소 곳곳에 담긴 이야기
                     </motion.h2>
                     <motion.p
                         className="text-lg max-w-2xl mx-auto text-slate-600 whitespace-nowrap"
@@ -79,7 +119,7 @@ export function DiscoverSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
                     >
-                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 국내 여행지를 만나보세요.
+                        숨겨진 해변부터 활기찬 도시까지, 모든 여행자를 위해 엄선된 국내외 여행지를 만나보세요.
                     </motion.p>
                 </div>
 

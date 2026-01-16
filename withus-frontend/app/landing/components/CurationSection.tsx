@@ -36,7 +36,7 @@ const profiles: MatchProfile[] = [
         tags: ['#맛집탐방', '#수제맥주', '#야시장'],
         bio: '로컬 맛집이랑 야시장은 꼭 가봐야 직성이 풀리는 먹방러입니다. 🍺',
         image: '🧔🏻',
-        location: '부산',
+        location: '도쿄',
     },
     {
         id: 'p3',
@@ -46,7 +46,7 @@ const profiles: MatchProfile[] = [
         tags: ['#미술관', '#전시회', '#감성카페'],
         bio: '하루 종일 미술관에서 시간 보내는 거 좋아해요. 같이 가실 분!',
         image: '👩🏼',
-        location: '서울',
+        location: '파리',
     }
 ];
 
