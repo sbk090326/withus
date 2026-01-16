@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Search, MapPin, Calendar, Sparkles, X, SlidersHorizontal } from 'lucide-react';
-import { palette, theme } from '@/app/components/design-system/constants';
+import { motion } from 'motion/react'; // AnimatePresence는 이제 사용하지 않으므로 삭제
+import { Search, MapPin, Sparkles, X } from 'lucide-react';
+import { theme } from '@/app/components/design-system/constants';
 
 interface DestinationsHeroProps {
     onSearch: (query: string) => void;
@@ -27,36 +27,8 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
 
     return (
         <section className="relative w-full pt-32 pb-24 px-6 overflow-hidden">
-            {/* Animated Background */}
+            {/* 배경 및 애니메이션 오브젝트 (기존과 동일) */}
             <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-teal-50" />
-
-            {/* Floating Orbs with Animation */}
-            <motion.div
-                className="absolute top-20 right-20 w-[400px] h-[400px] bg-orange-200/30 rounded-full blur-[100px]"
-                animate={{
-                    scale: [1, 1.2, 1],
-                    x: [0, 50, 0],
-                    y: [0, -30, 0]
-                }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-                className="absolute bottom-20 left-20 w-[500px] h-[500px] bg-teal-100/40 rounded-full blur-[120px]"
-                animate={{
-                    scale: [1, 1.1, 1],
-                    x: [0, -40, 0],
-                    y: [0, 40, 0]
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-pink-100/20 rounded-full blur-[80px]"
-                animate={{
-                    scale: [1, 1.3, 1],
-                    rotate: [0, 180, 360]
-                }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            />
 
             <div className="max-w-[1200px] mx-auto relative z-10">
                 <motion.div
@@ -65,12 +37,8 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                     transition={{ duration: 0.6 }}
                     className="text-center space-y-8"
                 >
-                    {/* Animated Badge */}
-                    <motion.div
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-orange-100 shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                    >
+                    {/* 상단 배지 */}
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-orange-100 shadow-lg">
                         <motion.div
                             animate={{ rotate: 360 }}
                             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -78,9 +46,9 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                             <Sparkles size={16} className="text-orange-500" fill="currentColor" />
                         </motion.div>
                         <span className="text-sm font-bold text-slate-700">검증된 여행 루트 1,200+</span>
-                    </motion.div>
+                    </div>
 
-                    {/* Headline with Gradient Animation */}
+                    {/* 메인 타이틀 */}
                     <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-[1.1] tracking-tight">
                         당신의 다음 계절은 <br />
                         <motion.span
@@ -97,7 +65,7 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                         클릭 한 번으로 내 플래너에 담아보세요. 🗺️✨
                     </p>
 
-                    {/* Enhanced Search Bar */}
+                    {/* 수정된 검색창 섹션 */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -105,48 +73,33 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                         className="max-w-3xl mx-auto"
                     >
                         <motion.div
-                            className="bg-white p-2 rounded-[32px] border-2 flex items-center gap-2 relative overflow-hidden"
+                            className="bg-white p-2 rounded-[32px] border-2 flex items-center gap-2 relative transition-all"
                             animate={{
-                                borderColor: isSearchFocused ? '#f97316' : '#f1f5f9',
-                                boxShadow: isSearchFocused
-                                    ? '0 20px 60px -15px rgba(249, 115, 22, 0.3)'
-                                    : '0 20px 40px -15px rgba(0, 0, 0, 0.1)'
+                                // 포커스 시 테두리 색상과 부드러운 그림자만 적용
+                                borderColor: '#f1f5f9',
+                                boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.05)'
                             }}
-                            transition={{ duration: 0.3 }}
                         >
-                            {/* Animated Border Glow */}
-                            <AnimatePresence>
-                                {isSearchFocused && (
-                                    <motion.div
-                                        className="absolute inset-0 bg-gradient-to-r from-orange-500 via-pink-500 to-orange-500 opacity-20 blur-xl"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 0.2 }}
-                                        exit={{ opacity: 0 }}
-                                    />
-                                )}
-                            </AnimatePresence>
-
                             <div className="flex-1 flex items-center gap-3 px-6 py-4 relative z-10">
                                 <MapPin size={20} className="text-orange-500" />
                                 <input
                                     type="text"
                                     placeholder="어디로 떠나고 싶으신가요? (예: 파리, 제주, 발리)"
-                                    className="bg-transparent border-none outline-none w-full text-slate-900 font-medium placeholder:text-slate-400"
+                                    // 핵심 수정: outline-none과 focus 관련 속성 제거
+                                    className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 w-full text-slate-900 font-medium placeholder:text-slate-400"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onFocus={() => setIsSearchFocused(true)}
                                     onBlur={() => setIsSearchFocused(false)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                 />
                                 {searchQuery && (
-                                    <motion.button
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
+                                    <button
                                         onClick={() => setSearchQuery('')}
                                         className="text-slate-400 hover:text-slate-600 transition-colors"
                                     >
                                         <X size={18} />
-                                    </motion.button>
+                                    </button>
                                 )}
                             </div>
 
@@ -154,35 +107,28 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                                 onClick={handleSearch}
                                 className="px-10 py-4 rounded-full text-white font-bold shadow-lg flex items-center gap-2 relative z-10"
                                 style={{ background: theme.colors.gradients.brand }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
                                 <Search size={20} />
                                 검색
                             </motion.button>
                         </motion.div>
 
-                        {/* Quick Tags with Hover Effects */}
+                        {/* 인기 검색 태그 (기존과 동일) */}
                         <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
                             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">인기 검색</span>
                             {['#파리', '#제주', '#발리', '#도쿄', '#유럽배낭여행'].map((tag, index) => (
                                 <motion.button
                                     key={tag}
                                     onClick={() => handleQuickTag(tag)}
-                                    className="px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-100 text-sm font-medium text-slate-600 shadow-sm relative overflow-hidden group"
-                                    whileHover={{ scale: 1.05, y: -2 }}
-                                    whileTap={{ scale: 0.95 }}
+                                    className="px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-100 text-sm font-medium text-slate-600 shadow-sm overflow-hidden group relative"
+                                    whileHover={{ y: -2 }}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 + index * 0.05 }}
                                 >
                                     <span className="relative z-10 group-hover:text-orange-600 transition-colors">{tag}</span>
-                                    <motion.div
-                                        className="absolute inset-0 bg-orange-50"
-                                        initial={{ scale: 0, opacity: 0 }}
-                                        whileHover={{ scale: 1, opacity: 1 }}
-                                        transition={{ duration: 0.3 }}
-                                    />
                                 </motion.button>
                             ))}
                         </div>

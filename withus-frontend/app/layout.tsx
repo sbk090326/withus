@@ -12,6 +12,7 @@ import { AuthProvider } from '@/app/context/AuthContext';
 import { OnboardingModal } from '@/app/components/onboarding/OnboardingModal';
 import { ModalProvider } from '@/app/context/ModalContext';
 import { AlertModal } from '@/app/components/ui/AlertModal';
+import { PageTransition } from '@/app/components/layout/PageTransition';
 
 export default function RootLayout({
     children,
@@ -26,7 +27,9 @@ export default function RootLayout({
                         <Header />
                         <OnboardingModal />
                         <AlertModal />
-                        {children}
+                        <PageTransition>
+                            {children}
+                        </PageTransition>
                         <Footer />
                     </ModalProvider>
                 </AuthProvider>
