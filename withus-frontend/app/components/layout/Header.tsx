@@ -6,8 +6,14 @@ import Link from 'next/link';
 import { colors, animations } from '@/app/components/design-system/constants';
 import { useAuth } from '@/app/context/AuthContext';
 import { User, LogOut } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'dark' }) {
+    const pathname = usePathname();
+    const isAdmin = pathname?.startsWith('/admin');
+
+    if (isAdmin) return null;
+
     const [activeTab, setActiveTab] = useState('Destinations');
     const [isScrolled, setIsScrolled] = useState(false);
     const { scrollY } = useScroll();

@@ -6,8 +6,11 @@ import { palette, theme, animations } from '@/app/components/design-system/const
 
 export const StorySection = () => {
     return (
-        <section className="w-full py-40 px-6 bg-white overflow-hidden">
-            <div className="max-w-[1200px] mx-auto space-y-24">
+        <section className="w-full py-40 px-6 relative overflow-hidden" style={{ backgroundColor: palette.cream.section }}>
+            {/* Subtle Gradient background matching Hero style */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-orange-50/10 via-transparent to-pink-50/10 -z-10" />
+
+            <div className="max-w-[1200px] mx-auto space-y-24 relative z-10">
                 <div className="text-center space-y-6">
                     <motion.span
                         initial={{ opacity: 0 }}
@@ -32,12 +35,12 @@ export const StorySection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1 }}
-                        className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
+                        className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl bg-white p-2"
                     >
                         <img
                             src="https://images.unsplash.com/photo-1531058284639-8d2863810f87?auto=format&fit=crop&q=80&w=1000"
                             alt="Mission"
-                            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 rounded-2xl"
                         />
                     </motion.div>
 
@@ -60,7 +63,7 @@ export const StorySection = () => {
                                 <p className="text-3xl font-black text-slate-900">1.5M</p>
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Verified Users</p>
                             </div>
-                            <div className="w-[1px] h-10 bg-slate-100" />
+                            <div className="w-[1px] h-10 bg-slate-200" />
                             <div className="text-center">
                                 <p className="text-3xl font-black text-slate-900">120k</p>
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Monthly Matches</p>

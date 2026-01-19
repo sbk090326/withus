@@ -1,0 +1,244 @@
+'use client';
+
+import React from 'react';
+import { motion } from 'motion/react';
+import { MessageSquare, Heart, Eye, Clock, MapPin, ChevronRight, Save } from 'lucide-react';
+
+interface Post {
+    id: number;
+    authorId: number;
+    category: string;
+    categoryLabel: string;
+    title: string;
+    excerpt: string;
+    author: string;
+    authorImage: string;
+    date: string;
+    comments: number;
+    likes: number;
+    views: number;
+    thumbnail?: string;
+    routes?: string[]; // 코스 전용 데이터
+    location?: string; // 코스 전용 데이터
+}
+
+const mockPosts: Post[] = [
+    {
+        id: 100,
+        authorId: 0, // 시스템 어카운트
+        category: 'notice',
+        categoryLabel: '공지사항',
+        title: '📢 위더스 이용 약관 및 포인트 정책 개정 안내',
+        excerpt: '안녕하세요, 위더스 팀입니다. 서비스의 투명성 제고를 위해 이용 약관 및 포인트 사용 정책이 일부 변경되었습니다. 자세한 내용은 전문을 확인해주세요.',
+        author: '위더스 운영지원팀',
+        authorImage: '🛡️',
+        date: '오늘',
+        comments: 0,
+        likes: 0,
+        views: 1240,
+    },
+    {
+        id: 10,
+        authorId: 201,
+        category: 'course',
+        categoryLabel: '여행 코스',
+        title: '포르투 한 달 살기가 추천하는 서핑 루트 🌊',
+        excerpt: '서핑과 낭만 두 마리 토끼를 다 잡는 완벽한 포르투 서쪽 코스입니다. 제가 직접 가보고 검증한 최강 루트예요!',
+        author: '포르투전문가',
+        authorImage: '🏄',
+        date: '30분 전',
+        comments: 24,
+        likes: 156,
+        views: 2400,
+        thumbnail: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&q=80&w=300',
+        location: '포르투갈, 포르투',
+        routes: ['마토지뉴슈 해변', '시티 파크', '펠리구에이라 등대', '리베이라 광장']
+    },
+    {
+        id: 1,
+        authorId: 101,
+        category: 'qna',
+        categoryLabel: '질문/답변',
+        title: '파리 에펠탑 야경 명소 추천해주세요!',
+        excerpt: '내일 파리 도착하는데 에펠탑이 한눈에 들어오는 식당이나 카페, 혹은 공원 명소가 어디일까요? 현지인들만 아는 곳이면 더 좋겠어요.',
+        author: '여행홀릭',
+        authorImage: '🐿️',
+        date: '10분 전',
+        comments: 12,
+        likes: 24,
+        views: 156,
+    },
+    {
+        id: 2,
+        authorId: 1,
+        category: 'review',
+        categoryLabel: '여행후기',
+        title: '나홀로 후쿠오카 3박 4일 먹방 여행기 🍜',
+        excerpt: '이번에 혼자 후쿠오카 다녀왔어요. 혼자 가기 좋은 라멘집이랑 야키토리집 리스트 공유합니다! 사진 많음 주의하세요.',
+        author: '미식가(나)',
+        authorImage: '🍲',
+        date: '2시간 전',
+        comments: 45,
+        likes: 128,
+        views: 890,
+        thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=300',
+    },
+    {
+        id: 11,
+        authorId: 202,
+        category: 'course',
+        categoryLabel: '여행 코스',
+        title: '방콕 야경에 취하는 인스타 인생샷 코스 🥂',
+        excerpt: '방콕 밤거리를 헤매지 마세요. 이동 동선 최적화! 하루 만에 끝내는 방콕 핫플레이스 투어 가이드입니다.',
+        author: '방콕마스터',
+        authorImage: '🐘',
+        date: '1시간 전',
+        comments: 18,
+        likes: 89,
+        views: 1200,
+        thumbnail: 'https://images.unsplash.com/photo-1508939232145-159d460d3fc1?auto=format&fit=crop&q=80&w=300',
+        location: '태국, 방콕',
+        routes: ['딸랏노이 벽화마을', '왓 아룬 야경', '티추카 루프탑', '카오산 로드']
+    },
+    {
+        id: 3,
+        authorId: 99,
+        category: 'info',
+        categoryLabel: '정보공유',
+        title: '2026년 유럽 여행 비자(ETIAS) 발급 총정리',
+        excerpt: '유럽 여행 준비하시는 분들 주목! 내년부터 시행되는 ETIAS 비자 발급 방법과 주의사항 핵심만 정리해봤습니다.',
+        author: '위더스운영자',
+        authorImage: '📢',
+        date: '5시간 전',
+        comments: 8,
+        likes: 56,
+        views: 2400,
+    }
+];
+
+interface PostListProps {
+    category: string;
+    currentUserId: number;
+    onEdit: (post: Post) => void;
+    onDelete: (postId: number) => void;
+    onSelect: (post: Post) => void;
+}
+
+export const PostList = ({ category, currentUserId, onEdit, onDelete, onSelect }: PostListProps) => {
+    const filteredPosts = category === 'all'
+        ? mockPosts
+        : mockPosts.filter(post => post.category === category);
+
+    return (
+        <div className="space-y-6">
+            {filteredPosts.map((post, index) => {
+                const isCourse = post.category === 'course';
+
+                return (
+                    <motion.div
+                        key={post.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        onClick={() => onSelect(post)}
+                        className={`bg-white rounded-[2.5rem] border p-8 transition-all duration-300 cursor-pointer group shadow-sm hover:shadow-xl
+                            ${post.category === 'notice' ? 'border-indigo-100 bg-indigo-50/20 hover:border-indigo-300' :
+                                isCourse ? 'border-orange-100 hover:border-orange-300' :
+                                    'border-slate-100 hover:border-orange-200'}
+                        `}
+                    >
+                        <div className="flex flex-col md:flex-row gap-8">
+                            <div className="flex-1 flex flex-col justify-between">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-widest ${post.category === 'notice' ? 'bg-indigo-600 text-white shadow-sm' :
+                                            post.category === 'qna' ? 'bg-orange-50 text-orange-600' :
+                                                post.category === 'review' ? 'bg-pink-50 text-pink-600' :
+                                                    post.category === 'info' ? 'bg-teal-50 text-teal-600' :
+                                                        post.category === 'course' ? 'bg-orange-500 text-white' :
+                                                            'bg-slate-50 text-slate-500'
+                                            }`}>
+                                            {post.categoryLabel}
+                                        </span>
+                                        {isCourse && post.location && (
+                                            <div className="flex items-center gap-1 text-[10px] font-black text-orange-500/70 uppercase tracking-widest">
+                                                <MapPin size={12} />
+                                                {post.location}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-auto md:ml-0">
+                                            <Clock size={12} />
+                                            {post.date}
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-xl font-black text-slate-900 group-hover:text-orange-500 transition-colors line-clamp-1 tracking-tighter">
+                                        {post.title}
+                                    </h3>
+
+                                    {/* Course Routes display */}
+                                    {isCourse && post.routes && (
+                                        <div className="flex items-center gap-2 flex-wrap py-1">
+                                            {post.routes.map((route, i, arr) => (
+                                                <React.Fragment key={i}>
+                                                    <span className="text-[10px] font-bold text-slate-500 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-100 uppercase tracking-tight">
+                                                        {route}
+                                                    </span>
+                                                    {i < arr.length - 1 && <ChevronRight size={10} className="text-slate-300" />}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 font-medium">
+                                        {post.excerpt}
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-6">
+                                    <div className="flex items-center gap-4 text-[11px] text-slate-400 font-black">
+                                        <div className="flex items-center gap-1.5">
+                                            <MessageSquare size={14} className="text-slate-300" />
+                                            {post.comments}
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <Heart size={14} className="text-pink-400" />
+                                            {post.likes}
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <Eye size={14} className="text-slate-300" />
+                                            {post.views}
+                                        </div>
+                                        {isCourse && (
+                                            <div className="flex items-center gap-1 text-orange-500">
+                                                <Save size={14} />
+                                                <span>42</span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-50/50 border border-slate-100/50">
+                                        <div className="w-5 h-5 rounded-full bg-white shadow-sm flex items-center justify-center border border-slate-100 overflow-hidden text-[10px]">
+                                            {post.authorImage}
+                                        </div>
+                                        <span className="text-[11px] font-bold text-slate-700">{post.author}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {post.thumbnail && (
+                                <div className="w-full md:w-44 h-44 rounded-[2rem] overflow-hidden shadow-sm flex-shrink-0">
+                                    <img
+                                        src={post.thumbnail}
+                                        alt={post.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+                );
+            })}
+        </div>
+    );
+};

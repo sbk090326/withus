@@ -15,6 +15,7 @@ import { DetailGallery } from '../components/DetailGallery';
 import { DetailContent } from '../components/DetailContent';
 import { DetailAuthorCard } from '../components/DetailAuthorCard';
 import { DetailQna } from '../components/DetailQna';
+import { DetailRoute } from '../components/DetailRoute';
 
 export default function CompanionDetailPage() {
     const router = useRouter();
@@ -55,7 +56,9 @@ export default function CompanionDetailPage() {
         targetAge: "20대 후반",
         isSmoker: "비흡연자만",
         budget: "50만원 내외",
+        route: ["에펠탑", "루브르 박물관", "몽생미셸", "지베르니", "오르세 미술관"],
         gallery: [
+
             "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&q=80&w=1200",
             "https://images.unsplash.com/photo-1493397212122-2b85bef83063?auto=format&fit=crop&q=80&w=600",
             "https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&q=80&w=600",
@@ -95,8 +98,13 @@ export default function CompanionDetailPage() {
 
                         <DetailContent data={data as any} />
 
+                        {data.route && data.route.length > 0 && (
+                            <DetailRoute route={data.route} />
+                        )}
+
                         <DetailQna />
                     </div>
+
 
                     {/* Right: Author & Match Area (Spans 4 columns) */}
                     <div className="lg:col-span-4">

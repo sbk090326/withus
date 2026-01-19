@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Calendar, Tag, Image as ImageIcon, Send, Sparkles } from 'lucide-react';
-import { palette } from '@/app/components/design-system/constants';
+import { X, MapPin, Calendar, Tag, Image as ImageIcon, Send, PlusCircle, Map, Plus, Trash2, Download } from 'lucide-react';
+import { palette, theme } from '@/app/components/design-system/constants';
+import { ImportRouteModal } from './ImportRouteModal';
 
 interface CreateCompanionModalProps {
     isOpen: boolean;
@@ -23,7 +24,29 @@ export const CreateCompanionModal = ({ isOpen, onClose }: CreateCompanionModalPr
         maxPeople: 4,
         isSmoker: '상관없음',
         budget: '',
+        route: [] as string[],
     });
+
+    const [newRoutePoint, setNewRoutePoint] = useState('');
+    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
+
+    const addRoutePoint = () => {
+        if (newRoutePoint.trim() && formData.route.length < 5) {
+            setFormData({ ...formData, route: [...formData.route, newRoutePoint.trim()] });
+            setNewRoutePoint('');
+        }
+    };
+
+    const removeRoutePoint = (index: number) => {
+        const newRoute = formData.route.filter((_, i) => i !== index);
+        setFormData({ ...formData, route: newRoute });
+    };
+
+    const handleImportRoute = (importedRoute: string[]) => {
+        setFormData({ ...formData, route: importedRoute });
+    };
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,7 +83,7 @@ export const CreateCompanionModal = ({ isOpen, onClose }: CreateCompanionModalPr
                         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-white sticky top-0 z-10">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white shadow-lg">
-                                    <Sparkles size={20} fill="white" />
+                                    <PlusCircle size={20} fill="white" />
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-slate-900">새 동행 찾기</h2>
@@ -123,7 +146,67 @@ export const CreateCompanionModal = ({ isOpen, onClose }: CreateCompanionModalPr
                                     </div>
                                 </div>
 
-                                {/* Recruitment Criteria - NEW SECTION */}
+                                {/* Key Route Section - NEW */}
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <label className="block text-sm font-bold text-slate-700 flex items-center gap-2">
+                                            <Map size={18} className="text-orange-500" />
+                                            주요 동선 (최대 5곳)
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsImportModalOpen(true)}
+                                            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-teal-50 text-teal-600 text-xs font-bold hover:bg-teal-100 transition-all border border-teal-100"
+                                        >
+                                            <Download size={14} />
+                                            일정 가져오기
+                                        </button>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            placeholder="예) 에펠탑, 루브르 박물관 등"
+                                            className="flex-1 px-6 py-4 rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-orange-500/30 transition-all outline-none font-medium text-slate-900"
+                                            value={newRoutePoint}
+                                            onChange={(e) => setNewRoutePoint(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addRoutePoint())}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addRoutePoint}
+                                            className="px-6 rounded-2xl bg-slate-900 text-white font-bold hover:bg-orange-500 transition-all"
+                                        >
+                                            <Plus size={20} />
+                                        </button>
+                                    </div>
+
+
+                                    <div className="flex flex-wrap gap-3 mt-4">
+                                        {formData.route.map((point, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                className="flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-xl border border-orange-100 group"
+                                            >
+                                                <span className="text-xs font-bold text-orange-600">{index + 1}</span>
+                                                <span className="text-sm font-bold text-slate-700">{point}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeRoutePoint(index)}
+                                                    className="text-slate-300 hover:text-rose-500 transition-colors"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                                {index < formData.route.length - 1 && (
+                                                    <div className="ml-2 w-4 h-[1px] bg-orange-200 hidden group-last:hidden" />
+                                                )}
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Recruitment Criteria */}
                                 <div className="p-8 rounded-[32px] bg-slate-50/50 border border-slate-100 space-y-6">
                                     <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
@@ -295,6 +378,13 @@ export const CreateCompanionModal = ({ isOpen, onClose }: CreateCompanionModalPr
                             </div>
                         </div>
                     </motion.div>
+
+                    {/* Import Route Modal */}
+                    <ImportRouteModal
+                        isOpen={isImportModalOpen}
+                        onClose={() => setIsImportModalOpen(false)}
+                        onImport={handleImportRoute}
+                    />
                 </div>
             )}
         </AnimatePresence>

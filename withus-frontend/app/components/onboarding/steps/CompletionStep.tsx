@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 interface CompletionStepProps {
     nickname: string;
@@ -24,7 +24,7 @@ export function CompletionStep({ nickname, onComplete }: CompletionStepProps) {
                 transition={{ type: "spring", delay: 0.2 }}
                 className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-6 text-[#FF7E5F]"
             >
-                <Sparkles size={40} fill="currentColor" />
+                <CheckCircle2 size={40} fill="currentColor" />
             </motion.div>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4 leading-normal">
