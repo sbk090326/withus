@@ -61,7 +61,7 @@ export const CommunityHero = ({ onAddPost }: CommunityHeroProps) => {
                     </motion.div>
                 </div>
 
-                {/* Search Bar - Glassmorphism */}
+                {/* Search Bar - Glassmorphism (Restored original style) */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -86,6 +86,7 @@ export const CommunityHero = ({ onAddPost }: CommunityHeroProps) => {
                         </button>
                     </div>
                 </motion.div>
+
             </div>
         </section>
     );

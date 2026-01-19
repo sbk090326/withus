@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react'; // AnimatePresence는 이제 사용하지 않으므로 삭제
-import { Search, MapPin, Route, X } from 'lucide-react';
+import { MapPin, Route } from 'lucide-react';
 import { theme } from '@/app/components/design-system/constants';
+import { UnifiedSearchBar } from '@/app/components/ui/UnifiedSearchBar';
 
 interface DestinationsHeroProps {
     onSearch: (query: string) => void;
@@ -66,66 +67,39 @@ export const DestinationsHero = ({ onSearch }: DestinationsHeroProps) => {
                         클릭 한 번으로 내 플래너에 담아보세요. 🗺️✨
                     </p>
 
-                    {/* 검색창 섹션 - Glassmorphism unified with CompanionHero */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="max-w-3xl mx-auto space-y-6"
-                    >
-                        <div className="bg-white/70 backdrop-blur-xl border border-white p-2 rounded-[32px] shadow-2xl flex flex-col md:flex-row items-center gap-2">
-                            <div className="flex-1 flex items-center gap-3 px-6 py-4 w-full">
-                                <MapPin size={20} className="text-orange-500" />
-                                <input
-                                    type="text"
-                                    placeholder="어디로 떠나고 싶으신가요? (예: 파리, 제주, 발리)"
-                                    className="bg-transparent border-none outline-none w-full text-slate-900 font-medium placeholder:text-slate-400"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    onFocus={() => setIsSearchFocused(true)}
-                                    onBlur={() => setIsSearchFocused(false)}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                                />
-                                {searchQuery && (
-                                    <button
-                                        onClick={() => setSearchQuery('')}
-                                        className="text-slate-400 hover:text-slate-600 transition-colors"
-                                    >
-                                        <X size={18} />
-                                    </button>
-                                )}
-                            </div>
+                    {/* 검색창 섹션 - Unified */}
+                    <UnifiedSearchBar
+                        fields={[
+                            {
+                                id: 'destination',
+                                icon: <MapPin size={20} />,
+                                placeholder: '어디로 떠나고 싶으신가요? (예: 파리, 제주, 발리)',
+                                value: searchQuery,
+                                onChange: setSearchQuery
+                            }
+                        ]}
+                        onSearch={handleSearch}
+                        className="max-w-3xl"
+                    />
 
+
+                    {/* 인기 검색 태그 */}
+                    <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">인기 검색</span>
+                        {['#파리', '#제주', '#발리', '#도쿄', '#유럽배낭여행'].map((tag, index) => (
                             <motion.button
-                                onClick={handleSearch}
-                                className="w-full md:w-auto px-10 py-4 rounded-full text-white font-bold shadow-lg hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
-                                style={{ background: theme.colors.gradients.brand }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
+                                key={tag}
+                                onClick={() => handleQuickTag(tag)}
+                                className="px-4 py-1.5 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 text-xs font-medium text-slate-600 hover:bg-white hover:text-orange-500 transition-all shadow-sm"
+                                whileHover={{ y: -2 }}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 + index * 0.05 }}
                             >
-                                <Search size={20} />
-                                검색
+                                {tag}
                             </motion.button>
-                        </div>
-
-                        {/* 인기 검색 태그 */}
-                        <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">인기 검색</span>
-                            {['#파리', '#제주', '#발리', '#도쿄', '#유럽배낭여행'].map((tag, index) => (
-                                <motion.button
-                                    key={tag}
-                                    onClick={() => handleQuickTag(tag)}
-                                    className="px-4 py-1.5 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 text-xs font-medium text-slate-600 hover:bg-white hover:text-orange-500 transition-all shadow-sm"
-                                    whileHover={{ y: -2 }}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3 + index * 0.05 }}
-                                >
-                                    {tag}
-                                </motion.button>
-                            ))}
-                        </div>
-                    </motion.div>
+                        ))}
+                    </div>
                 </motion.div>
             </div>
         </section>

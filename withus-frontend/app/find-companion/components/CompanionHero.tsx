@@ -3,9 +3,19 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { palette } from '@/app/components/design-system/constants';
-import { Search, MapPin, Calendar, Filter } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
+import { UnifiedSearchBar } from '@/app/components/ui/UnifiedSearchBar';
 
 export const CompanionHero = () => {
+    const [searchValues, setSearchValues] = React.useState({
+        location: '',
+        date: ''
+    });
+
+    const handleInputChange = (field: string, value: string) => {
+        setSearchValues(prev => ({ ...prev, [field]: value }));
+    };
+
     return (
         <section className="relative w-full pt-32 pb-20 px-6 overflow-hidden">
             {/* Background Decor */}
@@ -44,53 +54,44 @@ export const CompanionHero = () => {
                     </p>
                 </motion.div>
 
-                {/* Search Bar - Glassmorphism */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="max-w-4xl mx-auto space-y-4"
-                >
-                    <div className="bg-white/70 backdrop-blur-xl border border-white p-2 md:p-3 rounded-[32px] shadow-2xl flex flex-col md:flex-row items-center gap-2">
-                        {/* ... (search inputs) */}
-                        <div className="flex-1 flex items-center gap-3 px-6 py-3 border-b md:border-b-0 md:border-r border-slate-100 w-full">
-                            <MapPin size={20} className="text-orange-500" />
-                            <input
-                                type="text"
-                                placeholder="어디로 떠나시나요?"
-                                className="bg-transparent border-none outline-none w-full text-slate-900 font-medium placeholder:text-slate-400"
-                            />
-                        </div>
-                        <div className="flex-1 flex items-center gap-3 px-6 py-3 border-b md:border-b-0 md:border-r border-slate-100 w-full">
-                            <Calendar size={20} className="text-orange-500" />
-                            <input
-                                type="text"
-                                placeholder="언제 떠나시나요?"
-                                className="bg-transparent border-none outline-none w-full text-slate-900 font-medium placeholder:text-slate-400"
-                            />
-                        </div>
-                        <button
-                            className="w-full md:w-auto px-10 py-4 rounded-full text-white font-bold shadow-lg hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
-                            style={{ background: 'linear-gradient(to right, #f97316, #ec4899)' }}
-                        >
-                            <Search size={20} />
-                            찾기
-                        </button>
-                    </div>
+                {/* Search Bar - Unified */}
+                <UnifiedSearchBar
+                    fields={[
+                        {
+                            id: 'location',
+                            icon: <MapPin size={20} />,
+                            placeholder: '어디로 떠나시나요?',
+                            value: searchValues.location,
+                            onChange: (val) => handleInputChange('location', val)
+                        },
+                        {
+                            id: 'dates',
+                            icon: <Calendar size={20} />,
+                            placeholder: '언제 떠나시나요?',
+                            value: searchValues.date,
+                            onChange: (val) => handleInputChange('date', val),
+                            type: 'text'
+                        }
+                    ]}
+                    onSearch={() => console.log('Searching for:', searchValues)}
+                    buttonText="찾기"
+                    className="max-w-4xl"
+                />
 
-                    {/* Trending Keywords */}
-                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">Trending</span>
-                        {['#파리에펠탑', '#제주한달살기', '#서핑클래스', '#유럽배낭여행', '#맛집탐방'].map((tag) => (
-                            <button
-                                key={tag}
-                                className="px-4 py-1.5 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 text-xs font-medium text-slate-600 hover:bg-white hover:text-orange-500 transition-all shadow-sm"
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                    </div>
-                </motion.div>
+
+                {/* 인기 검색 태그 */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">인기 검색</span>
+                    {['#파리에펠탑', '#제주한달살기', '#서핑클래스', '#유럽배낭여행', '#맛집탐방'].map((tag) => (
+                        <button
+                            key={tag}
+                            className="px-4 py-1.5 rounded-full bg-white/40 backdrop-blur-sm border border-white/50 text-xs font-medium text-slate-600 hover:bg-white hover:text-orange-500 transition-all shadow-sm"
+                        >
+                            {tag}
+                        </button>
+                    ))}
+                </div>
+
             </div>
         </section>
     );
