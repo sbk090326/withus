@@ -246,7 +246,7 @@ export function RegionQuickExploreSection() {
                 >
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-slate-900">
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
                                 인기 콘텐츠로 시작하기
                             </h2>
                             <p className="text-slate-600">

@@ -105,7 +105,7 @@ export function DiscoverSection() {
                 {/* Header */}
                 <div className="text-center mb-16">
                     <motion.h2
-                        className="text-4xl md:text-5xl font-bold mb-6 text-slate-900"
+                        className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
