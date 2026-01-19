@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Award, MapPin, Calendar, Download, Check, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { Award, MapPin, Calendar, Download, Check, ChevronLeft, ChevronRight, Star, Heart, Pin } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 
 const bestRoutes = [
@@ -189,10 +189,12 @@ export const BestRoutes = () => {
 
                                             <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3">
                                                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-bold">
-                                                    ❤️ {route.likes}
+                                                    <Heart size={14} className="text-white fill-white/20" />
+                                                    {route.likes}
                                                 </div>
                                                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-bold">
-                                                    📌 {route.saves}
+                                                    <Pin size={14} className="text-white fill-white/20" />
+                                                    {route.saves}
                                                 </div>
                                                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-bold">
                                                     <Star size={14} fill="gold" className="text-yellow-400" />
@@ -342,8 +344,8 @@ export const BestRoutes = () => {
                             key={index}
                             onClick={() => setCurrentIndex(index)}
                             className={`h-2 rounded-full transition-all ${index === currentIndex
-                                    ? 'w-12 bg-orange-500'
-                                    : 'w-2 bg-slate-300 hover:bg-slate-400'
+                                ? 'w-12 bg-orange-500'
+                                : 'w-2 bg-slate-300 hover:bg-slate-400'
                                 }`}
                             whileHover={{ scale: 1.2 }}
                             whileTap={{ scale: 0.9 }}

@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { Check, Sparkles, MessageCircle, Heart, Star } from 'lucide-react';
+import { Check, CheckCircle2, MessageCircle, Heart, Star } from 'lucide-react';
 import { theme } from '@/app/components/design-system/constants';
 
 interface MatchProfile {
@@ -63,7 +63,7 @@ const MatchCard = ({ profile, index }: { profile: MatchProfile; index: number })
             {/* Match Badge - Absolute position */}
             <div className="absolute -top-4 -right-4 bg-white p-1 rounded-full shadow-md z-10 rotate-12 group-hover:rotate-0 transition-transform duration-300">
                 <div className="bg-gradient-to-br from-pink-500 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">
-                    <Sparkles size={12} fill="currentColor" />
+                    <CheckCircle2 size={12} fill="currentColor" />
                     {profile.matchScore}% 일치
                 </div>
             </div>

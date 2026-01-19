@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, PenTool } from 'lucide-react';
+import { Rocket, ArrowRight, PenTool } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 
 export const DestinationsCTA = () => {
@@ -24,7 +24,7 @@ export const DestinationsCTA = () => {
                     className="space-y-6"
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30">
-                        <Sparkles size={16} className="text-white" fill="white" />
+                        <Rocket size={16} className="text-white" fill="white" />
                         <span className="text-sm font-bold text-white">Your Journey Starts Here</span>
                     </div>
 

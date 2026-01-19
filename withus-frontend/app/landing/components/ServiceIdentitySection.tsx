@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Sparkles, HeartHandshake, Fingerprint } from 'lucide-react';
+import { ShieldCheck, Compass, HeartHandshake, Fingerprint } from 'lucide-react';
 import { colors, spacing, theme } from '@/app/components/design-system/constants';
 
 const TrustFeature = ({ icon: Icon, title, description, delay }: { icon: any, title: string, description: string, delay: number }) => (
@@ -84,7 +84,7 @@ export function ServiceIdentitySection() {
                         delay={0.1}
                     />
                     <TrustFeature
-                        icon={Sparkles}
+                        icon={Compass}
                         title="여행 성향 매칭"
                         description="나와 딱 맞는 여행 스타일! 예산, 일정, 여행 속도까지 고려해 매칭해드립니다."
                         delay={0.2}

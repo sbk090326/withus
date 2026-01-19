@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { Apple, Smartphone, Sparkles } from 'lucide-react';
+import { Apple, Smartphone, TrendingUp } from 'lucide-react';
 import { spacing } from '@/app/components/design-system/constants';
 
 export function CallToActionSection() {
@@ -32,7 +32,7 @@ export function CallToActionSection() {
                             transition={{ duration: 0.6 }}
                         >
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-6">
-                                <Sparkles size={16} className="text-orange-400" />
+                                <TrendingUp size={16} className="text-orange-400" />
                                 <span className="text-sm font-medium text-white/90">가장 빠르게 성장하는 여행 커뮤니티</span>
                             </div>
 

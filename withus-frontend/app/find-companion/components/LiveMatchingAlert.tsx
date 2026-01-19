@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, X } from 'lucide-react';
+import { Zap, X } from 'lucide-react';
 
 const mockNotifications = [
     { id: 1, user: '지은', location: '파리', action: '매칭 성공!' },
@@ -43,7 +43,7 @@ export const LiveMatchingAlert = () => {
                     className="fixed bottom-10 left-10 z-[100] hidden md:flex items-center gap-3 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-orange-100 min-w-[280px]"
                 >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white shadow-sm">
-                        <Sparkles size={18} fill="white" />
+                        <Zap size={18} fill="white" />
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2">

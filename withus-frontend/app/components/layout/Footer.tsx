@@ -3,8 +3,13 @@
 import React from 'react';
 import { Instagram, Twitter, Facebook } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function Footer() {
+    const pathname = usePathname();
+    const isAdmin = pathname?.startsWith('/admin');
+
+    if (isAdmin) return null;
     const footerLinks = {
         company: [
             { name: 'About Us', href: '#' },

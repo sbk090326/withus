@@ -5,9 +5,11 @@ import { AnimatePresence } from 'motion/react';
 import { DestinationsHero } from './components/DestinationsHero';
 import { SearchResults } from './components/SearchResults';
 import { TrendingDestinations } from './components/TrendingDestinations';
-import { ThemedCuration } from './components/ThemedCuration';
 import { BestRoutes } from './components/BestRoutes';
+import { OfficialGuides } from './components/OfficialGuides';
 import { DestinationsCTA } from './components/DestinationsCTA';
+
+import { palette } from '@/app/components/design-system/constants';
 
 export default function DestinationsPage() {
     const [searchQuery, setSearchQuery] = useState<string | null>(null);
@@ -26,7 +28,7 @@ export default function DestinationsPage() {
     };
 
     return (
-        <main className="min-h-screen bg-[#FDFCFB]">
+        <main className="min-h-screen" style={{ backgroundColor: palette.cream.base }}>
             <DestinationsHero onSearch={handleSearch} />
 
             <AnimatePresence>
@@ -40,7 +42,7 @@ export default function DestinationsPage() {
             {!searchQuery && (
                 <>
                     <TrendingDestinations />
-                    <ThemedCuration />
+                    <OfficialGuides />
                     <BestRoutes />
                     <DestinationsCTA />
                 </>

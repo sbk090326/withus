@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { palette } from '@/app/components/design-system/constants';
-import { Sparkles, MessageCircle, MapPin, Calendar, Heart } from 'lucide-react';
+import { CheckCircle2, MessageCircle, MapPin, Calendar, Heart } from 'lucide-react';
 
 interface CompanionCardProps {
     companion: {
@@ -68,7 +68,7 @@ export const CompanionCard = ({ companion, index }: CompanionCardProps) => {
                         ) : <div />}
 
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white font-black text-[9px] tracking-tighter shadow-xl">
-                            <Sparkles size={10} className="text-[#FF7E5F]" fill="currentColor" />
+                            <CheckCircle2 size={10} className="text-[#FF7E5F]" fill="currentColor" />
                             {companion.matchScore}%
                         </div>
                     </div>

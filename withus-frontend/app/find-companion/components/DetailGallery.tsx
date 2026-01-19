@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Sparkles, Share2 } from 'lucide-react';
+import { Maximize2, Share2 } from 'lucide-react';
 
 interface DetailGalleryProps {
     images: string[];
@@ -21,7 +21,7 @@ export const DetailGallery = ({ images, onImageClick }: DetailGalleryProps) => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Sparkles className="text-white drop-shadow-lg" size={40} />
+                    <Maximize2 className="text-white drop-shadow-lg" size={40} />
                 </div>
                 <div className="absolute top-6 right-6 flex gap-2">
                     <button className="p-3 rounded-full bg-white/80 backdrop-blur-md text-slate-700 hover:bg-white transition-all shadow-sm">

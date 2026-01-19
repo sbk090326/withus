@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Calendar, Tag, Image as ImageIcon, Send, Sparkles, Map, Plus, Trash2, Download } from 'lucide-react';
+import { X, MapPin, Calendar, Tag, Image as ImageIcon, Send, PlusCircle, Map, Plus, Trash2, Download } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 import { ImportRouteModal } from './ImportRouteModal';
 
@@ -83,7 +83,7 @@ export const CreateCompanionModal = ({ isOpen, onClose }: CreateCompanionModalPr
                         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-white sticky top-0 z-10">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white shadow-lg">
-                                    <Sparkles size={20} fill="white" />
+                                    <PlusCircle size={20} fill="white" />
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-slate-900">새 동행 찾기</h2>

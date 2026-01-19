@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, Calendar, Users, Heart, Download, X, SlidersHorizontal } from 'lucide-react';
+import { MapPin, Calendar, Users, Heart, Download, X, SlidersHorizontal, Pin } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 
 interface SearchResultsProps {
@@ -169,7 +169,8 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                                             {result.likes}
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            📌 {result.saves}
+                                            <Pin size={14} />
+                                            {result.saves}
                                         </div>
                                     </div>
                                 </div>

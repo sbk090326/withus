@@ -2,18 +2,18 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Palmtree, Building2, Mountain, Coffee, Camera, Utensils } from 'lucide-react';
+import { Palmtree, Building2, Mountain, Coffee, Camera, Utensils, Heart, Pin } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 
 type ThemeType = 'healing' | 'city' | 'adventure' | 'cafe' | 'photo' | 'food';
 
 const themes = [
-    { id: 'healing' as ThemeType, label: '🌿 힐링', icon: Palmtree, color: 'teal' },
-    { id: 'city' as ThemeType, label: '🏙️ 시티', icon: Building2, color: 'slate' },
-    { id: 'adventure' as ThemeType, label: '🧗 어드벤처', icon: Mountain, color: 'orange' },
-    { id: 'cafe' as ThemeType, label: '☕ 카페', icon: Coffee, color: 'amber' },
-    { id: 'photo' as ThemeType, label: '📸 인생샷', icon: Camera, color: 'pink' },
-    { id: 'food' as ThemeType, label: '🍜 맛집', icon: Utensils, color: 'rose' }
+    { id: 'healing' as ThemeType, label: '힐링', icon: Palmtree, color: 'teal' },
+    { id: 'city' as ThemeType, label: '시티', icon: Building2, color: 'slate' },
+    { id: 'adventure' as ThemeType, label: '어드벤처', icon: Mountain, color: 'orange' },
+    { id: 'cafe' as ThemeType, label: '카페', icon: Coffee, color: 'amber' },
+    { id: 'photo' as ThemeType, label: '인생샷', icon: Camera, color: 'pink' },
+    { id: 'food' as ThemeType, label: '맛집', icon: Utensils, color: 'rose' }
 ];
 
 const mockRoutes: Record<ThemeType, any[]> = {
@@ -144,8 +144,8 @@ export const ThemedCuration = () => {
                                 key={theme.id}
                                 onClick={() => setActiveTheme(theme.id)}
                                 className={`px-6 py-3 rounded-full font-bold text-sm transition-all flex items-center gap-2 ${isActive
-                                        ? 'bg-slate-900 text-white shadow-lg scale-105'
-                                        : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-100'
+                                    ? 'bg-slate-900 text-white shadow-lg scale-105'
+                                    : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-100'
                                     }`}
                             >
                                 <Icon size={16} />
@@ -185,10 +185,12 @@ export const ThemedCuration = () => {
                                     {/* Stats Overlay */}
                                     <div className="absolute bottom-4 left-4 right-4 flex items-center gap-4 text-white text-xs font-bold">
                                         <div className="flex items-center gap-1">
-                                            ❤️ {route.likes}
+                                            <Heart size={14} className="text-white" />
+                                            {route.likes}
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            📌 {route.saves}
+                                            <Pin size={14} className="text-white" />
+                                            {route.saves}
                                         </div>
                                     </div>
                                 </div>
@@ -200,8 +202,14 @@ export const ThemedCuration = () => {
                                     </h3>
                                     <p className="text-sm text-slate-500 font-medium">{route.location}</p>
 
-                                    <button className="w-full py-3 rounded-2xl bg-slate-50 text-slate-600 font-bold text-sm hover:bg-orange-50 hover:text-orange-600 transition-all">
-                                        일정 자세히 보기 →
+                                    <button className="w-full py-3 rounded-2xl bg-slate-50 text-slate-600 font-bold text-sm hover:bg-orange-50 hover:text-orange-600 transition-all border border-transparent hover:border-orange-100 flex items-center justify-center gap-2">
+                                        일정 자세히 보기
+                                        <motion.span
+                                            animate={{ x: [0, 4, 0] }}
+                                            transition={{ duration: 1.5, repeat: Infinity }}
+                                        >
+                                            →
+                                        </motion.span>
                                     </button>
                                 </div>
                             </motion.div>

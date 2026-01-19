@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Sparkles, Calendar, MapPin, ChevronRight } from 'lucide-react';
+import { X, Route, Calendar, MapPin, ChevronRight } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 
 interface ImportRouteModalProps {
@@ -90,7 +90,7 @@ export const ImportRouteModal = ({ isOpen, onClose, onImport }: ImportRouteModal
                         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-white sticky top-0 z-10">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white shadow-lg">
-                                    <Sparkles size={20} fill="white" />
+                                    <Route size={20} fill="white" />
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-bold text-slate-900">일정 가져오기</h2>
@@ -111,8 +111,8 @@ export const ImportRouteModal = ({ isOpen, onClose, onImport }: ImportRouteModal
                                 <button
                                     onClick={() => setActiveTab('my-planner')}
                                     className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all ${activeTab === 'my-planner'
-                                            ? 'bg-slate-900 text-white shadow-lg'
-                                            : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                                        ? 'bg-slate-900 text-white shadow-lg'
+                                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
                                         }`}
                                 >
                                     📋 내 플래너 ({mockMyPlanners.length})
@@ -120,8 +120,8 @@ export const ImportRouteModal = ({ isOpen, onClose, onImport }: ImportRouteModal
                                 <button
                                     onClick={() => setActiveTab('popular')}
                                     className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all ${activeTab === 'popular'
-                                            ? 'bg-slate-900 text-white shadow-lg'
-                                            : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                                        ? 'bg-slate-900 text-white shadow-lg'
+                                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
                                         }`}
                                 >
                                     🔥 인기 코스 ({mockPopularRecipes.length})

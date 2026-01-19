@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CompanionCard } from './CompanionCard';
-import { Filter, ChevronDown, Sparkles, List, Map as MapIcon, Navigation, X } from 'lucide-react';
+import { Filter, ChevronDown, Zap, List, Map as MapIcon, Navigation, X } from 'lucide-react';
 import { MapView } from './MapView';
 import { CompanionSkeleton } from './CompanionSkeleton';
 import { AdvancedFilter } from './AdvancedFilter';
@@ -187,7 +187,7 @@ export const CompanionList = () => {
                             }`}
                     >
                         맞춤 추천
-                        <Sparkles size={14} className={activeTab === 'rec' ? 'text-orange-500' : 'text-slate-400'} />
+                        <Zap size={14} className={activeTab === 'rec' ? 'text-orange-500' : 'text-slate-400'} fill={activeTab === 'rec' ? 'currentColor' : 'none'} />
                     </button>
                 </div>
 

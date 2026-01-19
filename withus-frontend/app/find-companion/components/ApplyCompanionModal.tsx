@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, Sparkles, AlertCircle } from 'lucide-react';
+import { X, Send, Heart, AlertCircle } from 'lucide-react';
 
 interface ApplyCompanionModalProps {
     isOpen: boolean;
@@ -49,7 +49,7 @@ export const ApplyCompanionModal = ({ isOpen, onClose, onApply, companionTitle }
 
                         <div className="flex flex-col items-center text-center mb-10">
                             <div className="w-20 h-20 rounded-3xl bg-orange-50 flex items-center justify-center text-orange-500 mb-6 shadow-sm">
-                                <Sparkles size={40} fill="currentColor" className="opacity-80" />
+                                <Heart size={40} fill="currentColor" className="opacity-80" />
                             </div>
                             <h2 className="text-2xl font-black text-slate-900 mb-3">동행 신청하기</h2>
                             <p className="text-slate-500 text-sm leading-relaxed px-4">
