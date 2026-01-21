@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { Flame, MapPin, Calendar, User, Users, ArrowRight, Heart, Share2 } from 'lucide-react';
 import { colors, spacing, theme } from '@/app/components/design-system/constants';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface RecruitmentProps {
     id: number;
@@ -330,10 +331,13 @@ export function TrendingSection() {
                         ))}
 
                         {/* View All Button */}
-                        <button className="w-full mt-4 py-3 text-slate-600 hover:text-orange-500 transition-colors font-medium flex items-center justify-center gap-2 group">
+                        <Link
+                            href="/find-companion"
+                            className="w-full mt-4 py-3 text-slate-600 hover:text-orange-500 transition-colors 
+                                       font-medium flex items-center justify-center gap-2 group">
                             전체 모집글 보기
                             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Right: Detail Panel */}
