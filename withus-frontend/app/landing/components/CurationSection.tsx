@@ -147,7 +147,7 @@ export function CurationSection() {
                             >
                                 AI 매칭 시스템
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-[1.2]">
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
                                 나와 여행 스타일이 <br />
                                 <span className="bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">99% 일치하는 동행</span>
                             </h2>

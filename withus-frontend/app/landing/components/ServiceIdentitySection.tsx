@@ -57,9 +57,9 @@ export function ServiceIdentitySection() {
                         >
                             Why Withus?
                         </span>
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
                             믿을 수 있는 동행, <br />
-                            <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남.</span>
+                            <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남</span>
                         </h2>
                         <p className="text-lg text-slate-600 leading-relaxed">
                             WithUs는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 <br /> 집중할 수 있게 도와드립니다.

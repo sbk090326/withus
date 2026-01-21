@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
 import Link from 'next/link';
 import { colors, animations } from '@/app/components/design-system/constants';
@@ -18,6 +18,13 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
     const [isScrolled, setIsScrolled] = useState(false);
     const { scrollY } = useScroll();
     const { isLoggedIn, logout } = useAuth();
+
+    useEffect(() => {
+        // 메인페이지 일 때는 activeTab 초기화
+        if (pathname === '/landing') {
+            setActiveTab('');
+        }
+    }, [pathname]);
 
     const navLinks = [
         { label: '동행 찾기', href: '/find-companion' },

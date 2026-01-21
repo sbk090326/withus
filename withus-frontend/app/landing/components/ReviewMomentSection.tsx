@@ -183,7 +183,7 @@ export function ReviewMomentSection() {
                             <span className="w-10 h-[2px] bg-gradient-to-r from-orange-400 to-transparent" />
                             User Testimonials
                         </span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
                             당신의 첫 동행, <br className="hidden md:block" />
                             <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">최고의 선택</span>이 되도록
                         </h2>

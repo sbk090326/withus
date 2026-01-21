@@ -3,9 +3,9 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { SearchWidget } from './SearchWidget';
+import { UnifiedSearchBar } from '@/app/components/ui/UnifiedSearchBar';
 import { typography, animations, theme } from '@/app/components/design-system/constants';
-import { Users, Heart, MapPin } from 'lucide-react';
+import { Users, Heart, MapPin, Calendar, User as UserIcon } from 'lucide-react';
 import { CountUp } from '@/app/components/ui/CountUp';
 
 export function HeroParallax() {
@@ -23,6 +23,11 @@ export function HeroParallax() {
     ];
 
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const [searchValues, setSearchValues] = useState({ location: '', date: '', guests: '' });
+
+    const handleSearchChange = (field: string, value: string) => {
+        setSearchValues(prev => ({ ...prev, [field]: value }));
+    };
 
     const handleVideoEnded = () => {
         setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length);
@@ -86,7 +91,55 @@ export function HeroParallax() {
                             함께라서 더 즐거운 국내 여행의 시작을 지금 WithUs와 함께하세요.
                         </motion.p>
 
-                        <SearchWidget theme="light" />
+                        <UnifiedSearchBar
+                            fields={[
+                                {
+                                    id: 'location',
+                                    icon: <MapPin size={22} />,
+                                    placeholder: '어디로 떠나세요?',
+                                    value: searchValues.location,
+                                    onChange: (val) => handleSearchChange('location', val)
+                                },
+                                {
+                                    id: 'date',
+                                    icon: <Calendar size={22} />,
+                                    placeholder: '언제 떠나시나요?',
+                                    value: searchValues.date,
+                                    onChange: (val) => handleSearchChange('date', val),
+                                    type: 'text'
+                                },
+                                {
+                                    id: 'guests',
+                                    icon: <UserIcon size={22} />,
+                                    placeholder: '몇 명인가요?',
+                                    value: searchValues.guests,
+                                    onChange: (val) => handleSearchChange('guests', val),
+                                    type: 'number'
+                                }
+                            ]}
+                            onSearch={() => console.log('Searching:', searchValues)}
+                            className="max-w-[1000px]"
+                        />
+
+                        {/* 인기 검색 태그 추가 */}
+                        <motion.div
+                            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
+                            <span className="text-sm font-medium text-slate-400 mr-2">인기:</span>
+                            {["제주도", "혼자 여행", "맛집 투어", "당일치기", "힐링 여행"].map((tag) => (
+                                <motion.button
+                                    key={tag}
+                                    className="px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-orange-100 text-sm font-medium text-slate-600 hover:bg-white hover:text-orange-500 transition-all shadow-sm"
+                                    whileHover={{ y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    #{tag}
+                                </motion.button>
+                            ))}
+                        </motion.div>
                     </div>
 
                     {/* Image Grid with Parallax */}
