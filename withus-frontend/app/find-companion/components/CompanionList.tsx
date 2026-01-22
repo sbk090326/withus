@@ -251,15 +251,17 @@ export const CompanionList = () => {
                     </div>
 
                     <button
-                        onClick={() => setIsFilterOpen(true)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all border ${filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체'
-                            ? 'bg-slate-900 text-white border-slate-900'
-                            : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200'
+                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${isFilterOpen
+                            ? 'bg-orange-500 text-white border-orange-500 shadow-lg shadow-orange-500/20'
+                            : (filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체'
+                                ? 'bg-slate-900 text-white border-slate-900'
+                                : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200 shadow-sm')
                             }`}
                     >
                         <Filter size={16} />
                         필터
-                        {(filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체') && (
+                        {(filters.style.length > 0 || filters.gender !== '전체' || filters.smoking !== '전체') && !isFilterOpen && (
                             <span className="w-4 h-4 bg-orange-500 text-[10px] rounded-full flex items-center justify-center text-white">
                                 !
                             </span>
@@ -267,6 +269,13 @@ export const CompanionList = () => {
                     </button>
                 </div>
             </div>
+
+            {/* 🔥 새롭게 적용된 수평 확장 필터 패널 */}
+            <AdvancedFilter
+                isOpen={isFilterOpen}
+                filters={filters}
+                setFilters={setFilters}
+            />
 
             {/* Active Filter Chips */}
             <AnimatePresence>
@@ -378,12 +387,7 @@ export const CompanionList = () => {
                 )}
             </AnimatePresence>
 
-            <AdvancedFilter
-                isOpen={isFilterOpen}
-                onClose={() => setIsFilterOpen(false)}
-                filters={filters}
-                setFilters={setFilters}
-            />
+
         </div>
     );
 };

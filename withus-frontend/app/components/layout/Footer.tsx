@@ -12,12 +12,12 @@ export function Footer() {
     if (isAdmin) return null;
     const footerLinks = {
         company: [
-            { name: 'About Us', href: '#' },
+            { name: 'About Us', href: '/about' },
             { name: 'Careers', href: '#' },
             { name: 'Blog', href: '#' },
         ],
         support: [
-            { name: 'Help Center', href: '#' },
+            { name: 'Help Center', href: '/contact' },
             { name: 'Terms of Service', href: '#' },
             { name: 'Privacy Policy', href: '#' },
         ],
@@ -58,12 +58,12 @@ export function Footer() {
                         <ul className="space-y-2">
                             {footerLinks.company.map((link) => (
                                 <li key={link.name}>
-                                    <a
+                                    <Link
                                         href={link.href}
                                         className="text-slate-600 hover:text-orange-500 transition-colors text-sm"
                                     >
                                         {link.name}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -75,12 +75,12 @@ export function Footer() {
                         <ul className="space-y-2">
                             {footerLinks.support.map((link) => (
                                 <li key={link.name}>
-                                    <a
+                                    <Link
                                         href={link.href}
                                         className="text-slate-600 hover:text-orange-500 transition-colors text-sm"
                                     >
                                         {link.name}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
