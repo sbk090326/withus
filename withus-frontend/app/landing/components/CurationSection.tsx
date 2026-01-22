@@ -151,7 +151,7 @@ export function CurationSection() {
                                 나와 여행 스타일이 <br />
                                 <span className="bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">99% 일치하는 동행</span>
                             </h2>
-                            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                            <p className="text-base md:text-lg mb-8 text-slate-600 font-medium max-w-lg mx-auto md:mx-0">
                                 어색한 침묵은 걱정 마세요. <br className="hidden md:block" />
                                 WithUs가 취향, 속도, 감성까지 딱 맞는 여행 메이트를 연결해 드립니다.
                             </p>

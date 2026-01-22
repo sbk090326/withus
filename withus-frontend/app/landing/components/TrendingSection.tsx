@@ -35,7 +35,7 @@ const CompactListItem = ({
     <motion.div
         onClick={onClick}
         className={`relative p-4 rounded-xl cursor-pointer transition-all duration-300 ${isSelected
-            ? 'bg-gradient-to-r from-orange-50 to-pink-50 border-2 border-orange-300 shadow-md'
+            ? 'bg-white border-2 border-[#FF7E5F]'
             : 'bg-white border border-slate-200 hover:border-orange-200 hover:shadow-sm'
             }`}
         initial={{ opacity: 0, x: -20 }}
@@ -70,7 +70,7 @@ const CompactListItem = ({
                         </span>
                     )}
                 </div>
-                <h4 className={`font-bold text-sm leading-tight line-clamp-1 mb-1 ${isSelected ? 'text-orange-600' : 'text-slate-900'
+                <h4 className={`font-bold text-sm leading-tight line-clamp-1 mb-1 ${isSelected ? 'text-[#FF7E5F]' : 'text-slate-900'
                     }`}>
                     {data.title}
                 </h4>
@@ -299,7 +299,7 @@ export function TrendingSection() {
         <section className={`w-full ${spacing.section.py} bg-[#FDFCFB] relative z-20`}>
             <div className={`max-w-[1400px] mx-auto ${spacing.section.px}`}>
                 {/* Header */}
-                <div className="mb-12 text-center">
+                <div className="mb-16 text-center">
                     <div className="flex items-center justify-center gap-2 mb-4 text-[#FF7E5F]">
                         <span className="relative flex h-3 w-3">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7E5F] opacity-75"></span>
@@ -311,7 +311,7 @@ export function TrendingSection() {
                         지금 떠나는 동행, <br />
                         <span style={{ color: theme.colors.secondary.DEFAULT }}>바로 합류하세요.</span>
                     </h2>
-                    <p className="text-lg text-slate-600  leading-relaxed max-w-2xl mx-auto">
+                    <p className="text-base md:text-lg text-slate-600 font-medium mx-auto whitespace-nowrap">
                         수많은 여행자들이 지금 이 순간에도 동행을 찾고 있습니다. 놓치기 아까운 기회를 잡으세요!
                     </p>
                 </div>
@@ -319,16 +319,18 @@ export function TrendingSection() {
                 {/* Left-Right Split Layout */}
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Left: Recruitment List */}
-                    <div className="lg:w-1/2 space-y-3">
-                        {activeRecruitments.map((item, i) => (
-                            <CompactListItem
-                                key={item.id}
-                                data={item}
-                                index={i}
-                                isSelected={selectedId === item.id}
-                                onClick={() => setSelectedId(item.id)}
-                            />
-                        ))}
+                    <div className="lg:w-1/2 flex flex-col">
+                        <div className="space-y-4 flex-1">
+                            {activeRecruitments.map((item, i) => (
+                                <CompactListItem
+                                    key={item.id}
+                                    data={item}
+                                    index={i}
+                                    isSelected={selectedId === item.id}
+                                    onClick={() => setSelectedId(item.id)}
+                                />
+                            ))}
+                        </div>
 
                         {/* View All Button */}
                         <Link
