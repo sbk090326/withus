@@ -61,7 +61,7 @@ export function ServiceIdentitySection() {
                             믿을 수 있는 동행, <br />
                             <span style={{ color: theme.colors.secondary.DEFAULT }}>검증된 만남</span>
                         </h2>
-                        <p className="text-lg text-slate-600 leading-relaxed">
+                        <p className="text-base md:text-lg text-slate-600 font-medium mx-auto md:mx-0">
                             WithUs는 철저한 신원 인증과 여행 스타일 매칭으로 오직 여행의 즐거움에만 <br /> 집중할 수 있게 도와드립니다.
                         </p>
                     </motion.div>

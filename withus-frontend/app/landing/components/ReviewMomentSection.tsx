@@ -179,8 +179,13 @@ export function ReviewMomentSection() {
                         viewport={{ once: true }}
                         className="max-w-2xl"
                     >
-                        <span className="inline-flex items-center gap-3 text-[#F97316] font-black text-[11px] uppercase tracking-[0.3em] mb-4">
-                            <span className="w-10 h-[2px] bg-gradient-to-r from-orange-400 to-transparent" />
+                        <span
+                            className="inline-block py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+                            style={{
+                                backgroundColor: '#F0FDFA', // theme.colors.secondary.bg
+                                color: '#2DD4BF' // theme.colors.secondary.DEFAULT
+                            }}
+                        >
                             User Testimonials
                         </span>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">

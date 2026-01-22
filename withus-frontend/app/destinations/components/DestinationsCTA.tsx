@@ -46,7 +46,7 @@ export const DestinationsCTA = () => {
                     transition={{ delay: 0.2 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
-                    <Link href="/my-trips/planner">
+                    <Link href="/mypage">
                         <button className="group px-10 py-5 rounded-full bg-white text-slate-900 font-black text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-3">
                             <PenTool size={22} />
                             내 플래너 만들기

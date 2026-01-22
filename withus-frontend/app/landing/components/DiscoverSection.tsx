@@ -104,6 +104,16 @@ export function DiscoverSection() {
 
                 {/* Header */}
                 <div className="text-center mb-16">
+                    <span
+                        className="inline-block py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+                        style={{
+                            backgroundColor: '#F0FDFA', // theme.colors.secondary.bg
+                            color: '#2DD4BF' // theme.colors.secondary.DEFAULT
+                        }}
+                    >
+                        Discover Places
+                    </span>
+
                     <motion.h2
                         className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter"
                         initial={{ opacity: 0, y: 20 }}
@@ -113,7 +123,7 @@ export function DiscoverSection() {
                         국내외 명소 곳곳에 담긴 이야기
                     </motion.h2>
                     <motion.p
-                        className="text-lg max-w-2xl mx-auto text-slate-600 whitespace-nowrap"
+                        className="text-base md:text-lg text-slate-600 font-medium mx-auto md:mx-0"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

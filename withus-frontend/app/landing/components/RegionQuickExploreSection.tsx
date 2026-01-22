@@ -160,7 +160,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             {/* Content */}
             <div className="p-5">
                 {/* Title */}
-                <h4 className="text-xl font-extrabold text-slate-900 mb-2 group-hover:text-orange-500 transition-colors line-clamp-1">
+                <h4 className="text-xl font-extrabold text-slate-900 mb-2 group-hover:text-[#FF7E5F] transition-colors line-clamp-1">
                     {recipe.title}
                 </h4>
 
@@ -195,7 +195,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
                 </div>
 
                 {/* CTA Button */}
-                <button className="w-full py-2.5 rounded-lg bg-slate-900 text-white font-semibold text-sm hover:bg-orange-500 transition-colors flex items-center justify-center gap-2 group/btn">
+                <button className="w-full py-2.5 rounded-lg bg-slate-900 text-white font-semibold text-sm hover:bg-[#FF7E5F] transition-colors flex items-center justify-center gap-2 group/btn">
                     내 플래너로 가져오기
                     <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                 </button>
@@ -244,12 +244,22 @@ export function RegionQuickExploreSection() {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-12">
                         <div>
+                            <span
+                                className="inline-block py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+                                style={{
+                                    backgroundColor: '#FFF5F2', // theme.colors.primary.bg
+                                    color: '#FF7E5F' // theme.colors.primary.DEFAULT
+                                }}
+                            >
+                                Travel Recipes
+                            </span>
+
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] text-slate-900 mb-6 tracking-tighter">
                                 인기 콘텐츠로 시작하기
                             </h2>
-                            <p className="text-slate-600">
+                            <p className="text-base md:text-lg text-slate-600 font-medium max-w-lg mx-auto md:mx-0">
                                 검증된 여행 일정을 내 플래너로 가져와서 자유롭게 편집하세요.
                             </p>
                         </div>
@@ -289,7 +299,7 @@ export function RegionQuickExploreSection() {
                                         key={region}
                                         onClick={() => setSelectedRegion(region)}
                                         className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${selectedRegion === region
-                                            ? 'bg-orange-500 text-white'
+                                            ? 'bg-[#FF7E5F] text-white'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                             }`}
                                     >
@@ -305,7 +315,7 @@ export function RegionQuickExploreSection() {
                                         key={style}
                                         onClick={() => setSelectedStyle(style)}
                                         className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${selectedStyle === style
-                                            ? 'bg-orange-500 text-white'
+                                            ? 'bg-[#FF7E5F] text-white'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                             }`}
                                     >
@@ -338,7 +348,7 @@ export function RegionQuickExploreSection() {
                                 setSelectedRegion('전체');
                                 setSelectedStyle('전체');
                             }}
-                            className="text-orange-500 hover:underline font-medium"
+                            className="text-[#FF7E5F] hover:underline font-medium"
                         >
                             필터 초기화
                         </button>

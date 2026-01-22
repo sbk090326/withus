@@ -64,8 +64,42 @@
 
 ---
 
-## 🎨 5. 디자인 톤앤매너
+## 🎨 5. 완벽한 디자인 톤앤매너 (WithUs Standard UI Guide)
 
-*   **Aesthetic:** Premium Tech + Subtle Warmth 지향
-*   **Colors:** Orange/Pink Gradient (Brand), Teal (Support), Cream/White (Base) 사용
-*   **Layout:** 하단 탭바(Bottom Navigation)를 활용한 앱 스타일 레이아웃 구성
+본 서비스는 **[동행 찾기]** 페이지의 전체 아키텍처를 표준 UI로 정의하며, 모든 신규 페이지 및 기존 페이지 수정 시 아래 가이드를 **강제 적용**한다.
+
+### 🏛️ 1. 페이지 아키텍처 (Page Architecture)
+*   **Base Layout:** 모든 메인 페이지는 `min-h-screen`을 기본으로 하며, 배경은 `palette.cream.base` (#FFFFFF)를 고정 사용한다.
+*   **Hero Section:** 
+    - 페이지 상단에는 항상 목적이 명확한 히어로 섹션을 배치한다.
+    - 배경에는 `bg-orange-200/20`, `bg-pink-100/20`, `bg-teal-50/15` 등 3가지 이상의 다채로운 블러 데코(`blur-[120px]`)를 중첩하여 입체감을 준다.
+    - 라이브 카운터 또는 상태 배지(`bg-white/50 backdrop-blur-md`)를 활용해 페이지의 생동감을 부여한다.
+*   **Content Container:** 메인 콘텐츠는 `max-w-[1200px]` (또는 대시보드형의 경우 `1400px`) 중앙 정렬 구조를 유지하며, 좌우 여백 `px-6`을 준수한다.
+
+### 📐 2. 컴포넌트 표준 규격 (Component Standards)
+*   **Cards & Boxes:** 
+    - 외부 컨테이너: `rounded-[32px]`, `border-slate-100`, `shadow-sm`.
+    - 내부 섹션(입력창 등): `rounded-2xl` 또는 `rounded-[24px]`, `bg-slate-50/50`.
+    - Hover 효과: `y-[-4px]` 이동과 함께 `shadow-orange-500/10` (또는 브랜드 컬러 그림자)를 부드럽게 적용한다.
+*   **Buttons & Controls:**
+    - 메인 액션(CTA): `rounded-full` 또는 `rounded-3xl`, 브랜드 그라데이션(`Linear Orange to Pink`) 적용.
+    - 필터/정렬/옵션 버튼: `rounded-full`, `bg-white`, `border-slate-100`, `text-sm font-bold`.
+    - Floating Action Button (FAB): `fixed bottom-10 right-10`, `w-16 h-16`, 고대비 그라데이션과 강한 그림자(`shadow-2xl`) 적용.
+
+### 🎨 3. 컬러 매트릭스 (Color Matrix)
+*   **Primary:** 브랜드 시그니처 그라데이션 (`#f97316` ↔ `#ec4899`).
+*   **Secondary:** `Coral` (#FF7E5F) - 강조 태그 및 아이콘.
+*   **Point:** `Teal` (#14B8A6) - 매칭률, 성공 지표, 긍정 상태 표현.
+*   **Neutral:** `Slate-900` (Title), `Slate-600` (Body), `Slate-400` (Meta), `Slate-100` (Divider/Border).
+
+### ✍️ 4. 타이포그래피 시스템 (Typography System)
+*   **Hero Title:** `text-4xl md:text-6xl font-extrabold tracking-tight`. 핵심 키워드에는 브랜드 그라데이션 텍스트를 적용한다.
+*   **Section Title:** `text-2xl font-black text-slate-900`.
+*   **Card Title:** `text-[15px]`~`text-[18px] font-bold`.
+*   **Meta/Label:** `text-[9px]`~`text-[11px] font-black uppercase tracking-widest` (전문적인 기술적 이미지 구축).
+*   **Body:** `text-[13px]`~`text-[15px] font-medium text-slate-600`.
+
+### ✨ 5. 인터랙션 및 애니메이션 (Interaction & Animation)
+*   **Entrance:** 모든 주요 섹션은 `motion.div`를 활용하여 `y: 20`에서 0으로, `opacity: 0`에서 1로 부드럽게 페이드인(`duration: 0.6`) 한다.
+*   **Micro-interaction:** 버튼 Hover 시 `scale: 1.05`, 클릭 시 `scale: 0.95`를 기본으로 하여 물리적인 반응성을 제공한다.
+*   **Blur Strategy:** 모달 배경이나 플로팅 요소 뒤에는 `backdrop-blur-xl` 또는 `backdrop-blur-md`를 필수 적용하여 시각적 깊이를 만든다.

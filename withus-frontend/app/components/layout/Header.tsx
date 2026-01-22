@@ -30,9 +30,8 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
         { label: '동행 찾기', href: '/find-companion' },
         { label: '추천 여행지', href: '/destinations' },
         { label: '커뮤니티', href: '/community' },
-        { label: '내 여행', href: '/my-trips' },
-        { label: '소개', href: '/about' },
-        { label: '문의', href: '/contact' },
+        { label: '이벤트', href: '/events' },
+        { label: '여행 준비', href: '/prepare' },
     ];
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -100,13 +99,14 @@ export function Header({ theme: initialTheme = 'light' }: { theme?: 'light' | 'd
                 ))}
             </nav>
 
-            {/* Sign Up Button */}
             {/* Authentication */}
             {isLoggedIn ? (
                 <div className="flex items-center gap-4">
-                    <button className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center hover:bg-slate-50 transition-colors">
-                        <User size={20} className="text-slate-600" />
-                    </button>
+                    <Link href="/mypage">
+                        <button className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center hover:bg-slate-50 transition-colors">
+                            <User size={20} className="text-slate-600" />
+                        </button>
+                    </Link>
                     <button
                         onClick={logout}
                         className="p-2 text-slate-500 hover:text-[#FF7E5F] transition-colors"
