@@ -34,7 +34,7 @@ const topPages = [
     { name: '/destinations', title: '추천 여행지', views: '42.5k', change: '+12%' },
     { name: '/community/course', title: '여행 코스 게시판', views: '38.2k', change: '+24%' },
     { name: '/find-companion', title: '동행 찾기', views: '29.1k', change: '-5%' },
-    { name: '/my-trips', title: '내 일정 관리', views: '15.4k', change: '+8%' },
+    { name: '/mypage', title: '마이페이지', views: '15.4k', change: '+8%' },
 ];
 
 const trafficSources = [

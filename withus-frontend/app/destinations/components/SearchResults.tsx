@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Calendar, Users, Heart, Download, X, SlidersHorizontal, Pin } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
+import { SearchFilterPanel } from '@/app/components/ui/SearchFilterPanel';
 
 interface SearchResultsProps {
     query: string;
@@ -80,6 +81,7 @@ const mockSearchResults = (query: string) => {
 };
 
 export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
+    const [isFilterOpen, setIsFilterOpen] = React.useState(false);
     const results = mockSearchResults(query);
 
     return (
@@ -111,7 +113,10 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <button className="px-4 py-2 rounded-xl bg-slate-50 text-slate-600 font-bold text-sm hover:bg-slate-100 transition-all flex items-center gap-2">
+                        <button
+                            onClick={() => setIsFilterOpen(!isFilterOpen)}
+                            className={`px-4 py-2 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ${isFilterOpen ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}
+                        >
                             <SlidersHorizontal size={16} />
                             필터
                         </button>
@@ -123,6 +128,10 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                         </button>
                     </div>
                 </div>
+
+                {/* Shared Filter Panel */}
+                <SearchFilterPanel isOpen={isFilterOpen} className="mb-8" />
+
 
                 {/* Results Grid */}
                 {results.length === 0 ? (

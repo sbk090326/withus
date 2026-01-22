@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { Plus, Check, Sparkles, Wand2 } from 'lucide-react';
 import { theme } from '@/app/components/design-system/constants';
-import { TripCard } from './upcoming-trips/TripCard';
+import { TripCard, TripCardSkeleton } from './upcoming-trips/TripCard';
 import { ImportRouteModal } from './upcoming-trips/ImportRouteModal';
 import { CreateTripModal } from './upcoming-trips/CreateTripModal';
 
@@ -51,8 +51,16 @@ const MOCK_SAVED_COURSES = [
 ];
 
 export const UpcomingTrips = () => {
-    const [trips, setTrips] = useState(INITIAL_TRIPS);
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+    const [isLoading, setIsLoading] = useState(true);
+    const [trips, setTrips] = useState(INITIAL_TRIPS);
+
+    React.useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => setIsLoading(false), 800);
+        return () => clearTimeout(timer);
+    }, [filter]);
+
     const [isAdding, setIsAdding] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
 
@@ -197,16 +205,23 @@ export const UpcomingTrips = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <AnimatePresence mode="popLayout">
-                    {filteredTrips.map((trip) => (
-                        <TripCard
-                            key={trip.id}
-                            trip={trip}
-                            onDelete={deleteTrip}
-                            onReview={openReviewModal}
-                        />
-                    ))}
-                </AnimatePresence>
+                {isLoading ? (
+                    <>
+                        <TripCardSkeleton />
+                        <TripCardSkeleton />
+                    </>
+                ) : (
+                    <AnimatePresence mode="popLayout">
+                        {filteredTrips.map((trip) => (
+                            <TripCard
+                                key={trip.id}
+                                trip={trip}
+                                onDelete={deleteTrip}
+                                onReview={openReviewModal}
+                            />
+                        ))}
+                    </AnimatePresence>
+                )}
             </div>
 
             {/* 루트 가져오기 모달 */}
