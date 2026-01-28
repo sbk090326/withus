@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, Star, MapPin, ChevronRight, Tags, ArrowRight, X, Info } from 'lucide-react';
+import { Search, Filter, Star, MapPin, ChevronRight, Tags, ArrowRight, X, Info, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { theme } from '@/app/components/design-system/constants';
-import { SearchFilterPanel } from '@/app/components/ui/SearchFilterPanel';
+import { SearchFilterPanel, FilterGroup } from '@/app/components/ui/SearchFilterPanel';
+import { ProductDetailModal } from './ProductDetailModal';
+import { Pagination } from '@/app/components/ui/Pagination';
 
 const MOCK_DATA_BY_CATEGORY: Record<string, any[]> = {
     accomodation: [
@@ -31,6 +33,42 @@ const MOCK_DATA_BY_CATEGORY: Record<string, any[]> = {
             distance: '역사 지구 중심',
             image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800',
             tags: ['스파시설', '정원 보유', '럭셔리']
+        },
+        {
+            id: 3,
+            name: '호텔 리베이라 포르투',
+            type: '4성급 호텔',
+            rating: 4.6,
+            reviews: 560,
+            price: '210,000',
+            location: 'Portugal, Porto',
+            distance: '리베이라 광장 인접',
+            image: 'https://images.unsplash.com/photo-1596436889106-be35e843f974?auto=format&fit=crop&q=80&w=800',
+            tags: ['테라스', '강변 산책로']
+        },
+        {
+            id: 4,
+            name: '토렐 1884 스위트',
+            type: '게스트하우스',
+            rating: 4.9,
+            reviews: 89,
+            price: '195,000',
+            location: 'Portugal, Porto',
+            distance: '상벤투 역 근처',
+            image: 'https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=800',
+            tags: ['감성 숙소', '조식 맛집']
+        },
+        {
+            id: 5,
+            name: '그랜드 호텔 도우로',
+            type: '클래식 호텔',
+            rating: 4.4,
+            reviews: 120,
+            price: '245,000',
+            location: 'Portugal, Porto',
+            distance: '상업 지구 중심',
+            image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800',
+            tags: ['클래식', '편리한 위치']
         }
     ],
     flights: [
@@ -111,6 +149,29 @@ interface SearchSectionProps {
 export const SearchSection = ({ category, trip }: SearchSectionProps) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeFilters, setActiveFilters] = useState<Record<string, any>>({
+        price: 'range',
+        extra: []
+    });
+    const [sortBy, setSortBy] = useState('rec');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
+
+    const filterGroups: FilterGroup[] = [
+        { id: 'price', label: '가격 범위', type: 'range', activeColor: 'orange' },
+        { id: 'extra', label: '추가 조건', type: 'chips', options: ['무료취소', '조식포함', '직항', '한국어지원'], activeColor: 'slate' },
+    ];
+
+    const handleFilterChange = (groupId: string, value: any) => {
+        setActiveFilters(prev => ({ ...prev, [groupId]: value }));
+    };
+
+    const handleReset = () => {
+        setActiveFilters({ price: 'range', sort: '추천순', extra: [] });
+    };
 
     // 카테고리에 맞는 데이터 필터링
     const results = useMemo(() => {
@@ -119,14 +180,26 @@ export const SearchSection = ({ category, trip }: SearchSectionProps) => {
 
     React.useEffect(() => {
         setIsLoading(true);
+        setCurrentPage(1); // 카테고리 변경 시 페이지 초기화
         const timer = setTimeout(() => setIsLoading(false), 600);
         return () => clearTimeout(timer);
     }, [category]);
 
+    // 페이지 변경 시 로딩 효과
+    React.useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => setIsLoading(false), 400);
+        return () => clearTimeout(timer);
+    }, [currentPage]);
+
+    const totalPages = Math.ceil(results.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedResults = results.slice(startIndex, startIndex + itemsPerPage);
+
     return (
         <div className="space-y-8 min-h-[1000px]">
             {/* 📍 검색 인터페이스 */}
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-3">
                     <div className="flex-1 relative group">
                         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-orange-500 transition-colors pointer-events-none">
@@ -138,110 +211,182 @@ export const SearchSection = ({ category, trip }: SearchSectionProps) => {
                                 category === 'flights' ? "어디로 날아가시나요?" :
                                     category === 'accomodation' ? "어디서 묵고 싶으신가요?" : "검색어를 입력하세요"
                             }
-                            className="w-full h-[60px] pl-14 pr-6 rounded-[20px] bg-white border border-slate-100 focus:border-orange-200 outline-none font-bold text-[14px] text-slate-700 shadow-sm transition-all placeholder:text-slate-300"
+                            className="w-full h-[64px] pl-14 pr-6 rounded-[22px] bg-white border border-slate-100 focus:border-orange-200 outline-none font-bold text-[14px] text-slate-700 shadow-sm transition-all placeholder:text-slate-300"
                         />
                     </div>
 
                     <button
-                        className="h-[60px] px-8 rounded-[20px] text-white font-black hover:shadow-xl hover:shadow-orange-500/20 transition-all active:scale-95 flex items-center gap-3 shrink-0 shadow-lg"
+                        className="h-[64px] px-8 rounded-[22px] text-white font-black hover:shadow-xl hover:shadow-orange-500/10 transition-all active:scale-95 flex items-center gap-3 shrink-0 shadow-lg"
                         style={{ background: theme.colors.gradients.brand }}
                     >
-                        <span className="text-[13px]">검색</span>
+                        <span className="text-[13px]">검색하기</span>
                         <ArrowRight size={16} strokeWidth={3} />
-                    </button>
-
-                    <button
-                        onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className={`h-[60px] w-[60px] rounded-[20px] flex items-center justify-center transition-all shrink-0 shadow-md group relative ${isFilterOpen ? 'bg-orange-500 text-white' : 'bg-slate-900 text-white hover:bg-slate-800'}`}
-                    >
-                        {isFilterOpen ? <X size={20} /> : <Filter size={20} />}
                     </button>
                 </div>
 
-                <SearchFilterPanel isOpen={isFilterOpen} />
-            </div>
+                {/* Toolbar Row: Results Summary + Sort/Filter */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    {/* Left side: Results Summary & Location */}
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                            <MapPin size={14} className="text-orange-500" />
+                            <span className="text-[12px] font-black text-slate-800">{trip.location}</span>
+                        </div>
+                        <div className="h-4 w-px bg-slate-200 hidden sm:block" />
+                        <p className="text-[12px] font-bold text-slate-400">
+                            총 <span className="text-slate-900">{results.length}개</span>의 결과를 찾았습니다
+                        </p>
+                    </div>
 
-            {/* 🗂️ 검색 결과 리스트 - 카테고리 기반 렌더링 */}
-            <div className="space-y-6">
-                {isLoading ? (
-                    <>
-                        <SearchItemSkeleton />
-                        <SearchItemSkeleton />
-                    </>
-                ) : (
-                    results.map((item, idx) => (
-                        <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.05 }}
-                            className="bg-white rounded-[24px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-500 group"
+                    {/* Right side: Sort & Filter */}
+                    <div className="flex items-center gap-3">
+                        {/* Sort Dropdown */}
+                        <div className="flex items-center gap-1">
+                            <div className="relative group">
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    className="appearance-none bg-white border border-slate-100 pl-4 pr-10 py-2.5 rounded-full text-[12px] font-bold text-slate-600 hover:border-slate-200 cursor-pointer outline-none transition-all shadow-sm focus:border-orange-500"
+                                >
+                                    <option value="rec">추천순</option>
+                                    <option value="price_low">낮은가격순</option>
+                                    <option value="rating">평점순</option>
+                                </select>
+                                <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none transition-transform group-hover:text-slate-600" />
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => setIsFilterOpen(!isFilterOpen)}
+                            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-all border ${isFilterOpen
+                                ? 'bg-orange-500 text-white border-orange-500 shadow-lg shadow-orange-500/20'
+                                : (activeFilters.extra.length > 0
+                                    ? 'bg-slate-900 text-white border-slate-900'
+                                    : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200 shadow-sm')
+                                }`}
                         >
-                            <div className="flex flex-col md:flex-row p-4 gap-6">
-                                {/* 🎇 이미지 섹션 */}
-                                <div className="w-full md:w-[240px] h-[180px] overflow-hidden rounded-[18px] relative shrink-0">
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    />
-                                    <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white font-black text-[9px]">
-                                        <Star size={10} className="text-orange-400 fill-orange-400" />
-                                        <span>{item.rating}</span>
-                                    </div>
-                                </div>
+                            <Filter size={16} />
+                            상세 필터
+                            {activeFilters.extra.length > 0 && !isFilterOpen && (
+                                <span className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
+                            )}
+                        </button>
+                    </div>
 
-                                {/* 📝 콘텐츠 섹션 */}
-                                <div className="flex-1 flex flex-col justify-between py-0.5 pr-2">
-                                    <div className="space-y-4">
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-1.5">
-                                                <div className="w-1 h-1 rounded-full bg-orange-500" />
-                                                <span className="text-[9px] font-black text-orange-500 uppercase tracking-widest">{item.type}</span>
+                    <SearchFilterPanel
+                        isOpen={isFilterOpen}
+                        groups={filterGroups}
+                        activeFilters={activeFilters}
+                        onFilterChange={handleFilterChange}
+                        onReset={handleReset}
+                    />
+                </div>
+
+                {/* 🗂️ 검색 결과 리스트 - 카테고리 기반 렌더링 */}
+                <div className="space-y-6 min-h-[600px]">
+                    {isLoading ? (
+                        <>
+                            <SearchItemSkeleton />
+                            <SearchItemSkeleton />
+                            <SearchItemSkeleton />
+                        </>
+                    ) : (
+                        <>
+                            {paginatedResults.map((item, idx) => (
+                                <motion.div
+                                    key={item.id}
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                    className="bg-white rounded-[24px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-500 group"
+                                >
+                                    <div className="flex flex-col md:flex-row p-4 gap-6">
+                                        {/* 🎇 이미지 섹션 */}
+                                        <div className="w-full md:w-[240px] h-[180px] overflow-hidden rounded-[18px] relative shrink-0">
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                            />
+                                            <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white font-black text-[9px]">
+                                                <Star size={10} className="text-orange-400 fill-orange-400" />
+                                                <span>{item.rating}</span>
                                             </div>
-                                            <h3 className="text-[18px] font-bold text-slate-900 tracking-tight leading-tight transition-colors group-hover:text-orange-500">
-                                                {item.name}
-                                            </h3>
                                         </div>
 
-                                        <div className="p-3.5 rounded-[16px] bg-slate-50/70 border border-slate-100/50 flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <MapPin size={14} className="text-slate-400 shrink-0" />
-                                                <div className="space-y-px">
-                                                    <p className="text-[12px] font-bold text-slate-700">{item.location}</p>
-                                                    <p className="text-[10px] font-medium text-slate-400 italic">{item.distance}</p>
+                                        {/* 📝 콘텐츠 섹션 */}
+                                        <div className="flex-1 flex flex-col justify-between py-0.5 pr-2">
+                                            <div className="space-y-4">
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <div className="w-1 h-1 rounded-full bg-orange-500" />
+                                                        <span className="text-[9px] font-black text-orange-500 uppercase tracking-widest">{item.type}</span>
+                                                    </div>
+                                                    <h3 className="text-[18px] font-bold text-slate-900 tracking-tight leading-tight transition-colors group-hover:text-orange-500">
+                                                        {item.name}
+                                                    </h3>
+                                                </div>
+
+                                                <div className="p-3.5 rounded-[16px] bg-slate-50/70 border border-slate-100/50 flex items-center justify-between">
+                                                    <div className="flex items-center gap-3">
+                                                        <MapPin size={14} className="text-slate-400 shrink-0" />
+                                                        <div className="space-y-px">
+                                                            <p className="text-[12px] font-bold text-slate-700">{item.location}</p>
+                                                            <p className="text-[10px] font-medium text-slate-400 italic">{item.distance}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {item.tags.map((tag: string) => (
+                                                        <span key={tag} className="px-3 py-1 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500">
+                                                            #{tag}
+                                                        </span>
+                                                    ))}
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {item.tags.map((tag: string) => (
-                                                <span key={tag} className="px-3 py-1 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500">
-                                                    #{tag}
-                                                </span>
-                                            ))}
+                                            <div className="flex items-center justify-between pt-4 border-t border-slate-50 mt-4">
+                                                <div className="flex items-baseline gap-1">
+                                                    <span className="text-[22px] font-black text-slate-900 tracking-tighter">{item.price}</span>
+                                                    <span className="text-[13px] font-bold text-slate-500">원~</span>
+                                                </div>
+
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedItem(item);
+                                                        setIsModalOpen(true);
+                                                    }}
+                                                    className="h-11 px-6 rounded-xl bg-slate-900 text-white font-black hover:bg-slate-800 transition-all active:scale-[0.98] flex items-center gap-2 text-[12px] tracking-tight shadow-md"
+                                                >
+                                                    <span>자세히 보기</span>
+                                                    <ChevronRight size={16} strokeWidth={3} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                </motion.div>
+                            ))}
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-slate-50 mt-4">
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-[22px] font-black text-slate-900 tracking-tighter">{item.price}</span>
-                                            <span className="text-[13px] font-bold text-slate-500">원~</span>
-                                        </div>
-
-                                        <button
-                                            className="h-11 px-6 rounded-xl bg-slate-900 text-white font-black hover:bg-slate-800 transition-all active:scale-[0.98] flex items-center gap-2 text-[12px] tracking-tight shadow-md"
-                                        >
-                                            <span>자세히 보기</span>
-                                            <ChevronRight size={16} strokeWidth={3} />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))
-                )}
+                            {totalPages > 1 && (
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={setCurrentPage}
+                                    className="pt-10"
+                                />
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
+
+            <ProductDetailModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                item={selectedItem}
+                category={category}
+            />
         </div>
     );
 };

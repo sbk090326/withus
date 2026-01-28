@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { palette } from '@/app/components/design-system/constants';
+import { motion, useSpring } from 'motion/react';
+import { palette, theme } from '@/app/components/design-system/constants';
 import { PrepareHeader } from './components/PrepareHeader';
 import { CategorySidebar } from './components/CategorySidebar';
 import { SearchSection } from './components/SearchSection';
 import { CollaborationWidget } from './components/CollaborationWidget';
+import { Navigation, Send, Compass, MapPin as PinIcon } from 'lucide-react';
 
 const MOCK_UPCOMING_TRIPS = [
     {
@@ -42,23 +44,85 @@ const INITIAL_CHECKLISTS: Record<number, any[]> = {
 export default function PreparePage() {
     const [selectedTrip, setSelectedTrip] = useState(MOCK_UPCOMING_TRIPS[0]);
     const [activeCategory, setActiveCategory] = useState('accomodation');
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+    };
 
     // 체크리스트 상태 관리 (내 여행과 동일한 로직)
     const [checklists, setChecklists] = useState(INITIAL_CHECKLISTS);
 
     // 현재 선택된 여행의 체크리스트 데이터
     const currentItems = checklists[selectedTrip.id] || [];
-    const completedCount = currentItems.filter(i => i.completed).length;
+    const completedCount = currentItems.filter((i: any) => i.completed).length;
     const totalCount = currentItems.length;
     const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
     return (
-        <main className="min-h-screen pt-20 pb-40" style={{ backgroundColor: palette.cream.base }}>
-            {/* V4.1 Standard Hero Background Decor */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1400px] h-full pointer-events-none overflow-hidden">
-                <div className="absolute top-[-5%] right-[-10%] w-[800px] h-[800px] bg-orange-200/20 rounded-full blur-[120px] mix-blend-multiply" />
-                <div className="absolute bottom-[20%] left-[-10%] w-[700px] h-[700px] bg-pink-100/20 rounded-full blur-[110px] mix-blend-multiply" />
-                <div className="absolute top-[30%] left-[-5%] w-[600px] h-[600px] bg-teal-50/20 rounded-full blur-[100px] mix-blend-multiply" />
+        <main
+            onMouseMove={handleMouseMove}
+            className="min-h-screen pt-20 pb-40 relative overflow-hidden"
+            style={{ backgroundColor: palette.cream.section }}
+        >
+            {/* Premium Refined Background Decor - Cool & Minimal */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                {/* 1. Subtle Mouse Glow (Cool Tone) */}
+                <motion.div
+                    animate={{
+                        x: mousePos.x - 250,
+                        y: mousePos.y - 250,
+                    }}
+                    transition={{ type: "spring", damping: 50, stiffness: 100 }}
+                    className="absolute w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[100px]"
+                />
+
+                {/* 2. Refined Mesh Gradients (Cool & Refreshing) */}
+                <motion.div
+                    animate={{
+                        scale: [1, 1.05, 1],
+                        x: [0 + (mousePos.x * 0.01)],
+                        y: [0 + (mousePos.y * 0.01)],
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] bg-teal-50/40 rounded-full blur-[120px]"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1.05, 1, 1.05],
+                        x: [-20 - (mousePos.x * 0.005)],
+                        y: [40 + (mousePos.y * 0.005)],
+                    }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute bottom-[-15%] left-[-10%] w-[800px] h-[800px] bg-slate-100/30 rounded-full blur-[140px]"
+                />
+
+                {/* 3. Minimal Dotted Grid Overlay */}
+                <motion.div
+                    animate={{
+                        x: -mousePos.x * 0.005,
+                        y: -mousePos.y * 0.005,
+                    }}
+                    className="absolute inset-0 opacity-[0.25]"
+                    style={{
+                        backgroundImage: `radial-gradient(${palette.slate[200]} 1.5px, transparent 1.5px)`,
+                        backgroundSize: '48px 48px'
+                    }}
+                />
+
+                {/* 4. Subtle Path Lines (Refreshing) */}
+                <motion.svg
+                    animate={{
+                        x: mousePos.x * 0.003,
+                        y: mousePos.y * 0.003,
+                    }}
+                    className="absolute inset-0 w-full h-full opacity-[0.02] text-teal-900"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M-100 200 C 400 150 800 350 1500 200" stroke="currentColor" fill="none" strokeWidth="1" />
+                    <circle cx="15%" cy="20%" r="100" stroke="currentColor" fill="none" strokeWidth="1" strokeDasharray="8 8" />
+                    <circle cx="85%" cy="80%" r="150" stroke="currentColor" fill="none" strokeWidth="1" strokeDasharray="12 12" />
+                </motion.svg>
             </div>
 
             <div className="max-w-[1400px] mx-auto px-6 space-y-12 relative z-10">
@@ -96,10 +160,13 @@ export default function PreparePage() {
                             checklists={checklists}
                             setChecklists={setChecklists}
                             selectedTripId={selectedTrip.id}
+                            progress={progress}
+                            completedCount={completedCount}
+                            totalCount={totalCount}
                         />
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }

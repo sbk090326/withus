@@ -11,6 +11,7 @@ import { palette } from '../../components/design-system/constants';
 import { useRouter } from 'next/navigation';
 import { ChatDrawer } from '../components/ChatDrawer';
 import { ApplyCompanionModal } from '../components/ApplyCompanionModal';
+import { ManageApplicantsModal } from '@/app/mypage/components/ManageApplicantsModal';
 import { DetailGallery } from '../components/DetailGallery';
 import { DetailContent } from '../components/DetailContent';
 import { DetailAuthorCard } from '../components/DetailAuthorCard';
@@ -22,8 +23,15 @@ export default function CompanionDetailPage() {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+    const [isManageModalOpen, setIsManageModalOpen] = useState(false);
     const [applicationStatus, setApplicationStatus] = useState<'idle' | 'pending' | 'approved'>('idle');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [chatRecipient, setChatRecipient] = useState<{ name: string; image: string } | null>(null);
+
+    // For demo purposes, let's assume if the author name is "정민수", it's the current user
+    // Since the mock data below says "지니", it's not the user. 
+    // Let's add a simple way to toggle this for the USER to test.
+    const [isDemoHost, setIsDemoHost] = useState(false);
 
     const handleApply = (message: string) => {
         setApplicationStatus('pending');
@@ -31,6 +39,11 @@ export default function CompanionDetailPage() {
         setTimeout(() => {
             // setApplicationStatus('approved');
         }, 5000);
+    };
+
+    const handleOpenChat = (recipient: { name: string; image: string }) => {
+        setChatRecipient(recipient);
+        setIsChatOpen(true);
     };
 
     // Mock data - in real app, fetch by id
@@ -76,6 +89,19 @@ export default function CompanionDetailPage() {
 
     return (
         <main className="min-h-screen pt-28 pb-32" style={{ backgroundColor: palette.cream.base }}>
+            {/* Demo Toggle - Just for development */}
+            <div className="fixed bottom-10 left-10 z-[1000] bg-white p-4 rounded-2xl shadow-xl border border-slate-200">
+                <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={isDemoHost}
+                        onChange={(e) => setIsDemoHost(e.target.checked)}
+                        className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500"
+                    />
+                    <span className="text-xs font-bold text-slate-600">내 글 모드로 보기 (호스트)</span>
+                </label>
+            </div>
+
             <div className="max-w-[1200px] mx-auto px-6">
 
                 {/* Back Button */}
@@ -114,9 +140,11 @@ export default function CompanionDetailPage() {
                                 matchScore={data.matchScore}
                                 applicationStatus={applicationStatus}
                                 isLiked={isLiked}
+                                isHost={isDemoHost}
                                 onApply={() => setIsApplyModalOpen(true)}
                                 onToggleLike={() => setIsLiked(!isLiked)}
-                                onOpenChat={() => setIsChatOpen(true)}
+                                onOpenChat={() => handleOpenChat({ name: data.author.name, image: data.author.image })}
+                                onManageRecruitment={() => setIsManageModalOpen(true)}
                             />
                         </div>
                     </div>
@@ -130,11 +158,22 @@ export default function CompanionDetailPage() {
                     companionTitle={data.title}
                 />
 
+                {/* Management Modal */}
+                <ManageApplicantsModal
+                    isOpen={isManageModalOpen}
+                    onClose={() => setIsManageModalOpen(false)}
+                    postTitle={data.title}
+                    onChatOpen={(recipient) => {
+                        setIsManageModalOpen(false);
+                        handleOpenChat(recipient);
+                    }}
+                />
+
                 {/* Chat Drawer */}
                 <ChatDrawer
                     isOpen={isChatOpen}
                     onClose={() => setIsChatOpen(false)}
-                    recipient={{
+                    recipient={chatRecipient || {
                         name: data.author.name,
                         image: data.author.image
                     }}

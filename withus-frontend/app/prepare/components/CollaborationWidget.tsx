@@ -9,6 +9,9 @@ interface CollaborationWidgetProps {
     checklists: Record<number, any[]>;
     setChecklists: React.Dispatch<React.SetStateAction<Record<number, any[]>>>;
     selectedTripId: number;
+    progress: number;
+    completedCount: number;
+    totalCount: number;
 }
 
 const MOCK_VOTES = [
@@ -22,7 +25,7 @@ const MOCK_VOTES = [
     }
 ];
 
-export const CollaborationWidget = ({ checklists, setChecklists, selectedTripId }: CollaborationWidgetProps) => {
+export const CollaborationWidget = ({ checklists, setChecklists, selectedTripId, progress, completedCount, totalCount }: CollaborationWidgetProps) => {
     const [newItem, setNewItem] = useState('');
     const items = checklists[selectedTripId] || [];
 
@@ -62,9 +65,34 @@ export const CollaborationWidget = ({ checklists, setChecklists, selectedTripId 
         <div className="space-y-8 sticky top-32">
             {/* 📋 공동 체크리스트 (내 여행에서 이동됨) */}
             <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8 transition-all hover:shadow-xl hover:shadow-slate-200/20">
-                <div className="space-y-1.5">
-                    <span className="text-[10px] font-bold text-teal-600 uppercase tracking-[0.3em] block">공동 체크리스트</span>
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">함께 준비해요 🎒</h3>
+                <div className="flex items-center justify-between">
+                    <div className="space-y-1.5">
+                        <span className="text-[10px] font-bold text-teal-600 uppercase tracking-[0.3em] block">공동 체크리스트</span>
+                        <h3 className="text-2xl font-black text-slate-900 tracking-tight">함께 준비해요 🎒</h3>
+                    </div>
+                    {/* 🚀 이동된 준비현황 (컴팩트 버전) */}
+                    <div className="flex items-center gap-3 bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-100 shadow-inner">
+                        <div className="flex flex-col items-end">
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">준비 현황</span>
+                            <span className="text-[14px] font-black text-teal-600 leading-none">{progress}%</span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full border-[2.5px] border-white flex items-center justify-center relative bg-white shadow-sm">
+                            <svg className="w-full h-full -rotate-90 scale-110">
+                                <circle cx="18" cy="18" r="14" fill="transparent" stroke="#f1f5f9" strokeWidth="3" />
+                                <motion.circle
+                                    cx="18" cy="18" r="14"
+                                    fill="transparent"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeDasharray={88}
+                                    initial={{ strokeDashoffset: 88 }}
+                                    animate={{ strokeDashoffset: 88 * (1 - progress / 100) }}
+                                    className="text-teal-500"
+                                    strokeLinecap="round"
+                                />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 {/* 입력창 (컴팩트 버전) */}
