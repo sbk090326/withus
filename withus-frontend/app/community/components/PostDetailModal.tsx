@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MessageSquare, Heart, Eye, Clock, User, Share2, MoreVertical, Trash2, Edit3, Send, MapPin, ChevronRight, Save } from 'lucide-react';
+import { X, MessageSquare, Heart, Eye, Clock, User, Share2, MoreVertical, Trash2, Edit3, Send, MapPin, ChevronRight, ChevronLeft, Save } from 'lucide-react';
 import { theme, palette } from '@/app/components/design-system/constants';
 
 interface PostDetailModalProps {
@@ -15,7 +15,15 @@ interface PostDetailModalProps {
 }
 
 export const PostDetailModal = ({ isOpen, onClose, post, isAuthor, onEdit, onDelete }: PostDetailModalProps) => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
     if (!post) return null;
+
+    const allImages = post.images || (post.thumbnail ? [post.thumbnail] : []);
+    const hasImages = allImages.length > 0;
+
+    const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
 
     return (
         <AnimatePresence>
@@ -35,29 +43,65 @@ export const PostDetailModal = ({ isOpen, onClose, post, isAuthor, onEdit, onDel
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-6xl bg-white rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[85vh] md:h-[800px]"
+                        className={`relative w-full bg-white rounded-[40px] shadow-2xl overflow-hidden transition-all duration-500 ${hasImages ? 'max-w-[1500px] h-[750px] grid md:grid-cols-2' : 'max-w-3xl h-[85vh] md:h-[750px] flex flex-col'
+                            }`}
                     >
-                        {/* Left: Aspect-Balanced Image Section */}
-                        {post.thumbnail && (
-                            <div className="w-full md:w-[500px] lg:w-[540px] bg-slate-100 relative group overflow-hidden shrink-0 hidden md:block border-r border-slate-50">
-                                <img
-                                    src={post.thumbnail}
-                                    alt={post.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60 pointer-events-none" />
+                        {/* Left: Perfect 1:1 Square Image Slider Section */}
+                        {hasImages && (
+                            <div className="w-full h-full bg-slate-900 relative hidden md:block group overflow-hidden">
+                                <AnimatePresence mode="wait">
+                                    <motion.img
+                                        key={currentImageIndex}
+                                        src={allImages[currentImageIndex]}
+                                        initial={{ opacity: 0, scale: 1.1 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </AnimatePresence>
 
-                                {/* Image Pagination Overlays */}
+                                {/* Gradient Overlays */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 pointer-events-none" />
+
+                                {/* Navigation Arrows */}
+                                {allImages.length > 1 && (
+                                    <>
+                                        <button
+                                            onClick={prevImage}
+                                            className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-black/40 transition-all z-10"
+                                        >
+                                            <ChevronLeft size={24} />
+                                        </button>
+                                        <button
+                                            onClick={nextImage}
+                                            className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/20 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-black/40 transition-all z-10"
+                                        >
+                                            <ChevronRight size={24} />
+                                        </button>
+                                    </>
+                                )}
+
+                                {/* Pagination Dots */}
                                 <div className="absolute bottom-10 left-0 right-0 z-20 flex justify-center gap-2">
-                                    {[1, 2, 3, 4].map((i) => (
-                                        <div key={i} className={`w-1.5 h-1.5 rounded-full shadow-sm transition-all ${i === 1 ? 'bg-white w-4' : 'bg-white/40'}`} />
+                                    {allImages.map((unused: any, i: number) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setCurrentImageIndex(i)}
+                                            className={`w-1.5 h-1.5 rounded-full transition-all ${i === currentImageIndex ? 'bg-white w-6' : 'bg-white/40'}`}
+                                        />
                                     ))}
+                                </div>
+
+                                {/* Image Counter */}
+                                <div className="absolute top-8 left-8 bg-black/40 backdrop-blur-md text-white text-[10px] font-black px-3 py-1.5 rounded-full border border-white/10 uppercase tracking-widest z-10">
+                                    {currentImageIndex + 1} / {allImages.length}
                                 </div>
                             </div>
                         )}
 
                         {/* Right: Content & Comments Container */}
-                        <div className="flex-1 flex flex-col bg-white overflow-hidden relative">
+                        <div className="flex flex-col bg-white overflow-hidden relative h-full">
                             {/* Header: Fixed Author Info */}
                             <div className="px-10 py-6 border-b border-slate-50 flex items-center justify-between bg-white/80 backdrop-blur-md shrink-0">
                                 <div className="flex items-center gap-3">
@@ -88,47 +132,57 @@ export const PostDetailModal = ({ isOpen, onClose, post, isAuthor, onEdit, onDel
                                         }`}>
                                         {post.categoryLabel}
                                     </div>
-                                    <h2 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">
+                                    <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">
                                         {post.title}
                                     </h2>
 
-                                    {/* 코스 상세 (Route Visualization) */}
+                                    {/* 코스 상세 (Clean Minimal Route) */}
                                     {post.category === 'course' && post.routes && (
-                                        <div className="bg-slate-50/50 border border-slate-100 rounded-[2rem] p-8 space-y-6">
+                                        <div className="bg-slate-50/50 rounded-[2.5rem] p-8 space-y-6">
                                             <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <MapPin size={18} className="text-orange-500" />
-                                                    <span className="text-sm font-black text-slate-900">추천 여행 경로</span>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 rounded-2xl bg-orange-500 text-white flex items-center justify-center">
+                                                        <MapPin size={20} />
+                                                    </div>
+                                                    <h4 className="text-base font-black text-slate-900">추천 여행 경로</h4>
                                                 </div>
-                                                <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500 text-white text-[11px] font-black shadow-lg shadow-orange-500/20 hover:scale-105 transition-all">
+                                                <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white text-[11px] font-black hover:bg-orange-500 hover:shadow-xl hover:shadow-orange-500/20 transition-all active:scale-95 shadow-lg">
                                                     <Save size={14} />
-                                                    내 일정으로 가져오기
+                                                    일정 저장하기
                                                 </button>
                                             </div>
 
-                                            <div className="flex flex-col gap-4 relative">
-                                                <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-orange-100" />
+                                            <div className="flex flex-wrap gap-2">
                                                 {post.routes.map((route: string, i: number) => (
-                                                    <div key={i} className="flex items-center gap-4 relative z-10">
-                                                        <div className="w-8 h-8 rounded-full bg-white border-2 border-orange-500 flex items-center justify-center text-[10px] font-black text-orange-500">
-                                                            {i + 1}
-                                                        </div>
-                                                        <div className="flex-1 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                                    <div key={i} className="flex items-center gap-2">
+                                                        <div className="px-5 py-3 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center gap-3 group hover:border-orange-200 transition-all">
+                                                            <span className="text-[10px] font-black text-orange-500">{i + 1}</span>
                                                             <span className="text-sm font-bold text-slate-700">{route}</span>
                                                         </div>
+                                                        {i < post.routes.length - 1 && (
+                                                            <ChevronRight size={14} className="text-slate-300" />
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
                                     )}
 
-                                    <p className="text-slate-600 text-base leading-relaxed whitespace-pre-wrap font-medium">
+                                    <p className="text-slate-600 text-[17px] leading-[1.8] whitespace-pre-wrap font-medium">
                                         {post.excerpt}
                                         {"\n\n"}
                                         여행은 항상 설레는 것 같아요. 특히 이번 여행은 제가 정말 가보고 싶었던 곳들을 위주로 다녀와서 그런지 더 기억에 남네요. 사진 정리하다 보니까 다시 그 시간으로 돌아가고 싶어집니다.
-                                        {"\n\n"}
-                                        더 많은 팁이 궁금하시면 언제든 물어봐주세요!
                                     </p>
+
+                                    {post.tags && (
+                                        <div className="flex flex-wrap gap-3 pt-4">
+                                            {post.tags.map((tag: string, i: number) => (
+                                                <span key={i} className="text-sm font-bold text-orange-500/60 hover:text-orange-500 cursor-pointer transition-colors">
+                                                    #{tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Interaction Bar */}

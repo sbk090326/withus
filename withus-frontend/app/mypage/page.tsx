@@ -8,8 +8,14 @@ import { UpcomingTrips } from './components/UpcomingTrips';
 import { MyActivity } from './components/MyActivity';
 import { ParticipationStatus } from './components/ParticipationStatus';
 import { MiniCalendar } from './components/MiniCalendar';
+import { ProfileEdit } from './components/ProfileEdit';
+import { NotificationSettings } from './components/NotificationSettings';
+import { AccountSettings } from './components/AccountSettings';
+import { BlockedUsers } from './components/BlockedUsers';
+import { ExternalAccounts } from './components/ExternalAccounts';
+import { PrivacySettings } from './components/PrivacySettings';
 import { useSearchParams } from 'next/navigation';
-import { Settings, User, Sparkles } from 'lucide-react';
+import { Settings, User, Sparkles, Lock, UserX, Link, Eye } from 'lucide-react';
 
 // 🔗 데이터 통합: PreparePage와 동일한 데이터셋 구성
 const MOCK_UPCOMING_TRIPS = [
@@ -49,6 +55,7 @@ export default function MyPage() {
 
     const [activeTab, setActiveTab] = useState(initialTab === 'checklist' ? 'planner' : initialTab);
     const [checklists, setChecklists] = useState(INITIAL_CHECKLISTS);
+    const [settingsView, setSettingsView] = useState<'menu' | 'profile' | 'notifications' | 'account' | 'blocked' | 'external' | 'privacy'>('menu');
 
     useEffect(() => {
         const tab = searchParams.get('tab');
@@ -115,47 +122,163 @@ export default function MyPage() {
 
                         <div className="min-h-[600px] relative">
                             {activeTab === 'planner' && <UpcomingTrips />}
-                            {activeTab === 'participation' && <ParticipationStatus />}
+                            {activeTab === 'participation' && <ParticipationStatus onTabChange={setActiveTab} />}
                             {activeTab === 'activity' && <MyActivity type="posts" />}
                             {activeTab === 'settings' && (
                                 <div className="space-y-10">
-                                    {/* 상단 헤더 - 타 탭과 통일 */}
-                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-2 text-slate-400">
-                                                <Settings size={16} />
-                                                <span className="text-[10px] font-black uppercase tracking-[0.3em]">환경 설정</span>
+                                    {settingsView === 'menu' && (
+                                        <>
+                                            {/* 상단 헤더 - 타 탭과 통일 */}
+                                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center gap-2 text-slate-400">
+                                                        <Settings size={16} />
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">환경 설정</span>
+                                                    </div>
+                                                    <h3 className="text-2xl font-black text-slate-900 tracking-tighter">계정 관리 및 설정</h3>
+                                                    <p className="text-xs text-slate-400 font-bold max-w-md">나의 개인정보 보호와 서비스 이용 환경을 최적화하세요.</p>
+                                                </div>
                                             </div>
-                                            <h3 className="text-2xl font-black text-slate-900 tracking-tighter">계정 관리 및 설정</h3>
-                                            <p className="text-xs text-slate-400 font-bold max-w-md">나의 개인정보 보호와 서비스 이용 환경을 최적화하세요.</p>
-                                        </div>
-                                    </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <button className="flex items-center justify-between p-8 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-orange-200 hover:shadow-xl hover:shadow-orange-200/5 transition-all group text-left">
-                                            <div className="space-y-2">
-                                                <p className="text-base font-black text-slate-900">프로필 정보 수정</p>
-                                                <p className="text-xs text-slate-400 font-bold leading-relaxed">이름, 프로필 사진, 한 줄 소개 등<br />나의 페르소나를 관리합니다.</p>
-                                            </div>
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:text-orange-500 group-hover:bg-orange-50 transition-all">
-                                                <User size={20} />
-                                            </div>
-                                        </button>
+                                            <div className="space-y-8">
+                                                {/* Group 1: 프로필 및 소셜 */}
+                                                <div className="space-y-4">
+                                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">프로필 및 소셜 서비스</h4>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <button
+                                                            onClick={() => setSettingsView('profile')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-orange-200 hover:shadow-xl hover:shadow-orange-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                                                                <User size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">프로필 정보 수정</p>
+                                                                <p className="text-xs text-slate-400 font-bold">닉네임, 사진, 여행 성향 등</p>
+                                                            </div>
+                                                        </button>
 
-                                        <button className="flex items-center justify-between p-8 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-teal-400 hover:shadow-xl hover:shadow-teal-400/5 transition-all group text-left">
-                                            <div className="space-y-2">
-                                                <p className="text-base font-black text-slate-900">알림 및 푸시 설정</p>
-                                                <p className="text-xs text-slate-400 font-bold leading-relaxed">동행 신청, 커뮤니티 반응 등<br />중요한 소식을 놓치지 마세요.</p>
-                                            </div>
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 group-hover:text-teal-500 group-hover:bg-teal-50 transition-all">
-                                                <Sparkles size={20} />
-                                            </div>
-                                        </button>
-                                    </div>
+                                                        <button
+                                                            onClick={() => setSettingsView('external')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500 group-hover:scale-110 transition-transform">
+                                                                <Link size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">연동된 서비스 관리</p>
+                                                                <p className="text-xs text-slate-400 font-bold">Google, Kakao 로그인 연동</p>
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
 
-                                    <div className="bg-slate-900/5 rounded-[32px] p-8 border border-dashed border-slate-200 text-center">
-                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">추가 보안 및 환경 설정 기능을 준비 중입니다.</p>
-                                    </div>
+                                                {/* Group 2: 계정 보안 및 프라이버시 */}
+                                                <div className="space-y-4">
+                                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">계정 보안 및 프라이버시</h4>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <button
+                                                            onClick={() => setSettingsView('account')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-blue-200 hover:shadow-xl hover:shadow-blue-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                                                                <Lock size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">계정 및 보안 설정</p>
+                                                                <p className="text-xs text-slate-400 font-bold">비밀번호 변경, 개인정보 수정</p>
+                                                            </div>
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => setSettingsView('privacy')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                                                                <Eye size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">개인정보 공개 설정</p>
+                                                                <p className="text-xs text-slate-400 font-bold">프로필 및 이력 공개 범위</p>
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Group 3: 이용 환경 및 안전 */}
+                                                <div className="space-y-4">
+                                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-2">이용 환경 및 안전 관리</h4>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <button
+                                                            onClick={() => setSettingsView('notifications')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-teal-200 hover:shadow-xl hover:shadow-teal-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-500 group-hover:scale-110 transition-transform">
+                                                                <Sparkles size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">알림 및 푸시 설정</p>
+                                                                <p className="text-xs text-slate-400 font-bold">실시간 소식 및 마케팅 알림</p>
+                                                            </div>
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => setSettingsView('blocked')}
+                                                            className="flex items-center gap-6 p-6 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:border-rose-200 hover:shadow-xl hover:shadow-rose-200/5 transition-all group text-left"
+                                                        >
+                                                            <div className="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 group-hover:scale-110 transition-transform">
+                                                                <UserX size={24} />
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-base font-black text-slate-900">차단 및 신고 관리</p>
+                                                                <p className="text-xs text-slate-400 font-bold">사용자 차단 및 신고 내역 확인</p>
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="bg-slate-900/5 rounded-[32px] p-8 border border-dashed border-slate-200 text-center">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">추가 보안 및 환경 설정 기능을 준비 중입니다.</p>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {settingsView === 'profile' && (
+                                        <ProfileEdit
+                                            user={{ ...user, image: '🧔' }}
+                                            onBack={() => setSettingsView('menu')}
+                                        />
+                                    )}
+
+                                    {settingsView === 'notifications' && (
+                                        <NotificationSettings
+                                            onBack={() => setSettingsView('menu')}
+                                        />
+                                    )}
+
+                                    {settingsView === 'account' && (
+                                        <AccountSettings
+                                            user={{
+                                                name: '정민수',
+                                                email: 'minsu.jeong@example.com',
+                                                phone: '010-1234-5678'
+                                            }}
+                                            onBack={() => setSettingsView('menu')}
+                                        />
+                                    )}
+
+                                    {settingsView === 'blocked' && (
+                                        <BlockedUsers onBack={() => setSettingsView('menu')} />
+                                    )}
+
+                                    {settingsView === 'external' && (
+                                        <ExternalAccounts onBack={() => setSettingsView('menu')} />
+                                    )}
+
+                                    {settingsView === 'privacy' && (
+                                        <PrivacySettings onBack={() => setSettingsView('menu')} />
+                                    )}
                                 </div>
                             )}
                         </div>

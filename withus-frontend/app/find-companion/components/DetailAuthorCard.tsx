@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'motion/react';
-import { MessageCircle, Heart, Share2 } from 'lucide-react';
+import { MessageCircle, Heart, Share2, UserCheck } from 'lucide-react';
 
 interface DetailAuthorCardProps {
     author: {
@@ -14,9 +14,11 @@ interface DetailAuthorCardProps {
     matchScore: number;
     applicationStatus: 'idle' | 'pending' | 'approved';
     isLiked: boolean;
+    isHost?: boolean;
     onApply: () => void;
     onToggleLike: () => void;
     onOpenChat: () => void;
+    onManageRecruitment?: () => void;
 }
 
 export const DetailAuthorCard = ({
@@ -24,9 +26,11 @@ export const DetailAuthorCard = ({
     matchScore,
     applicationStatus,
     isLiked,
+    isHost,
     onApply,
     onToggleLike,
-    onOpenChat
+    onOpenChat,
+    onManageRecruitment
 }: DetailAuthorCardProps) => {
     return (
         <div className="sticky top-28 space-y-6">
@@ -80,33 +84,46 @@ export const DetailAuthorCard = ({
 
                     {/* Actions */}
                     <div className="w-full space-y-3">
-                        {applicationStatus === 'idle' && (
+                        {isHost ? (
                             <button
-                                onClick={onApply}
-                                className="w-full py-4 rounded-2xl text-white font-bold shadow-lg shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                                style={{ background: 'linear-gradient(to right, #f97316, #ec4899)' }}
+                                onClick={onManageRecruitment}
+                                className="w-full py-4 rounded-2xl text-white font-bold shadow-lg shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                style={{ background: 'linear-gradient(to right, #3b82f6, #2563eb)' }}
                             >
-                                <MessageCircle size={20} />
-                                동행 신청하기
+                                <UserCheck size={20} />
+                                신청자 관리하기
                             </button>
-                        )}
+                        ) : (
+                            <>
+                                {applicationStatus === 'idle' && (
+                                    <button
+                                        onClick={onApply}
+                                        className="w-full py-4 rounded-2xl text-white font-bold shadow-lg shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                        style={{ background: 'linear-gradient(to right, #f97316, #ec4899)' }}
+                                    >
+                                        <MessageCircle size={20} />
+                                        동행 신청하기
+                                    </button>
+                                )}
 
-                        {applicationStatus === 'pending' && (
-                            <div className="w-full py-4 rounded-2xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center gap-2 cursor-default border border-slate-200">
-                                <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                                신청 완료 (승인 대기 중)
-                            </div>
-                        )}
+                                {applicationStatus === 'pending' && (
+                                    <div className="w-full py-4 rounded-2xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center gap-2 cursor-default border border-slate-200">
+                                        <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                                        신청 완료 (승인 대기 중)
+                                    </div>
+                                )}
 
-                        {applicationStatus === 'approved' && (
-                            <button
-                                onClick={onOpenChat}
-                                className="w-full py-4 rounded-2xl text-white font-bold shadow-lg shadow-green-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                                style={{ background: 'linear-gradient(to right, #10b981, #059669)' }}
-                            >
-                                <MessageCircle size={20} />
-                                호스트와 채팅하기
-                            </button>
+                                {applicationStatus === 'approved' && (
+                                    <button
+                                        onClick={onOpenChat}
+                                        className="w-full py-4 rounded-2xl text-white font-bold shadow-lg shadow-green-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                        style={{ background: 'linear-gradient(to right, #10b981, #059669)' }}
+                                    >
+                                        <MessageCircle size={20} />
+                                        호스트와 채팅하기
+                                    </button>
+                                )}
+                            </>
                         )}
 
                         <div className="flex gap-3">

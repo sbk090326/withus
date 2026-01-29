@@ -3,6 +3,11 @@
 import React from 'react';
 import { MessageCircle, MapPin, Clock, ChevronRight, UserCheck, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { ManageApplicantsModal } from './ManageApplicantsModal';
+import { TripDetailModal } from './TripDetailModal';
+import { ChatDrawer } from '@/app/find-companion/components/ChatDrawer';
+import { Pagination } from '@/app/components/ui/Pagination';
+import { TripCardSkeleton } from './upcoming-trips/TripCard';
 
 const mockAppointments = [
     {
@@ -25,9 +30,33 @@ const mockAppointments = [
     }
 ];
 
-export const ParticipationStatus = () => {
+interface ParticipationStatusProps {
+    onTabChange: (tab: string) => void;
+}
+
+export const ParticipationStatus = ({ onTabChange }: ParticipationStatusProps) => {
     const [filter, setFilter] = React.useState<'joined' | 'hosted'>('joined');
     const [appointments, setAppointments] = React.useState(mockAppointments);
+    const [selectedTrip, setSelectedTrip] = React.useState<any>(null);
+    const [isManageModalOpen, setIsManageModalOpen] = React.useState(false);
+    const [selectedPost, setSelectedPost] = React.useState<{ id: number; title: string } | null>(null);
+    const [isChatOpen, setIsChatOpen] = React.useState(false);
+    const [chatRecipient, setChatRecipient] = React.useState<{ name: string; image: string } | null>(null);
+    const [isDetailModalOpen, setIsDetailModalOpen] = React.useState(false);
+
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const itemsPerPage = 3;
+
+    React.useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => setIsLoading(false), 400);
+        return () => clearTimeout(timer);
+    }, [filter, currentPage]);
+
+    React.useEffect(() => {
+        setCurrentPage(1);
+    }, [filter]);
 
     const data = {
         joined: appointments.filter(a => a.id !== 3), // Mock: Everything except item 3
@@ -48,14 +77,39 @@ export const ParticipationStatus = () => {
 
     const currentData = filter === 'joined' ? data.joined : data.hosted;
 
-    const cancelAppointment = (id: number) => {
-        if (confirm('정말로 이 약속을 취소하시겠습니까?')) {
-            setAppointments(appointments.filter(a => a.id !== id));
+    // Pagination Logic
+    const totalPages = Math.ceil(currentData.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedData = currentData.slice(startIndex, startIndex + itemsPerPage);
+
+    const handleDeleteItem = (id: number, title: string, isHost: boolean) => {
+        const message = isHost
+            ? `[모집 취소] '${title}' 모집을 중단하고 게시글을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없으며 대기 중인 신청자들에게 알림이 전송됩니다.`
+            : `'${title}' 동행 참여를 취소하시겠습니까?`;
+
+        if (confirm(message)) {
+            setAppointments(prev => prev.filter(a => a.id !== id));
         }
     };
 
+    const handleOpenChat = (recipient: { name: string; image: string }) => {
+        setChatRecipient(recipient);
+        setIsChatOpen(true);
+    };
+
     const enterChat = (title: string) => {
-        alert(`${title} 채팅방에 입장합니다!`);
+        // For general "Enter Chat" functionality (like if multiple people are in a room)
+        handleOpenChat({ name: '그룹', image: '👥' });
+    };
+
+    const handleManageRecruitment = (id: number, title: string) => {
+        setSelectedPost({ id, title });
+        setIsManageModalOpen(true);
+    };
+
+    const handleOpenDetail = (trip: any) => {
+        setSelectedTrip(trip);
+        setIsDetailModalOpen(true);
     };
 
     return (
@@ -89,10 +143,15 @@ export const ParticipationStatus = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-5">
+            <div className="grid grid-cols-1 gap-5 min-h-[400px]">
                 <AnimatePresence mode="popLayout">
-                    {currentData.length > 0 ? (
-                        currentData.map((app, idx) => (
+                    {isLoading ? (
+                        <div className="space-y-6">
+                            <TripCardSkeleton />
+                            <TripCardSkeleton />
+                        </div>
+                    ) : paginatedData.length > 0 ? (
+                        paginatedData.map((app, idx) => (
                             <motion.div
                                 key={app.id}
                                 layout
@@ -147,33 +206,64 @@ export const ParticipationStatus = () => {
                                             </span>
                                         </div>
 
-                                        {filter === 'joined' && (
-                                            <button
-                                                onClick={() => cancelAppointment(app.id)}
-                                                className="text-slate-300 hover:text-rose-500 transition-colors text-[10px] font-black tracking-widest uppercase flex items-center gap-1.5"
-                                            >
-                                                <Trash2 size={14} />
-                                                참여 취소
-                                            </button>
-                                        )}
+                                        <button
+                                            onClick={() => handleDeleteItem(app.id, app.title, filter === 'hosted')}
+                                            className="text-slate-300 hover:text-rose-500 transition-colors text-[10px] font-black tracking-widest uppercase flex items-center gap-1.5"
+                                        >
+                                            <Trash2 size={14} />
+                                            {filter === 'hosted' ? '모집 취소/삭제' : '참여 취소'}
+                                        </button>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row md:flex-col items-center gap-3 w-full md:w-auto shrink-0">
-                                    <button
-                                        onClick={() => enterChat(app.title)}
-                                        className={`flex-1 md:w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-black text-xs transition-all border
-                                            ${filter === 'hosted'
-                                                ? 'bg-orange-50 text-orange-600 border-orange-100 hover:bg-orange-100'
-                                                : 'bg-teal-50 text-teal-600 border-teal-100 hover:bg-teal-100'}`}
-                                    >
-                                        <MessageCircle size={16} />
-                                        채팅방 입장
-                                    </button>
-                                    <button className="flex-1 md:w-full px-6 py-4 rounded-2xl bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                                        {filter === 'hosted' ? '모집 관리' : '상세 보기'}
-                                        <ChevronRight size={14} />
-                                    </button>
+                                <div className="flex flex-col gap-3 w-full md:w-[180px] shrink-0">
+                                    {/* 🎯 Primary Action Button */}
+                                    {filter === 'hosted' ? (
+                                        <button
+                                            onClick={() => handleManageRecruitment(app.id, app.title)}
+                                            className="w-full py-4 rounded-2xl bg-slate-900 text-white text-[12px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"
+                                        >
+                                            모집 관리
+                                            <ChevronRight size={14} />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => enterChat(app.title)}
+                                            className="w-full py-4 rounded-2xl bg-teal-500 text-white text-[12px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all shadow-lg shadow-teal-100 active:scale-95 flex items-center justify-center gap-2"
+                                        >
+                                            <MessageCircle size={16} />
+                                            채팅방 입장
+                                        </button>
+                                    )}
+
+                                    {/* 🛠️ Secondary Action Row */}
+                                    <div className="flex gap-2">
+                                        {filter === 'hosted' ? (
+                                            <>
+                                                <button
+                                                    onClick={() => enterChat(app.title)}
+                                                    className="flex-1 py-3.5 rounded-2xl bg-white border border-slate-100 text-slate-400 text-[10px] font-black uppercase hover:bg-slate-50 hover:text-teal-600 transition-all flex items-center justify-center gap-1.5"
+                                                >
+                                                    <MessageCircle size={14} />
+                                                    채팅방
+                                                </button>
+                                                <button
+                                                    onClick={() => handleOpenDetail(app)}
+                                                    className="flex-1 py-3.5 rounded-2xl bg-white border border-slate-100 text-slate-400 text-[10px] font-black uppercase hover:bg-slate-50 hover:text-slate-900 transition-all flex items-center justify-center"
+                                                >
+                                                    상세 보기
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleOpenDetail(app)}
+                                                className="w-full py-3.5 rounded-2xl bg-white border border-slate-100 text-slate-400 text-[10px] font-black uppercase hover:bg-slate-50 hover:text-slate-900 transition-all flex items-center justify-center gap-2"
+                                            >
+                                                상세 정보 보기
+                                                <ChevronRight size={14} />
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </motion.div>
                         ))
@@ -193,6 +283,42 @@ export const ParticipationStatus = () => {
                     )}
                 </AnimatePresence>
             </div>
+
+            {!isLoading && totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    className="pt-10"
+                />
+            )}
+
+            {selectedPost && (
+                <ManageApplicantsModal
+                    isOpen={isManageModalOpen}
+                    onClose={() => setIsManageModalOpen(false)}
+                    postTitle={selectedPost.title}
+                    onChatOpen={(recipient) => {
+                        setIsManageModalOpen(false);
+                        handleOpenChat(recipient);
+                    }}
+                />
+            )}
+
+            {chatRecipient && (
+                <ChatDrawer
+                    isOpen={isChatOpen}
+                    onClose={() => setIsChatOpen(false)}
+                    recipient={chatRecipient}
+                />
+            )}
+
+            <TripDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={() => setIsDetailModalOpen(false)}
+                trip={selectedTrip}
+                onTabChange={onTabChange}
+            />
         </div>
     );
 };

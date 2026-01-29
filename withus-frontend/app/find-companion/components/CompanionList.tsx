@@ -4,7 +4,7 @@ import { CompanionCard } from './CompanionCard';
 import { Filter, ChevronDown, Zap, List, Map as MapIcon, Navigation, X } from 'lucide-react';
 import { MapView } from './MapView';
 import { CompanionSkeleton } from './CompanionSkeleton';
-import { AdvancedFilter } from './AdvancedFilter';
+import { SearchFilterPanel, FilterGroup } from '../../components/ui/SearchFilterPanel';
 import { LoadMoreButton } from '../../components/ui/LoadMoreButton';
 
 const mockCompanions = [
@@ -129,6 +129,20 @@ export const CompanionList = () => {
         const timer = setTimeout(() => setIsLoading(false), 1500);
         return () => clearTimeout(timer);
     }, []);
+
+    const filterGroups: FilterGroup[] = [
+        { id: 'gender', label: '선호 성별', type: 'single-select', options: ['전체', '남성만', '여성만', '성별 무관'], activeColor: 'orange' },
+        { id: 'age', label: '희망 연령대', type: 'single-select', options: ['전체', '20대', '30대', '40대 이상'], activeColor: 'pink' },
+        { id: 'style', label: '여행 스타일', type: 'chips', options: ['액티비티', '휴양', '맛집', '문화/예술', '캠핑', '쇼핑'], activeColor: 'slate' },
+    ];
+
+    const handleFilterChange = (groupId: string, value: any) => {
+        setFilters(prev => ({ ...prev, [groupId]: value }));
+    };
+
+    const handleReset = () => {
+        setFilters({ gender: '전체', age: '전체', smoking: '전체', style: [] });
+    };
 
     const handleNearMe = () => {
         setLocationStatus('loading');
@@ -270,11 +284,13 @@ export const CompanionList = () => {
                 </div>
             </div>
 
-            {/* 🔥 새롭게 적용된 수평 확장 필터 패널 */}
-            <AdvancedFilter
+            {/* 🔥 새롭게 적용된 통합 필터 패널 */}
+            <SearchFilterPanel
                 isOpen={isFilterOpen}
-                filters={filters}
-                setFilters={setFilters}
+                groups={filterGroups}
+                activeFilters={filters}
+                onFilterChange={handleFilterChange}
+                onReset={handleReset}
             />
 
             {/* Active Filter Chips */}
@@ -363,6 +379,9 @@ export const CompanionList = () => {
                             <LoadMoreButton
                                 onClick={handleLoadMore}
                                 isLoading={isMoreLoading}
+                                visibleCount={displayCompanions.length}
+                                totalCount={mockCompanions.length}
+                                label="동행"
                             />
                         )}
 

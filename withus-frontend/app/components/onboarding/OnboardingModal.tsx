@@ -25,6 +25,7 @@ export function OnboardingModal() {
     const [budgetStyle, setBudgetStyle] = useState<'economy' | 'moderate' | 'luxury' | null>(null);
     const [foodStyle, setFoodStyle] = useState<'local' | 'korean' | null>(null);
     const [lifestyleStyle, setLifestyleStyle] = useState<'morning' | 'night' | null>(null);
+    const [mbti, setMbti] = useState('');
 
     if (!showOnboarding) return null;
 
@@ -62,6 +63,7 @@ export function OnboardingModal() {
                         budgetStyle: budgetStyle?.toUpperCase(),
                         foodStyle: foodStyle?.toUpperCase(),
                         lifestyleStyle: lifestyleStyle?.toUpperCase(),
+                        mbti,
                     }
                 });
 
@@ -144,7 +146,7 @@ export function OnboardingModal() {
                                 <div className="flex flex-col gap-6">
                                     {/* The Step Content */}
                                     {step === 0 && <WelcomeStep />}
-                                    {step === 1 && <NicknameStep nickname={nickname} setNickname={setNickname} />}
+                                    {step === 1 && <NicknameStep nickname={nickname} setNickname={setNickname} mbti={mbti} setMbti={setMbti} />}
                                     {step === 2 && <PreferencesStep preferences={preferences} togglePreference={togglePreference} />}
                                     {step === 3 && <TravelStyleStep planStyle={planStyle} setPlanStyle={setPlanStyle} paceStyle={paceStyle} setPaceStyle={setPaceStyle} />}
                                     {step === 4 && <TravelStyleStep2 budgetStyle={budgetStyle} setBudgetStyle={setBudgetStyle} foodStyle={foodStyle} setFoodStyle={setFoodStyle} />}
@@ -182,13 +184,13 @@ export function OnboardingModal() {
                                     whileTap={{ scale: 0.98 }}
                                     onClick={handleNext}
                                     disabled={
-                                        (step === 1 && !nickname.trim()) ||
+                                        (step === 1 && (!nickname.trim() || !mbti)) ||
                                         (step === 2 && preferences.length === 0) ||
                                         (step === 3 && (!planStyle || !paceStyle)) ||
                                         (step === 4 && (!budgetStyle || !foodStyle)) ||
                                         (step === 5 && !lifestyleStyle)
                                     }
-                                    className={`px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 ${((step === 1 && !nickname.trim()) ||
+                                    className={`px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 ${((step === 1 && (!nickname.trim() || !mbti)) ||
                                         (step === 2 && preferences.length === 0) ||
                                         (step === 3 && (!planStyle || !paceStyle)) ||
                                         (step === 4 && (!budgetStyle || !foodStyle)) ||

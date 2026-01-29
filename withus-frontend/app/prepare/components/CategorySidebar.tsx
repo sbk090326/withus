@@ -35,9 +35,9 @@ export const CategorySidebar = ({
 
     if (isHorizontal) {
         return (
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full">
-                {/* 수평 카테고리 탭 */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+            <div className="flex flex-col xl:flex-row items-center justify-between gap-6 w-full">
+                {/* 🚀 프리미엄 퀵배너 (공간 최적화 수평 카테고리) */}
+                <div className="flex items-center gap-1.5 p-1.5 bg-slate-50/50 rounded-[22px] border border-slate-100 shadow-inner overflow-x-auto scrollbar-hide w-full xl:w-auto">
                     {CATEGORIES.map((cat) => {
                         const Icon = cat.icon;
                         const isActive = activeCategory === cat.id;
@@ -45,72 +45,48 @@ export const CategorySidebar = ({
                             <button
                                 key={cat.id}
                                 onClick={() => onCategoryChange(cat.id)}
-                                className={`relative flex items-center gap-2.5 px-6 py-3 rounded-2xl transition-all duration-300 shrink-0 ${isActive
+                                className={`relative flex items-center gap-2.5 px-4.5 py-3 rounded-[18px] transition-all duration-500 shrink-0 group ${isActive
                                     ? 'text-white'
-                                    : 'text-slate-500 hover:text-slate-900'
+                                    : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
                                     }`}
                             >
                                 {isActive && (
                                     <motion.div
-                                        layoutId="activeCategoryBG"
-                                        className="absolute inset-0 bg-slate-900 rounded-2xl shadow-lg shadow-slate-900/20"
-                                        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                                        layoutId="activeCategoryBG_Horizontal"
+                                        className="absolute inset-0 rounded-[18px] shadow-lg shadow-orange-500/20"
+                                        style={{ background: theme.colors.gradients.brand }}
+                                        transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
                                     />
                                 )}
                                 <div className="relative z-10 flex items-center gap-2.5">
-                                    <Icon size={16} className={isActive ? 'text-white' : cat.color} />
-                                    <span className="font-black text-[13px] tracking-tight whitespace-nowrap">
+                                    <div className={`p-1 rounded-lg transition-transform duration-500 ${isActive ? 'bg-white/20' : 'bg-transparent group-hover:scale-110'}`}>
+                                        <Icon size={16} className={isActive ? 'text-white' : cat.color} />
+                                    </div>
+                                    <span className="font-black text-[13.5px] tracking-tight whitespace-nowrap">
                                         {cat.label}
                                     </span>
                                 </div>
                             </button>
                         );
                     })}
-                </div>
-
-                {/* 슬림 준비 현황 배지 */}
-                <div className="flex items-center gap-4 bg-teal-50/50 px-5 py-3 rounded-2xl border border-teal-100/50 shrink-0">
-                    <div className="flex flex-col items-end">
-                        <span className="text-[9px] font-black text-teal-600 uppercase tracking-widest leading-none">준비 현황</span>
-                        <span className="text-[13px] font-black text-slate-900 leading-tight">{progress}% 완료</span>
-                    </div>
-                    <div className="w-12 h-12 rounded-full border-[3px] border-teal-100 flex items-center justify-center relative">
-                        <svg className="w-full h-full -rotate-90">
-                            <circle
-                                cx="24" cy="24" r="20"
-                                fill="transparent"
-                                stroke="currentColor"
-                                strokeWidth="3"
-                                className="text-teal-200/30"
-                            />
-                            <motion.circle
-                                cx="24" cy="24" r="20"
-                                fill="transparent"
-                                stroke="currentColor"
-                                strokeWidth="3"
-                                strokeDasharray={125.6}
-                                initial={{ strokeDashoffset: 125.6 }}
-                                animate={{ strokeDashoffset: 125.6 * (1 - progress / 100) }}
-                                className="text-teal-500"
-                            />
-                        </svg>
-                        <BarChart3 size={14} className="absolute text-teal-600" />
-                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="space-y-8 sticky top-32">
-            {/* 기존 수직 레이아웃 유지 */}
-            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-9">
-                <div className="space-y-1.5">
-                    <span className="text-[10px] font-bold text-orange-500 uppercase tracking-[0.3em] block">카테고리</span>
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">준비 항목</h3>
+        <div className="space-y-6 sticky top-32">
+            {/* 📍 프리미엄 사이드 배너 (공간 최적화) */}
+            <div className="bg-white/90 backdrop-blur-2xl rounded-[32px] p-7 border border-white shadow-xl shadow-slate-200/30 space-y-6">
+                <div className="space-y-1 px-1">
+                    <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                        <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">Category</span>
+                    </div>
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight">준비 항목</h3>
                 </div>
 
-                <div className="flex flex-col gap-1">
+                <nav className="flex flex-col gap-1.5">
                     {CATEGORIES.map((cat) => {
                         const Icon = cat.icon;
                         const isActive = activeCategory === cat.id;
@@ -118,47 +94,51 @@ export const CategorySidebar = ({
                             <button
                                 key={cat.id}
                                 onClick={() => onCategoryChange(cat.id)}
-                                className={`relative w-full flex items-center justify-between px-5 py-4.5 rounded-2xl transition-all duration-300 group ${isActive
+                                className={`relative w-full flex items-center justify-between px-5 py-3.5 rounded-[20px] transition-all duration-500 group ${isActive
                                     ? 'text-white'
-                                    : 'text-slate-500 hover:text-slate-900'
+                                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                                     }`}
                             >
                                 <div className="flex items-center gap-4 relative z-10">
-                                    <div className={`p-2.5 rounded-xl transition-colors ${isActive ? 'bg-white/20' : cat.bg}`}>
+                                    <div className={`w-10 h-10 rounded-1.5xl flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-white/20 shadow-inner' : cat.bg}`}>
                                         <Icon size={18} className={isActive ? 'text-white' : cat.color} />
                                     </div>
-                                    <span className="font-bold text-[14px] tracking-tight">
-                                        {cat.label}
-                                    </span>
+                                    <div className="flex flex-col items-start translate-y-[0.5px]">
+                                        <span className="font-black text-[14px] tracking-tight">{cat.label}</span>
+                                        {!isActive && <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-slate-500 transition-colors">보기</span>}
+                                    </div>
                                 </div>
                                 {isActive && (
                                     <motion.div
-                                        layoutId="activeCategoryTab"
-                                        className="absolute inset-0 bg-slate-900 rounded-2xl shadow-xl shadow-slate-900/20"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                        layoutId="activeCategoryTab_Vertical"
+                                        className="absolute inset-0 rounded-[20px] shadow-lg shadow-orange-500/20"
+                                        style={{ background: theme.colors.gradients.brand }}
+                                        transition={{ type: "spring", bounce: 0.2, duration: 0.7 }}
                                     />
                                 )}
                                 {isActive && (
-                                    <CheckCircle2 size={16} className="relative z-10 text-orange-400" />
+                                    <div className="relative z-10 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+                                        <ChevronRight size={16} className="text-white" />
+                                    </div>
                                 )}
                             </button>
                         );
                     })}
-                </div>
+                </nav>
             </div>
 
-            {/* 준비 요약 박스 (내 여행 데이터와 100% 연동) */}
-            <div className="bg-slate-50/50 rounded-[32px] p-8 border border-slate-100 space-y-8 relative overflow-hidden group transition-all hover:bg-white hover:shadow-xl hover:shadow-slate-200/20">
-                <div className="relative z-10 space-y-6">
-                    <div className="space-y-5">
+            {/* 준비 요약 박스 (슬림화) */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-[32px] p-6 border border-white shadow-lg shadow-slate-200/20 space-y-6 relative overflow-hidden group transition-all hover:bg-white">
+                <div className="relative z-10 space-y-5">
+                    <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-teal-600 uppercase tracking-[0.3em] flex items-center gap-2">
+                            <span className="text-[9px] font-black text-teal-600 uppercase tracking-[0.2em] flex items-center gap-2">
                                 <BarChart3 size={14} />
-                                실시간 준비 현황
+                                준비 현황
                             </span>
-                            <span className="text-[14px] font-black text-slate-900">{progress}%</span>
+                            <span className="text-[13px] font-black text-slate-900">{progress}%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-slate-200/50 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                             <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${progress}%` }}
@@ -166,22 +146,17 @@ export const CategorySidebar = ({
                                 style={{ background: theme.colors.gradients.brand }}
                             />
                         </div>
-                        <div className="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                            <p className="text-[13px] font-bold text-slate-600 leading-relaxed">
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50">
+                            <p className="text-[12px] font-bold text-slate-600 leading-relaxed">
                                 <span className="text-slate-900 font-black">{selectedTrip.title}</span><br />
-                                총 {totalCount}개의 준비물 중 {completedCount}개를 완료했습니다!
-                            </p>
-                            <p className="text-[11px] font-bold text-teal-600 mt-2">
-                                * 우측 공동 체크리스트에서 관리 가능
+                                {totalCount}개 중 {completedCount}개 완료!
                             </p>
                         </div>
                     </div>
 
-                    <div className="pt-2">
-                        <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
-                            동행과 실시간으로 공유되고 있어요
-                            <CheckCircle2 size={12} className="text-teal-500" />
-                        </div>
+                    <div className="flex items-center justify-between text-[10px] font-bold text-slate-400">
+                        동행과 실시간 공유 중
+                        <CheckCircle2 size={12} className="text-teal-500" />
                     </div>
                 </div>
             </div>

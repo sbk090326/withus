@@ -2,25 +2,24 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, Smile, Paperclip, MoreHorizontal } from 'lucide-react';
-import { palette } from '@/app/components/design-system/constants';
+import { X, Send, Smile, Paperclip, MoreHorizontal, Users } from 'lucide-react';
 
-interface ChatDrawerProps {
+interface TeamChatDrawerProps {
     isOpen: boolean;
     onClose: () => void;
-    recipient: {
-        name: string;
-        image: string;
-    };
+    tripTitle: string;
 }
 
-export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
+const MOCK_MESSAGES = [
+    { id: 1, text: "안녕하세요! 포르투갈 서핑 정복기 팀 채팅방입니다. 👋", sender: "system", time: "10:00 AM" },
+    { id: 2, text: "다들 짐은 잘 싸고 계신가요?", sender: "me", time: "10:02 AM" },
+    { id: 3, text: "저는 어제 구명조끼 샀어요! 🏄‍♀️", sender: "other1", senderName: "김지현", time: "10:05 AM", senderImage: "👩‍🦰" },
+    { id: 4, text: "오 좋네요! 저는 서핑 슈트 빌릴 생각이에요.", sender: "other2", senderName: "이승우", time: "10:08 AM", senderImage: "👱‍♂️" },
+];
+
+export const TeamChatDrawer = ({ isOpen, onClose, tripTitle }: TeamChatDrawerProps) => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([
-        { id: 1, text: "안녕하세요! 게시글 보고 메시지 드려요. 😊", sender: "me", time: "10:02 AM" },
-        { id: 2, text: "오! 반갑습니다 지니님! 파리 여행 같이 가고 싶어요!", sender: "me", time: "10:02 AM" },
-        { id: 3, text: "안녕하세요! 네 환영합니다 ㅎㅎ 어떤 일정 선호하시나요?", sender: "them", time: "10:05 AM" },
-    ]);
+    const [messages, setMessages] = useState(MOCK_MESSAGES);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -34,24 +33,26 @@ export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
         if (!message.trim()) return;
 
         const newMessage = {
-            id: messages.length + 1,
+            id: Date.now(),
             text: message,
             sender: "me",
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
 
-        setMessages([...messages, newMessage]);
+        setMessages([...messages, newMessage as any]);
         setMessage('');
 
         // Simulate reply
         setTimeout(() => {
             const reply = {
-                id: messages.length + 2,
-                text: "좋아요! 구체적인 장소는 어디로 생각하시나요?",
-                sender: "them",
+                id: Date.now() + 1,
+                text: "현지 맛집은 제가 좀 알아왔어요!",
+                sender: "other1",
+                senderName: "김지현",
+                senderImage: "👩‍🦰",
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
-            setMessages(prev => [...prev, reply]);
+            setMessages(prev => [...prev, reply as any]);
         }, 1500);
     };
 
@@ -79,14 +80,14 @@ export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
                         {/* Header */}
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-2xl border-2 border-white shadow-sm font-bold">
-                                    {recipient.image}
+                                <div className="w-12 h-12 rounded-2xl bg-orange-500 flex items-center justify-center text-white border-2 border-white shadow-sm">
+                                    <Users size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="font-extrabold text-slate-900">{recipient.name}님과의 대화</h3>
+                                    <h3 className="font-extrabold text-slate-900 line-clamp-1">{tripTitle}</h3>
                                     <div className="flex items-center gap-1.5">
-                                        <div className="w-2 h-2 rounded-full bg-green-500" />
-                                        <span className="text-xs text-slate-400 font-medium">현재 활동 중</span>
+                                        <div className="w-2 h-2 rounded-full bg-teal-500" />
+                                        <span className="text-xs text-slate-400 font-medium">3명 참여 중</span>
                                     </div>
                                 </div>
                             </div>
@@ -110,37 +111,52 @@ export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
                         >
                             <div className="text-center">
                                 <span className="inline-block px-3 py-1 rounded-full bg-slate-100 text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-8">
-                                    Conversation Started
+                                    Team Chat Created
                                 </span>
                             </div>
 
-                            {messages.map((msg) => (
-                                <div
-                                    key={msg.id}
-                                    className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}
-                                >
-                                    <div className={`flex gap-3 max-w-[85%] ${msg.sender === 'me' ? 'flex-row-reverse' : 'flex-row'}`}>
-                                        {msg.sender !== 'me' && (
-                                            <div className="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-xl shrink-0 shadow-sm mt-1">
-                                                {recipient.image}
-                                            </div>
-                                        )}
-                                        <div className={`flex flex-col ${msg.sender === 'me' ? 'items-end' : 'items-start'}`}>
-                                            <div
-                                                className={`px-5 py-3 rounded-2xl text-sm font-bold shadow-sm ${msg.sender === 'me'
-                                                    ? 'bg-slate-900 text-white rounded-tr-none'
-                                                    : 'bg-white text-slate-700 rounded-tl-none border border-slate-100'
-                                                    }`}
-                                            >
+                            {messages.map((msg) => {
+                                if (msg.sender === 'system') {
+                                    return (
+                                        <div key={msg.id} className="flex justify-center">
+                                            <span className="bg-slate-200/50 text-slate-500 text-[11px] px-4 py-1.5 rounded-full font-bold">
                                                 {msg.text}
-                                            </div>
-                                            <span className="text-[9px] text-slate-300 mt-1.5 font-black uppercase tracking-tighter px-1">
-                                                {msg.time}
                                             </span>
                                         </div>
+                                    );
+                                }
+
+                                return (
+                                    <div
+                                        key={msg.id}
+                                        className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className={`flex gap-3 max-w-[85%] ${msg.sender === 'me' ? 'flex-row-reverse' : 'flex-row'}`}>
+                                            {msg.sender !== 'me' && (
+                                                <div className="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-xl shrink-0 shadow-sm mt-1">
+                                                    {msg.senderImage}
+                                                </div>
+                                            )}
+                                            <div className={`flex flex-col ${msg.sender === 'me' ? 'items-end' : 'items-start'}`}>
+                                                {msg.sender !== 'me' && (
+                                                    <span className="text-[11px] font-black text-slate-400 mb-1 ml-1">{msg.senderName}</span>
+                                                )}
+                                                <div
+                                                    className={`px-5 py-3 rounded-2xl text-sm font-bold shadow-sm ${msg.sender === 'me'
+                                                        ? 'bg-slate-900 text-white rounded-tr-none'
+                                                        : 'bg-white text-slate-700 rounded-tl-none border border-slate-100'
+                                                        }`}
+                                                >
+                                                    {msg.text}
+                                                </div>
+                                                <span className="text-[9px] text-slate-300 mt-1.5 font-black uppercase tracking-tighter px-1">
+                                                    {msg.time}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {/* Input Area */}
@@ -155,7 +171,7 @@ export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
                                 <textarea
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="메시지를 입력하세요..."
+                                    placeholder="팀원들과 대화해 보세요..."
                                     className="flex-1 bg-transparent border-none focus:ring-0 py-3 text-sm font-bold resize-none max-h-32 scrollbar-hide leading-relaxed"
                                     rows={1}
                                     onKeyDown={(e) => {
@@ -178,9 +194,6 @@ export const ChatDrawer = ({ isOpen, onClose, recipient }: ChatDrawerProps) => {
                                     </motion.button>
                                 </div>
                             </form>
-                            <p className="text-[10px] text-center text-slate-400 mt-4 font-medium">
-                                안전한 동행을 위해 개인정보 공유 시 주의해 주세요.
-                            </p>
                         </div>
                     </motion.div>
                 </>

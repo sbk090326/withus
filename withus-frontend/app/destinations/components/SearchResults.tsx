@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Calendar, Users, Heart, Download, X, SlidersHorizontal, Pin } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
 import { SearchFilterPanel } from '@/app/components/ui/SearchFilterPanel';
+import { LoadMoreButton } from '@/app/components/ui/LoadMoreButton';
 
 interface SearchResultsProps {
     query: string;
@@ -68,6 +69,39 @@ const mockSearchResults = (query: string) => {
             saves: 892,
             tags: ["유럽", "배낭여행", "파리", "로마"],
             route: ["파리", "로마", "바르셀로나", "암스테르담"]
+        },
+        {
+            id: 6,
+            title: "스위스 만년설 하이킹 8박 9일",
+            location: "스위스, 인터라켄",
+            duration: "8박 9일",
+            image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?auto=format&fit=crop&q=80&w=600",
+            likes: 2100,
+            saves: 954,
+            tags: ["스위스", "자연", "하이킹"],
+            route: ["융프라우", "라우터브루넨", "그린델발트"]
+        },
+        {
+            id: 7,
+            title: "뉴욕 미드타운 시티 워크",
+            location: "미국, 뉴욕",
+            duration: "5박 6일",
+            image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=600",
+            likes: 1840,
+            saves: 720,
+            tags: ["뉴욕", "도시", "미국"],
+            route: ["타임스퀘어", "센트럴파크", "브루클린"]
+        },
+        {
+            id: 8,
+            title: "아이슬란드 링로드 투어 10일",
+            location: "아이슬란드",
+            duration: "9박 10일",
+            image: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&q=80&w=600",
+            likes: 3200,
+            saves: 1450,
+            tags: ["아이슬란드", "자연", "로드트립"],
+            route: ["레이캬비크", "비크", "요쿨살롱"]
         }
     ];
 
@@ -82,7 +116,21 @@ const mockSearchResults = (query: string) => {
 
 export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
     const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-    const results = mockSearchResults(query);
+    const [visibleCount, setVisibleCount] = React.useState(3);
+    const [isMoreLoading, setIsMoreLoading] = React.useState(false);
+
+    const allResults = mockSearchResults(query);
+
+    const handleLoadMore = () => {
+        setIsMoreLoading(true);
+        setTimeout(() => {
+            setVisibleCount(prev => prev + 3);
+            setIsMoreLoading(false);
+        }, 600);
+    };
+
+    const hasMore = visibleCount < allResults.length;
+    const paginatedResults = allResults.slice(0, visibleCount);
 
     return (
         <motion.section
@@ -108,7 +156,7 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                             </h2>
                         </motion.div>
                         <p className="text-slate-600 font-medium">
-                            총 <span className="font-bold text-orange-600">{results.length}개</span>의 루트를 찾았습니다
+                            총 <span className="font-bold text-orange-600">{allResults.length}개</span>의 루트를 찾았습니다
                         </p>
                     </div>
 
@@ -130,11 +178,17 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                 </div>
 
                 {/* Shared Filter Panel */}
-                <SearchFilterPanel isOpen={isFilterOpen} className="mb-8" />
+                <SearchFilterPanel
+                    isOpen={isFilterOpen}
+                    className="mb-8"
+                    groups={[]}
+                    activeFilters={{}}
+                    onFilterChange={() => { }}
+                />
 
 
                 {/* Results Grid */}
-                {results.length === 0 ? (
+                {allResults.length === 0 ? (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -151,84 +205,97 @@ export const SearchResults = ({ query, onClose }: SearchResultsProps) => {
                         </button>
                     </motion.div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {results.map((result, index) => (
-                            <motion.div
-                                key={result.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="group bg-white rounded-[32px] overflow-hidden border border-slate-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-100/50 transition-all duration-500 cursor-pointer"
-                            >
-                                {/* Image */}
-                                <div className="relative h-56 overflow-hidden">
-                                    <motion.img
-                                        src={result.image}
-                                        alt={result.title}
-                                        className="w-full h-full object-cover"
-                                        whileHover={{ scale: 1.1 }}
-                                        transition={{ duration: 0.6 }}
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {paginatedResults.map((result, index) => (
+                                <motion.div
+                                    key={result.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group bg-white rounded-[32px] overflow-hidden border border-slate-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-100/50 transition-all duration-500 cursor-pointer"
+                                >
+                                    {/* Image */}
+                                    <div className="relative h-56 overflow-hidden">
+                                        <motion.img
+                                            src={result.image}
+                                            alt={result.title}
+                                            className="w-full h-full object-cover"
+                                            whileHover={{ scale: 1.1 }}
+                                            transition={{ duration: 0.6 }}
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                                    {/* Stats */}
-                                    <div className="absolute bottom-4 left-4 right-4 flex items-center gap-4 text-white text-sm font-bold">
-                                        <div className="flex items-center gap-1">
-                                            <Heart size={14} />
-                                            {result.likes}
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <Pin size={14} />
-                                            {result.saves}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-6 space-y-4">
-                                    <h3 className="font-bold text-lg text-slate-900 line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors">
-                                        {result.title}
-                                    </h3>
-
-                                    <div className="flex flex-wrap gap-3 text-sm text-slate-500">
-                                        <div className="flex items-center gap-1">
-                                            <MapPin size={14} />
-                                            {result.location}
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <Calendar size={14} />
-                                            {result.duration}
+                                        {/* Stats */}
+                                        <div className="absolute bottom-4 left-4 right-4 flex items-center gap-4 text-white text-sm font-bold">
+                                            <div className="flex items-center gap-1">
+                                                <Heart size={14} />
+                                                {result.likes}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Pin size={14} />
+                                                {result.saves}
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* Route Preview */}
-                                    <div className="flex flex-wrap gap-2">
-                                        {result.route.slice(0, 2).map((point, i) => (
-                                            <span key={i} className="px-2 py-1 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg">
-                                                {point}
-                                            </span>
-                                        ))}
-                                        {result.route.length > 2 && (
-                                            <span className="px-2 py-1 bg-slate-50 text-slate-400 text-xs font-bold rounded-lg">
-                                                +{result.route.length - 2}
-                                            </span>
-                                        )}
-                                    </div>
+                                    {/* Content */}
+                                    <div className="p-6 space-y-4">
+                                        <h3 className="font-bold text-lg text-slate-900 line-clamp-2 leading-tight group-hover:text-orange-600 transition-colors">
+                                            {result.title}
+                                        </h3>
 
-                                    {/* Actions */}
-                                    <div className="flex gap-2 pt-2">
-                                        <button className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-orange-500 transition-all flex items-center justify-center gap-2">
-                                            <Download size={14} />
-                                            담기
-                                        </button>
-                                        <button className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-sm hover:border-orange-200 hover:text-orange-600 hover:bg-orange-50 transition-all">
-                                            상세
-                                        </button>
+                                        <div className="flex flex-wrap gap-3 text-sm text-slate-500">
+                                            <div className="flex items-center gap-1">
+                                                <MapPin size={14} />
+                                                {result.location}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Calendar size={14} />
+                                                {result.duration}
+                                            </div>
+                                        </div>
+
+                                        {/* Route Preview */}
+                                        <div className="flex flex-wrap gap-2">
+                                            {result.route.slice(0, 2).map((point, i) => (
+                                                <span key={i} className="px-2 py-1 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg">
+                                                    {point}
+                                                </span>
+                                            ))}
+                                            {result.route.length > 2 && (
+                                                <span className="px-2 py-1 bg-slate-50 text-slate-400 text-xs font-bold rounded-lg">
+                                                    +{result.route.length - 2}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex gap-2 pt-2">
+                                            <button className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-orange-500 transition-all flex items-center justify-center gap-2">
+                                                <Download size={14} />
+                                                담기
+                                            </button>
+                                            <button className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-sm hover:border-orange-200 hover:text-orange-600 hover:bg-orange-50 transition-all">
+                                                상세
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {hasMore && (
+                            <LoadMoreButton
+                                onClick={handleLoadMore}
+                                isLoading={isMoreLoading}
+                                label="검색 결과"
+                                visibleCount={visibleCount}
+                                totalCount={allResults.length}
+                                className="pt-16"
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </motion.section>
