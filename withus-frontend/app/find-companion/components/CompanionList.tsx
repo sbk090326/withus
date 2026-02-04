@@ -6,6 +6,7 @@ import { MapView } from './MapView';
 import { CompanionSkeleton } from './CompanionSkeleton';
 import { SearchFilterPanel, FilterGroup } from '../../components/ui/SearchFilterPanel';
 import { LoadMoreButton } from '../../components/ui/LoadMoreButton';
+import { ResponsivePagination } from '../../components/ui/ResponsivePagination';
 
 const mockCompanions = [
     {
@@ -110,6 +111,108 @@ const mockCompanions = [
         maxPeople: 4,
         route: ['트레비 분수', '판테온', '콜로세움']
     },
+    {
+        id: 7,
+        user: { name: '하나', image: '👩', tags: ['#요가', '#힐링', '#자연'] },
+        title: '발리 우붓 요가 리트릿 함께 하실 분! 🧘‍♀️',
+        location: '인도네시아, 발리',
+        date: '2026.06.01 - 2026.06.07',
+        matchScore: 95,
+        likeCount: 28,
+        thumbnail: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800',
+        targetGender: '여성만',
+        targetAge: '20-30대',
+        isSmoker: '비흡연자만',
+        budget: '60만원',
+        currentPeople: 2,
+        maxPeople: 4,
+        route: ['우붓', '테갈랄랑 계단식 논', '몽키 포레스트']
+    },
+    {
+        id: 8,
+        user: { name: '준호', image: '🧑‍🎨', tags: ['#사진', '#일출', '#트레킹'] },
+        title: '스위스 융프라우 트레킹 & 사진 촬영 동행',
+        location: '스위스, 인터라켄',
+        date: '2026.07.15 - 2026.07.22',
+        matchScore: 91,
+        likeCount: 22,
+        thumbnail: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '20-30대',
+        isSmoker: '비흡연자만',
+        budget: '100만원',
+        currentPeople: 1,
+        maxPeople: 3,
+        route: ['융프라우', '그린델발트', '라우터브루넨']
+    },
+    {
+        id: 9,
+        user: { name: '수진', image: '👩‍🦱', tags: ['#쇼핑', '#카페투어', '#패션'] },
+        title: '도쿄 하라주쿠 쇼핑 & 카페 투어 같이 해요!',
+        location: '일본, 도쿄',
+        date: '2026.05.20 - 2026.05.25',
+        matchScore: 87,
+        likeCount: 35,
+        thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=800',
+        targetGender: '여성만',
+        targetAge: '20대',
+        isSmoker: '상관없음',
+        budget: '40만원',
+        currentPeople: 3,
+        maxPeople: 4,
+        route: ['하라주쿠', '시부야', '오모테산도']
+    },
+    {
+        id: 10,
+        user: { name: '민석', image: '🧑‍💼', tags: ['#와인', '#미식', '#럭셔리'] },
+        title: '프랑스 보르도 와이너리 투어 동행 구합니다 🍷',
+        location: '프랑스, 보르도',
+        date: '2026.09.10 - 2026.09.17',
+        matchScore: 84,
+        likeCount: 16,
+        thumbnail: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '30대 이상',
+        isSmoker: '상관없음',
+        budget: '150만원',
+        currentPeople: 2,
+        maxPeople: 4,
+        route: ['메독', '생테밀리옹', '포므롤']
+    },
+    {
+        id: 11,
+        user: { name: '예린', image: '👧', tags: ['#다이빙', '#바다', '#수영'] },
+        title: '필리핀 세부 스쿠버다이빙 자격증 따러 가요!',
+        location: '필리핀, 세부',
+        date: '2026.08.01 - 2026.08.10',
+        matchScore: 93,
+        likeCount: 41,
+        thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '전체',
+        isSmoker: '비흡연자만',
+        budget: '50만원',
+        currentPeople: 1,
+        maxPeople: 2,
+        route: ['막탄', '모알보알', '오슬롭']
+    },
+    {
+        id: 12,
+        user: { name: '태양', image: '🧑‍🚀', tags: ['#오로라', '#사진', '#겨울'] },
+        title: '아이슬란드 오로라 헌팅 & 빙하 트레킹 🌌',
+        location: '아이슬란드, 레이캬비크',
+        date: '2026.11.01 - 2026.11.10',
+        matchScore: 96,
+        likeCount: 52,
+        thumbnail: 'https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&q=80&w=800',
+        targetGender: '성별무관',
+        targetAge: '전체',
+        isSmoker: '상관없음',
+        budget: '200만원',
+        currentPeople: 2,
+        maxPeople: 4,
+        route: ['골든 서클', '요쿨살론', '블루라군']
+    },
 
 ];
 
@@ -123,12 +226,15 @@ export const CompanionList = () => {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success'>('idle');
     const [isMoreLoading, setIsMoreLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 6;
 
     useEffect(() => {
         // Simulate initial loading
+        setCurrentPage(1);  // 👈 페이지 초기화 추가
         const timer = setTimeout(() => setIsLoading(false), 1500);
         return () => clearTimeout(timer);
-    }, []);
+    }, [activeTab, filters]);  // 👈 의존성 배열 수정 (탭이나 필터 변경 시 1페이지로)
 
     const filterGroups: FilterGroup[] = [
         { id: 'gender', label: '선호 성별', type: 'single-select', options: ['전체', '남성만', '여성만', '성별 무관'], activeColor: 'orange' },
@@ -154,10 +260,15 @@ export const CompanionList = () => {
         }, 1500);
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const handleLoadMore = () => {
         setIsMoreLoading(true);
-        // Simulate API call to fetch more data
         setTimeout(() => {
+            setCurrentPage(prev => prev + 1);
             setIsMoreLoading(false);
         }, 1500);
     };
@@ -182,9 +293,13 @@ export const CompanionList = () => {
     };
 
     const displayCompanions = getSortedCompanions();
+    const totalPages = Math.ceil(displayCompanions.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedCompanions = displayCompanions.slice(startIndex, endIndex);
 
     return (
-        <div className="w-full max-w-[1200px] mx-auto px-6 pb-32">
+        <div className="w-full max-w-[1400px] mx-auto px-6 pb-32 mt-16">
             {/* Toolbar */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                 <div className="flex items-center gap-6">
@@ -369,22 +484,25 @@ export const CompanionList = () => {
                     >
                         {/* Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {displayCompanions.map((comp, idx) => (
+                            {paginatedCompanions.map((comp, idx) => (
                                 <CompanionCard key={comp.id} companion={comp} index={idx} />
                             ))}
                         </div>
 
-                        {/* Load More Section */}
-                        {displayCompanions.length >= 6 && (
-                            <LoadMoreButton
-                                onClick={handleLoadMore}
-                                isLoading={isMoreLoading}
-                                visibleCount={displayCompanions.length}
-                                totalCount={mockCompanions.length}
+                        {/* Responsive Pagination */}
+                        {displayCompanions.length > ITEMS_PER_PAGE && (
+                            <ResponsivePagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                                onLoadMore={handleLoadMore}
+                                isLoadMoreLoading={isMoreLoading}
+                                visibleCount={currentPage * ITEMS_PER_PAGE}
+                                totalCount={displayCompanions.length}
                                 label="동행"
+                                className="mt-16"
                             />
                         )}
-
                         {displayCompanions.length === 0 && (
                             <div className="py-40 text-center">
                                 <div className="text-6xl mb-6">🔍</div>

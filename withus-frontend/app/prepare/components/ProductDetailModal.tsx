@@ -111,7 +111,7 @@ export const ProductDetailModal = ({ isOpen, onClose, item, category }: ProductD
 
                                     <p className="text-slate-600 text-[17px] leading-[1.8] whitespace-pre-wrap font-medium">
                                         {item.name}은(는) 여행자들 사이에서 가장 선호되는 {item.type} 상품입니다.
-                                        위더스만의 특별한 검증 과정을 통과하였으며, 동행들과 함께하기에 최상의 조화를 자랑합니다.
+                                        WithUs만의 특별한 검증 과정을 통과하였으며, 동행들과 함께하기에 최상의 조화를 자랑합니다.
                                         {"\n\n"}
                                         별도의 복잡한 절차 없이 예약 버튼을 누르는 것만으로도, 공동 체크리스트와 일정표에 정보가 즉시 업데이트되어 팀원들과 실시간으로 공유됩니다.
                                     </p>

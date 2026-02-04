@@ -114,7 +114,7 @@ export const OfficialGuides = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter"
                         >
-                            위더스가 직접 큐레이션한 <br />
+                            WithUs가 직접 큐레이션한 <br />
                             <span className="text-transparent bg-clip-text" style={{ backgroundImage: theme.colors.gradients.brand }}>공식 여행 가이드</span>
                         </motion.h2>
                     </div>

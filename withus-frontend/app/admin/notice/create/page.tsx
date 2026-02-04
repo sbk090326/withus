@@ -54,8 +54,8 @@ export default function CreateNoticePage() {
                         <button
                             onClick={() => setIsPreview(!isPreview)}
                             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all border ${isPreview
-                                    ? 'bg-slate-900 text-white border-slate-900'
-                                    : 'bg-white text-slate-600 border-slate-100 hover:border-slate-300'
+                                ? 'bg-slate-900 text-white border-slate-900'
+                                : 'bg-white text-slate-600 border-slate-100 hover:border-slate-300'
                                 }`}
                         >
                             <Eye size={18} />
@@ -91,8 +91,8 @@ export default function CreateNoticePage() {
                                                 key={cat}
                                                 onClick={() => setCategory(cat)}
                                                 className={`px-4 py-2 rounded-xl text-xs font-black transition-all border ${category === cat
-                                                        ? 'bg-orange-500 border-orange-500 text-white shadow-lg'
-                                                        : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'
+                                                    ? 'bg-orange-500 border-orange-500 text-white shadow-lg'
+                                                    : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'
                                                     }`}
                                             >
                                                 {cat}
@@ -141,7 +141,7 @@ export default function CreateNoticePage() {
                                             {title || '제목이 여기에 표시됩니다'}
                                         </h1>
                                         <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
-                                            <span>위더스 운영지원팀</span>
+                                            <span>WithUs 운영지원팀</span>
                                             <div className="w-1 h-1 rounded-full bg-slate-200" />
                                             <span>방금 전</span>
                                         </div>

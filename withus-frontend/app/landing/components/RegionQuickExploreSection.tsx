@@ -58,6 +58,8 @@ const recipes: Recipe[] = [
     },
     {
         id: '4',
+
+
         title: '방콕 야시장 탐방',
         region: '태국',
         regionType: '해외',

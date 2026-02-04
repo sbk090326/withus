@@ -22,7 +22,7 @@ import { DataTable } from '../components/DataTable';
 const mockNotices = [
     {
         id: 1,
-        title: "📢 위더스 이용 약관 및 포인트 정책 개정 안내",
+        title: "📢 WithUs 이용 약관 및 포인트 정책 개정 안내",
         category: "시스템",
         status: "Published",
         writer: "운영팀",
@@ -106,8 +106,8 @@ export default function AdminNoticePage() {
                             <td className="px-8 py-6 text-sm font-bold text-slate-400 text-center">{notice.id}</td>
                             <td className="px-8 py-6">
                                 <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${notice.status === 'Published'
-                                        ? 'bg-emerald-50 text-emerald-600'
-                                        : 'bg-orange-50 text-orange-600'
+                                    ? 'bg-emerald-50 text-emerald-600'
+                                    : 'bg-orange-50 text-orange-600'
                                     }`}>
                                     {notice.status === 'Published' ? <CheckCircle2 size={12} /> : <EyeOff size={12} />}
                                     {notice.status}

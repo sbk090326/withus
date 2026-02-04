@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { EventCard } from './EventCard';
 import { LoadMoreButton } from '@/app/components/ui/LoadMoreButton';
+import { ResponsivePagination } from '@/app/components/ui/ResponsivePagination';
 
 const ONGOING_EVENTS = [
     {
@@ -53,8 +54,8 @@ const ONGOING_EVENTS = [
     },
     {
         id: 6,
-        title: '위더스 커뮤니티 출석 체크 📅',
-        description: '매일매일 위더스에 방문하고 출석 도장을 찍으세요. 한 달 개근 시 5,000 포인트가 쏟아집니다.',
+        title: 'WithUs 커뮤니티 출석 체크 📅',
+        description: '매일매일 WithUs에 방문하고 출석 도장을 찍으세요. 한 달 개근 시 5,000 포인트가 쏟아집니다.',
         image: 'https://images.unsplash.com/photo-1506784982277-4c5999c7596b?auto=format&fit=crop&q=80&w=800',
         date: '상시 진행',
         category: 'SUPPORT',
@@ -72,22 +73,29 @@ const ONGOING_EVENTS = [
 ];
 
 export const EventList = ({ activeTab }: { activeTab: string }) => {
-    const [visibleCount, setVisibleCount] = React.useState(3);
     const [isMoreLoading, setIsMoreLoading] = React.useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 3; // 페이지당 이벤트 수
 
     // In real app, filter data based on activeTab
     const displayEvents = ONGOING_EVENTS;
 
+    const totalPages = Math.ceil(displayEvents.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedEvents = displayEvents.slice(startIndex, endIndex);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     const handleLoadMore = () => {
         setIsMoreLoading(true);
         setTimeout(() => {
-            setVisibleCount(prev => prev + 3);
+            setCurrentPage(prev => prev + 1);
             setIsMoreLoading(false);
         }, 600);
     };
-
-    const hasMore = visibleCount < displayEvents.length;
-    const paginatedEvents = displayEvents.slice(0, visibleCount);
 
     return (
         <div className="max-w-[1240px] mx-auto px-6 pb-24">
@@ -97,14 +105,17 @@ export const EventList = ({ activeTab }: { activeTab: string }) => {
                 ))}
             </div>
 
-            {hasMore && (
-                <LoadMoreButton
-                    onClick={handleLoadMore}
-                    isLoading={isMoreLoading}
-                    label="이벤트"
-                    visibleCount={visibleCount}
+            {displayEvents.length > ITEMS_PER_PAGE && (
+                <ResponsivePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    onLoadMore={handleLoadMore}
+                    isLoadMoreLoading={isMoreLoading}
+                    visibleCount={currentPage * ITEMS_PER_PAGE}
                     totalCount={displayEvents.length}
-                    className="pt-12"
+                    label="이벤트"
+                    className='mt-16'
                 />
             )}
         </div>

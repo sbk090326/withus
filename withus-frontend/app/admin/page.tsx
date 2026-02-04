@@ -47,7 +47,7 @@ export default function AdminDashboard() {
                 <header className="flex items-center justify-between mb-16">
                     <div>
                         <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">어드민 대시보드</h2>
-                        <p className="text-slate-500 font-bold">위더스 플랫폼의 실시간 운영 현황을 확인하세요.</p>
+                        <p className="text-slate-500 font-bold">WithUs 플랫폼의 실시간 운영 현황을 확인하세요.</p>
                     </div>
                     <div className="flex gap-4">
                         <div className="px-6 py-3 rounded-2xl bg-white border border-slate-100 flex items-center gap-3">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
                                 <div key={i} className="bg-white p-6 rounded-[2rem] border border-slate-100 flex items-center justify-between hover:border-orange-200 transition-all cursor-pointer">
                                     <div className="flex items-center gap-6">
                                         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.status === 'urgent' ? 'bg-red-50 text-red-500' :
-                                                item.status === 'review' ? 'bg-emerald-50 text-emerald-500' : 'bg-slate-50 text-slate-500'
+                                            item.status === 'review' ? 'bg-emerald-50 text-emerald-500' : 'bg-slate-50 text-slate-500'
                                             }`}>
                                             {item.type === 'identity' ? <ShieldCheck size={20} /> :
                                                 item.type === 'report' ? <AlertCircle size={20} /> : <MapPin size={20} />}

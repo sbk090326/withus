@@ -33,16 +33,12 @@ export const CommunityHero = ({ onAddPost }: CommunityHeroProps) => {
                             <MessageSquare size={16} className="text-teal-500" />
                             <span className="text-xs font-bold text-slate-600">WithUs Community</span>
                         </div>
-                        <h1 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight mb-6">
+                        <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-[1.2] tracking-tight">
                             여행의 즐거움, <br />
                             <span className="text-transparent bg-clip-text" style={{ backgroundImage: theme.colors.gradients.brand }}>
                                 함께 나누면 두 배
                             </span>
                         </h1>
-                        <p className="text-lg text-slate-600 font-medium">
-                            고민되는 일정부터 나만 알고 있는 숨은 맛집까지, <br />
-                            WithUs 여행자들과 함께 이야기를 나눠보세요.
-                        </p>
                     </motion.div>
 
                     <motion.div

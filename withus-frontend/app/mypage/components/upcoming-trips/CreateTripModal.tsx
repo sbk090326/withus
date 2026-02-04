@@ -65,7 +65,7 @@ export const CreateTripModal = ({
                                     ✨
                                 </div>
                                 <div>
-                                    <div className="font-bold text-slate-800 text-sm">위더스 여행 가이드</div>
+                                    <div className="font-bold text-slate-800 text-sm">WithUs 여행 가이드</div>
                                     <div className="text-xs text-slate-400 flex items-center gap-1">
                                         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
                                         여정 설계 중

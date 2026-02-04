@@ -8,7 +8,7 @@ const FEATURED_EVENTS = [
     {
         id: 1,
         title: '함께 떠나는 즐거움,',
-        highlight: '위더스 특별 혜택',
+        highlight: 'WithUs 특별 혜택',
         description: '매일 쏟아지는 새로운 혜택과 즐거운 도전을 확인하세요. 동행과 함께라면 여행의 즐거움은 두 배가 됩니다.',
         image: '/event_hero_banner.png',
     },
@@ -16,7 +16,7 @@ const FEATURED_EVENTS = [
         id: 2,
         title: '새로운 시작을 응원하는',
         highlight: '첫 동행 웰컴 포인트',
-        description: '위더스와 함께하는 첫 번째 여행! 성공적으로 첫 커뮤니티 활동을 완료하면 즉시 사용 가능한 1만 포인트를 드립니다.',
+        description: 'WithUs와 함께하는 첫 번째 여행! 성공적으로 첫 커뮤니티 활동을 완료하면 즉시 사용 가능한 1만 포인트를 드립니다.',
         image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2000',
     },
     {

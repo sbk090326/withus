@@ -52,7 +52,7 @@ export default function EventsPage() {
 
                     <div className="relative z-10 space-y-4">
                         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-                            아직 위더스 회원이 아니신가요? <br />
+                            아직 WithUs 회원이 아니신가요? <br />
                             <span className="text-white/80">지금 가입하고 첫 동행의 설렘을 느껴보세요!</span>
                         </h2>
                         <p className="text-white/70 font-medium text-lg">가입 즉시 사용 가능한 웰컴 쿠폰팩이 지급됩니다.</p>

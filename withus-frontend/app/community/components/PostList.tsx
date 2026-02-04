@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { MessageSquare, Heart, Eye, Clock, MapPin, ChevronRight, Save } from 'lucide-react';
 import { LoadMoreButton } from '@/app/components/ui/LoadMoreButton';
+import { ResponsivePagination } from '@/app/components/ui/ResponsivePagination';
 
 interface Post {
     id: number;
@@ -30,9 +31,9 @@ const mockPosts: Post[] = [
         authorId: 0, // 시스템 어카운트
         category: 'notice',
         categoryLabel: '공지사항',
-        title: '📢 위더스 이용 약관 및 포인트 정책 개정 안내',
-        excerpt: '안녕하세요, 위더스 팀입니다. 서비스의 투명성 제고를 위해 이용 약관 및 포인트 사용 정책이 일부 변경되었습니다. 자세한 내용은 전문을 확인해주세요.',
-        author: '위더스 운영지원팀',
+        title: '📢 WithUs 이용 약관 및 포인트 정책 개정 안내',
+        excerpt: '안녕하세요, WithUs 팀입니다. 서비스의 투명성 제고를 위해 이용 약관 및 포인트 사용 정책이 일부 변경되었습니다. 자세한 내용은 전문을 확인해주세요.',
+        author: 'WithUs 운영지원팀',
         authorImage: '🛡️',
         date: '오늘',
         comments: 0,
@@ -113,7 +114,7 @@ const mockPosts: Post[] = [
         categoryLabel: '정보공유',
         title: '2026년 유럽 여행 비자(ETIAS) 발급 총정리',
         excerpt: '유럽 여행 준비하시는 분들 주목! 내년부터 시행되는 ETIAS 비자 발급 방법과 주의사항 핵심만 정리해봤습니다.',
-        author: '위더스운영자',
+        author: 'WithUs운영자',
         authorImage: '📢',
         date: '5시간 전',
         comments: 8,
@@ -197,7 +198,8 @@ interface PostListProps {
 export const PostList = ({ category, currentUserId, onEdit, onDelete, onSelect }: PostListProps) => {
     const [isLoading, setIsLoading] = React.useState(true);
     const [isMoreLoading, setIsMoreLoading] = React.useState(false);
-    const [visibleCount, setVisibleCount] = React.useState(3);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const ITEMS_PER_PAGE = 3;
 
     const filteredPosts = category === 'all'
         ? mockPosts
@@ -207,21 +209,28 @@ export const PostList = ({ category, currentUserId, onEdit, onDelete, onSelect }
         setIsLoading(true);
         const timer = setTimeout(() => {
             setIsLoading(false);
-            setVisibleCount(3);
+            setCurrentPage(1);
         }, 500);
         return () => clearTimeout(timer);
     }, [category]);
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const handleLoadMore = () => {
         setIsMoreLoading(true);
         setTimeout(() => {
-            setVisibleCount(prev => prev + 3);
+            setCurrentPage(prev => prev + 1);
             setIsMoreLoading(false);
         }, 600);
     };
 
-    const hasMore = visibleCount < filteredPosts.length;
-    const paginatedPosts = filteredPosts.slice(0, visibleCount);
+    const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
 
     return (
         <div className="space-y-6">
@@ -352,13 +361,16 @@ export const PostList = ({ category, currentUserId, onEdit, onDelete, onSelect }
                         );
                     })}
 
-                    {hasMore && (
-                        <LoadMoreButton
-                            onClick={handleLoadMore}
-                            isLoading={isMoreLoading}
-                            label="게시글"
-                            visibleCount={visibleCount}
+                    {filteredPosts.length > ITEMS_PER_PAGE && (
+                        <ResponsivePagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                            onLoadMore={handleLoadMore}
+                            isLoadMoreLoading={isMoreLoading}
+                            visibleCount={currentPage * ITEMS_PER_PAGE}
                             totalCount={filteredPosts.length}
+                            label="게시글"
                             className="pt-8"
                         />
                     )}

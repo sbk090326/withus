@@ -33,7 +33,7 @@ const mockOfficialGuides = [
         rating: 4.9,
         reviews: 128,
         status: "Published",
-        writer: "위더스 에디터",
+        writer: "WithUs 에디터",
         date: "2026-01-15",
         views: 8900
     },
@@ -46,7 +46,7 @@ const mockOfficialGuides = [
         rating: 4.8,
         reviews: 245,
         status: "Published",
-        writer: "위더스 에디터",
+        writer: "WithUs 에디터",
         date: "2026-01-10",
         views: 12400
     },
@@ -72,7 +72,7 @@ const mockOfficialGuides = [
         rating: 4.9,
         reviews: 312,
         status: "Draft",
-        writer: "위더스 에디터",
+        writer: "WithUs 에디터",
         date: "2026-01-17",
         views: 0
     }
@@ -185,7 +185,7 @@ export default function GuideManagementPage() {
                             </td>
                             <td className="px-8 py-6 text-center">
                                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${guide.status === 'Published' ? 'bg-emerald-50 text-emerald-600' :
-                                        guide.status === 'Review' ? 'bg-orange-50 text-orange-600' : 'bg-slate-100 text-slate-400'
+                                    guide.status === 'Review' ? 'bg-orange-50 text-orange-600' : 'bg-slate-100 text-slate-400'
                                     }`}>
                                     {guide.status === 'Published' ? <CheckCircle2 size={12} /> :
                                         guide.status === 'Review' ? <Clock size={12} /> : <Edit2 size={12} />}
@@ -241,7 +241,7 @@ export default function GuideManagementPage() {
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h3 className="text-3xl font-black text-slate-900 tracking-tighter mb-2">새 공식 가이드 제작</h3>
-                                        <p className="text-sm font-bold text-slate-400">위더스 공식 여행 가이드를 작성하세요</p>
+                                        <p className="text-sm font-bold text-slate-400">WithUs 공식 여행 가이드를 작성하세요</p>
                                     </div>
                                     <button
                                         onClick={() => setShowCreateModal(false)}

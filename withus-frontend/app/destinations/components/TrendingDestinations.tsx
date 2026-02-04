@@ -1,15 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { TrendingUp, Users, Heart, Flame, MapPin, ArrowRight, Crown } from 'lucide-react';
+import { TrendingUp, Users, Heart, Flame, MapPin, ArrowRight, Crown, Globe } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
+
+const regionFilters = [
+    { id: 'all', label: '전체', icon: '🌐' },
+    { id: 'domestic', label: '국내', icon: '🇰🇷' },
+    { id: 'asia', label: '아시아', icon: '🌏' },
+    { id: 'europe', label: '유럽', icon: '🌍' },
+    { id: 'americas', label: '미주/기타', icon: '🌎' }
+];
 
 const trendingData = [
     {
         id: 1,
         city: "파리",
         country: "프랑스",
+        region: "europe",
         image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&q=80&w=1200",
         travelers: 1240,
         routes: 89,
@@ -20,6 +29,7 @@ const trendingData = [
         id: 2,
         city: "제주",
         country: "대한민국",
+        region: "domestic",
         image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1200",
         travelers: 980,
         routes: 67,
@@ -30,6 +40,7 @@ const trendingData = [
         id: 3,
         city: "발리",
         country: "인도네시아",
+        region: "asia",
         image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=1200",
         travelers: 856,
         routes: 54,
@@ -40,6 +51,7 @@ const trendingData = [
         id: 4,
         city: "도쿄",
         country: "일본",
+        region: "asia",
         image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=1200",
         travelers: 742,
         routes: 43,
@@ -50,6 +62,7 @@ const trendingData = [
         id: 5,
         city: "런던",
         country: "영국",
+        region: "europe",
         image: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=1200",
         travelers: 698,
         routes: 38,
@@ -60,6 +73,7 @@ const trendingData = [
         id: 6,
         city: "뉴욕",
         country: "미국",
+        region: "americas",
         image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=1200",
         travelers: 1540,
         routes: 124,
@@ -70,6 +84,7 @@ const trendingData = [
         id: 7,
         city: "로마",
         country: "이탈리아",
+        region: "europe",
         image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&q=80&w=1200",
         travelers: 1100,
         routes: 76,
@@ -80,6 +95,7 @@ const trendingData = [
         id: 8,
         city: "방콕",
         country: "태국",
+        region: "asia",
         image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&q=80&w=1200",
         travelers: 2100,
         routes: 145,
@@ -89,7 +105,13 @@ const trendingData = [
 ];
 
 export const TrendingDestinations = () => {
-    const paginatedData = trendingData.slice(0, 5);
+    const [activeRegion, setActiveRegion] = useState('all');
+
+    const filteredData = activeRegion === 'all'
+        ? trendingData
+        : trendingData.filter(dest => dest.region === activeRegion);
+
+    const paginatedData = filteredData.slice(0, 5);
 
     return (
         <section className="w-full py-24 px-6 bg-white">
@@ -105,19 +127,31 @@ export const TrendingDestinations = () => {
                         <Flame className="text-orange-500" size={24} />
                         <span className="text-sm font-bold text-orange-500 uppercase tracking-wider">Hot Destinations</span>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div>
                             <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-3">
                                 지금 가장 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500">핫한 여행지</span>
                             </h2>
                             <p className="text-slate-600 font-medium">실시간 인기 급상승 중인 여행지를 만나보세요 🚀</p>
                         </div>
-                        <motion.button
-                            className="hidden md:block px-6 py-3 rounded-full border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-orange-500 hover:text-orange-600 transition-all font-black"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            전체 보기 →
-                        </motion.button>
+
+                        {/* Region Filters - Right Top */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                            {regionFilters.map((filter) => (
+                                <motion.button
+                                    key={filter.id}
+                                    onClick={() => setActiveRegion(filter.id)}
+                                    className={`px-4 py-2.5 rounded-full font-bold text-sm transition-all ${activeRegion === filter.id
+                                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
+                                        : 'bg-white border-2 border-slate-200 text-slate-600 hover:border-orange-300 hover:text-orange-600'
+                                        }`}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {filter.label}
+                                </motion.button>
+                            ))}
+                        </div>
                     </div>
                 </motion.div>
 
@@ -295,6 +329,23 @@ export const TrendingDestinations = () => {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* View All Button - Bottom Center */}
+                <motion.div
+                    className="flex justify-center mt-12"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <motion.button
+                        className="flex items-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-slate-200 text-slate-900 font-bold text-sm hover:border-orange-500 hover:text-orange-500 transition-colors shadow-lg"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        전체 여행지 보기
+                        <ArrowRight size={18} />
+                    </motion.button>
+                </motion.div>
             </div>
         </section>
     );
