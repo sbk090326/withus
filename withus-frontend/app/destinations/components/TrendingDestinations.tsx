@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { TrendingUp, Users, Heart, Flame, MapPin, ArrowRight, Crown, Globe } from 'lucide-react';
 import { palette, theme } from '@/app/components/design-system/constants';
+import Link from 'next/link';
 
 const regionFilters = [
     { id: 'all', label: '전체', icon: '🌐' },
@@ -337,14 +338,16 @@ export const TrendingDestinations = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
-                    <motion.button
-                        className="flex items-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-slate-200 text-slate-900 font-bold text-sm hover:border-orange-500 hover:text-orange-500 transition-colors shadow-lg"
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        전체 여행지 보기
-                        <ArrowRight size={18} />
-                    </motion.button>
+                    <Link href="/destinations/all">
+                        <motion.button
+                            className="flex items-center gap-3 px-8 py-4 rounded-full bg-white border-2 border-slate-200 text-slate-900 font-bold text-sm hover:border-orange-500 hover:text-orange-500 transition-colors shadow-lg"
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            전체 여행지 보기
+                            <ArrowRight size={18} />
+                        </motion.button>
+                    </Link>
                 </motion.div>
             </div>
         </section>
